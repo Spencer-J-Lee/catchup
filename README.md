@@ -1,50 +1,101 @@
-# Welcome to your Expo app 👋
+# CatchUp
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A mobile app for tracking who you want to stay in touch with and when you last
+caught up with them. React Native (Expo) + TypeScript + Supabase.
 
-## Get started
+## Phase 1 status
 
-1. Install dependencies
+This is the **Phase 1 scaffold**. It includes:
 
-   ```bash
-   npm install
-   ```
+- Expo Router app with auth gate (Supabase email/password).
+- Friends CRUD: add, edit, delete, list.
+- Catch-up events: schedule a future event, log a catch-up that just happened,
+  backfill a past one, mark scheduled events complete or missed, edit, delete.
+- Per-friend cadence presets (daily / weekly / monthly / 3 mo / 6 mo / yearly)
+  with a "next due" indicator on the friend list.
+- Friend detail view with history, per-event notes, and tap-to-open-in-Maps for
+  in-person events.
+- Tabs: Friends, Calendar (placeholder for 1.6), Settings.
 
-2. Start the app
+Phase 2 (notifications, contacts integration) and Phase 3 (Google Calendar
+sync, polish) are unscaffolded.
 
-   ```bash
-   npx expo start
-   ```
+## Setup
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+### 1. Install dependencies
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 2. Create a Supabase project
 
-## Learn more
+1. Create a project at https://database.new (or via
+   https://supabase.com/dashboard → New project).
+2. Once provisioned, grab **Project URL** and the **Publishable key**
+   (Settings → API Keys → "publishable", `sb_publishable_…`). Legacy "anon
+   public" keys also work — Supabase is migrating naming.
 
-To learn more about developing your project with Expo, look at the following resources:
+### 3. Apply the database migration
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+See `supabase/README.md` — either use the Supabase CLI (`supabase db push`) or
+paste `supabase/migrations/0001_init.sql` into the SQL editor.
 
-## Join the community
+### 4. Configure environment variables
 
-Join our community of developers creating universal apps.
+```bash
+cp .env.example .env.local
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Fill in `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
+
+### 5. Run the app
+
+```bash
+npm run ios
+# or
+npm start          # opens the Metro bundler — scan QR with Expo Go on your phone
+```
+
+The first time you sign up, Supabase creates an auth user and a trigger
+populates a matching `profiles` row.
+
+## Project layout
+
+```
+app/                          Expo Router screens
+  (auth)/                     login, signup
+  (tabs)/                     friends list, calendar, settings
+  friend/new.tsx              add-friend modal
+  friend/[id]/index.tsx       friend detail
+  friend/[id]/edit.tsx        edit friend
+  event/new.tsx               schedule / check-in / backfill modal
+  event/[id]/index.tsx        event detail
+  event/[id]/edit.tsx         edit event
+components/                   ui primitives + friend/event widgets
+hooks/                        use-auth, use-friends, use-events
+lib/                          supabase client, cadence math, zod schemas, formatters
+types/                        DB row types (regenerate after migration)
+supabase/migrations/          SQL schema
+```
+
+## Next steps (Phase 1 polish)
+
+- Wire up a `Custom` cadence input (amount + unit picker) — currently only
+  preset chips are wired up.
+- Build the calendar tab (`app/(tabs)/calendar.tsx`) using
+  `react-native-calendars` agenda + month view.
+- Apple Sign In (requires Apple Developer Program) — see
+  https://docs.expo.dev/versions/latest/sdk/apple-authentication/.
+- Regenerate `types/database.generated.ts` after schema changes:
+  `supabase gen types typescript --linked > types/database.generated.ts`.
+  `types/database.ts` is a hand-written facade over the generated file that
+  adds narrow union types for CHECK-constrained columns — don't overwrite it.
+
+## Phase 2 & 3 (not yet scaffolded)
+
+- Phase 2: `expo-notifications` push tokens, three Edge Function cron jobs
+  (cadence-check, pre-event-reminder, morning-after-prompt), `expo-contacts`
+  integration, contact-change banner.
+- Phase 3: Google OAuth via `expo-auth-session`, Edge Function
+  `gcal-sync`, accessibility pass, error/offline handling.
