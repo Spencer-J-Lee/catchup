@@ -11,13 +11,12 @@ import {
 } from "react-native";
 
 import { Screen } from "@/components/ui/Screen";
+import { useEventsForFriend } from "@/hooks/use-events";
 import {
   useDeleteFriend,
   useFriend,
   useLinkFriendContact,
 } from "@/hooks/use-friends";
-import { useEventsForFriend } from "@/hooks/use-events";
-import { formatDateTime, formatMedium, formatRelative } from "@/lib/format";
 import {
   openCall,
   openContactCard,
@@ -25,6 +24,7 @@ import {
   pickContact,
   snapshotFrom,
 } from "@/lib/contacts";
+import { formatDateTime, formatMedium, formatRelative } from "@/lib/format";
 import type { CatchUpEvent, EventStatus } from "@/types/database";
 
 export default function FriendDetailScreen() {
