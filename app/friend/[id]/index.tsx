@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { format } from "date-fns";
+import { format, isThisYear } from "date-fns";
 import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
 import {
   ActivityIndicator,
@@ -340,9 +340,16 @@ function HistoryItem({ event }: { event: CatchUpEvent }) {
               <Text className="text-[10px] font-semibold uppercase text-fg-subtle tracking-wider">
                 {format(when, "MMM")}
               </Text>
-              <Text className="text-xl font-bold text-fg leading-tight">
+              <Text
+                className={`font-bold text-fg leading-tight ${isThisYear(when) ? "text-xl" : "text-base"}`}
+              >
                 {format(when, "d")}
               </Text>
+              {!isThisYear(when) ? (
+                <Text className="text-[9px] text-fg-subtle leading-tight">
+                  {format(when, "yyyy")}
+                </Text>
+              ) : null}
             </View>
           ) : null}
           <Text
