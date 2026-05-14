@@ -7,7 +7,14 @@ import type {
   Medium,
 } from "@/types/database";
 
-const SEED_PREFIX = "[Seed]";
+// Trailing middle dot on last_name marks a row as seed data. Chosen to look
+// like an unobtrusive character rather than an obvious tag, so the data
+// resembles real entries while staying easy to identify for cleanup.
+const SEED_MARKER = "·";
+
+function mark(lastName: string): string {
+  return `${lastName}${SEED_MARKER}`;
+}
 
 interface SeedFriend {
   first_name: string;
@@ -42,9 +49,10 @@ function isoOffsetDays(days: number): string {
 }
 
 const FRIENDS: SeedFriend[] = [
+  // scenario: ~30d overdue (weekly cadence)
   {
-    first_name: `${SEED_PREFIX} Alex`,
-    last_name: "Chen — ~30d overdue",
+    first_name: "Alex",
+    last_name: mark("Chen"),
     general_notes: "College roommate. Loves climbing.",
     cadence_preset: "weekly",
     cadence_amount: 1,
@@ -73,9 +81,10 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
+  // scenario: 100d overdue (weekly cadence), includes a missed event
   {
-    first_name: `${SEED_PREFIX} Bailey`,
-    last_name: "Park — 100d overdue",
+    first_name: "Bailey",
+    last_name: mark("Park"),
     general_notes:
       "From the Boston team. Has two kids; partner's name is Sam.",
     cadence_preset: "weekly",
@@ -104,9 +113,10 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
+  // scenario: 1d overdue (weekly cadence)
   {
-    first_name: `${SEED_PREFIX} Cam`,
-    last_name: "Rivera — 1d overdue",
+    first_name: "Cam",
+    last_name: mark("Rivera"),
     general_notes: null,
     cadence_preset: "weekly",
     cadence_amount: 1,
@@ -125,9 +135,10 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
+  // scenario: 1d overdue (monthly cadence)
   {
-    first_name: `${SEED_PREFIX} Dana`,
-    last_name: "Wu — 1d overdue (monthly)",
+    first_name: "Dana",
+    last_name: mark("Wu"),
     general_notes: null,
     cadence_preset: "monthly",
     cadence_amount: 1,
@@ -146,9 +157,10 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
+  // scenario: never caught up (no events)
   {
-    first_name: `${SEED_PREFIX} Eli`,
-    last_name: "Brooks — never caught up",
+    first_name: "Eli",
+    last_name: mark("Brooks"),
     general_notes:
       "Met at conference last month — promised to keep in touch but haven't yet.",
     cadence_preset: "monthly",
@@ -158,9 +170,10 @@ const FRIENDS: SeedFriend[] = [
     createdDaysAgo: 60,
     events: [],
   },
+  // scenario: due tomorrow, has an upcoming scheduled event
   {
-    first_name: `${SEED_PREFIX} Faye`,
-    last_name: "Holloway — due tomorrow",
+    first_name: "Faye",
+    last_name: mark("Holloway"),
     general_notes: null,
     cadence_preset: "weekly",
     cadence_amount: 1,
@@ -188,9 +201,10 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
+  // scenario: due in 3 weeks, exercises a long hyphenated last name for layout
   {
-    first_name: `${SEED_PREFIX} Gabriella`,
-    last_name: "Constantinopoulos-Whitfield — due in 3 weeks",
+    first_name: "Gabriella",
+    last_name: mark("Constantinopoulos-Whitfield"),
     general_notes: "Old high school friend. Lives in Athens now.",
     cadence_preset: "monthly",
     cadence_amount: 1,
@@ -227,9 +241,10 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
+  // scenario: caught up 2d ago (6-month cadence, not due)
   {
-    first_name: `${SEED_PREFIX} Harper`,
-    last_name: "Singh — caught up 2d ago",
+    first_name: "Harper",
+    last_name: mark("Singh"),
     general_notes: null,
     cadence_preset: "6_months",
     cadence_amount: 6,
@@ -249,9 +264,10 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
+  // scenario: no cadence set
   {
-    first_name: `${SEED_PREFIX} Indra`,
-    last_name: "Olamide — no cadence set",
+    first_name: "Indra",
+    last_name: mark("Olamide"),
     general_notes: "Loose connection. Catch up whenever.",
     cadence_preset: null,
     cadence_amount: null,
@@ -270,9 +286,10 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
+  // scenario: 3d overdue, long hyphenated last name for layout
   {
-    first_name: `${SEED_PREFIX} Jules`,
-    last_name: "Marchetti-Andersen — overdue 3d, long name for layout",
+    first_name: "Jules",
+    last_name: mark("Marchetti-Andersen"),
     general_notes: null,
     cadence_preset: "weekly",
     cadence_amount: 1,
@@ -313,7 +330,7 @@ export async function clearSeedData(userId: string): Promise<number> {
     .from("friends")
     .select("id")
     .eq("user_id", userId)
-    .like("first_name", `${SEED_PREFIX}%`);
+    .like("last_name", `%${SEED_MARKER}`);
   if (selErr) throw selErr;
   const ids = (existing ?? []).map((f) => f.id);
   if (ids.length === 0) return 0;
@@ -352,7 +369,7 @@ export async function seedExampleData(userId: string): Promise<SeedResult> {
   >[];
 
   const keyOf = (f: { first_name: string; last_name: string | null }) =>
-    `${f.first_name} ${f.last_name ?? ""}`;
+    `${f.first_name} ${f.last_name ?? ""}`;
   const byName = new Map(insertedFriends.map((f) => [keyOf(f), f.id]));
   const eventRows = FRIENDS.flatMap((f) => {
     const fid = byName.get(keyOf(f));

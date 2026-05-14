@@ -35,7 +35,7 @@ export default function SettingsScreen() {
     if (!user) return;
     Alert.alert(
       "Clear seed data?",
-      "This deletes every friend whose name starts with [Seed], along with their catch-up history. Your other friends are untouched.",
+      "This deletes every seed-marked friend (last name ending in ·), along with their catch-up history. Your other friends are untouched.",
       [
         { text: "Cancel", style: "cancel" },
         {
