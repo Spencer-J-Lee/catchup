@@ -196,6 +196,7 @@ export default function FriendsScreen() {
         </View>
       ) : (
         <FlatList
+          className="-mx-4"
           data={sections}
           keyExtractor={(s, i) =>
             s.kind === "header" ? `h-${s.title}-${i}` : `f-${s.row.friend.id}`
@@ -209,7 +210,7 @@ export default function FriendsScreen() {
           )}
           renderItem={({ item }) =>
             item.kind === "header" ? (
-              <View className="mt-4 mb-1">
+              <View className="mt-4 mb-1 px-4">
                 <Text className="text-base font-normal text-fg-muted">
                   {item.title}
                 </Text>

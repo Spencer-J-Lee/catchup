@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import { Link, useRouter, type Href } from "expo-router";
 import { useRef } from "react";
 import { Alert, Image, Pressable, Text, View } from "react-native";
@@ -63,9 +64,9 @@ export function FriendListItem({
     return (
       <Pressable
         onPress={onDeletePress}
-        className="w-24 bg-red-600 active:bg-red-700 items-center justify-center"
+        className="w-20 bg-red-600 active:bg-red-700 items-center justify-center"
       >
-        <Text className="text-white font-semibold">Delete</Text>
+        <Ionicons name="trash" size={22} color="#ffffff" />
       </Pressable>
     );
   }
@@ -111,7 +112,7 @@ export function FriendListItem({
       overshootRight={false}
     >
       <Link href={`/friend/${friend.id}`} asChild>
-        <Pressable className="flex-row items-center gap-3 py-2 px-1 bg-surface active:opacity-70">
+        <Pressable className="flex-row items-center gap-3 py-2 px-4 bg-surface active:opacity-70">
           {friend.avatar_url ? (
             <Image
               source={{ uri: friend.avatar_url }}
