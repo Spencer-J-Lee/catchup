@@ -10,7 +10,7 @@ import {
   useLinkFriendContact,
 } from "@/hooks/use-friends";
 import { useEventsForFriend } from "@/hooks/use-events";
-import { formatDateTime, formatMedium, formatRelative } from "@/lib/format";
+import { formatDateTime, formatMedium, formatRelative, fullName } from "@/lib/format";
 import {
   openCall,
   openContactCard,
@@ -98,7 +98,7 @@ export default function FriendDetailScreen() {
     <Screen scroll>
       <Stack.Screen
         options={{
-          title: friend.display_name,
+          title: fullName(friend),
           headerRight: () => (
             <Link href={`/friend/${id}/edit`} asChild>
               <Pressable className="px-2">

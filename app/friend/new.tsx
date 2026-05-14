@@ -16,7 +16,8 @@ export default function NewFriendScreen() {
   const { user } = useAuth();
   const create = useCreateFriend();
 
-  const [displayName, setDisplayName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [generalNotes, setGeneralNotes] = useState("");
   const [cadence, setCadence] = useState<{
     preset: CadencePreset | null;
@@ -27,7 +28,8 @@ export default function NewFriendScreen() {
   async function onSave() {
     if (!user) return;
     const parsed = friendInputSchema.safeParse({
-      display_name: displayName,
+      first_name: firstName,
+      last_name: lastName || null,
       general_notes: generalNotes || null,
       cadence_preset: cadence.preset,
       cadence_amount: cadence.amount,
@@ -48,7 +50,8 @@ export default function NewFriendScreen() {
   return (
     <Screen scroll>
       <View className="gap-4">
-        <Input label="Name" value={displayName} onChangeText={setDisplayName} />
+        <Input label="First name" value={firstName} onChangeText={setFirstName} />
+        <Input label="Last name" value={lastName} onChangeText={setLastName} />
         <Input
           label="Notes"
           value={generalNotes}
@@ -59,7 +62,7 @@ export default function NewFriendScreen() {
           className="h-24"
         />
         <CadencePicker value={cadence} onChange={setCadence} />
-        <Button onPress={onSave} loading={create.isPending} disabled={!displayName.trim()}>
+        <Button onPress={onSave} loading={create.isPending} disabled={!firstName.trim()}>
           Save
         </Button>
         <Text className="text-xs text-fg-muted text-center">

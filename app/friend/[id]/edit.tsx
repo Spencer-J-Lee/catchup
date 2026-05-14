@@ -16,7 +16,8 @@ export default function EditFriendScreen() {
   const { data: friend } = useFriend(id);
   const update = useUpdateFriend();
 
-  const [displayName, setDisplayName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [generalNotes, setGeneralNotes] = useState("");
   const [cadence, setCadence] = useState<{
     preset: CadencePreset | null;
@@ -26,7 +27,8 @@ export default function EditFriendScreen() {
 
   useEffect(() => {
     if (!friend) return;
-    setDisplayName(friend.display_name);
+    setFirstName(friend.first_name);
+    setLastName(friend.last_name ?? "");
     setGeneralNotes(friend.general_notes ?? "");
     setCadence({
       preset: friend.cadence_preset,
@@ -38,7 +40,8 @@ export default function EditFriendScreen() {
   async function onSave() {
     if (!id) return;
     const parsed = friendInputSchema.safeParse({
-      display_name: displayName,
+      first_name: firstName,
+      last_name: lastName || null,
       general_notes: generalNotes || null,
       cadence_preset: cadence.preset,
       cadence_amount: cadence.amount,
@@ -59,7 +62,8 @@ export default function EditFriendScreen() {
   return (
     <Screen scroll>
       <View className="gap-4">
-        <Input label="Name" value={displayName} onChangeText={setDisplayName} />
+        <Input label="First name" value={firstName} onChangeText={setFirstName} />
+        <Input label="Last name" value={lastName} onChangeText={setLastName} />
         <Input
           label="Notes"
           value={generalNotes}
@@ -70,7 +74,7 @@ export default function EditFriendScreen() {
           className="h-24"
         />
         <CadencePicker value={cadence} onChange={setCadence} />
-        <Button onPress={onSave} loading={update.isPending} disabled={!displayName.trim()}>
+        <Button onPress={onSave} loading={update.isPending} disabled={!firstName.trim()}>
           Save
         </Button>
       </View>

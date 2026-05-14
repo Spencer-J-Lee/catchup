@@ -50,7 +50,9 @@ export default function FriendsScreen() {
 
     const q = search.trim().toLowerCase();
     const filtered = q
-      ? data.filter((f) => f.display_name.toLowerCase().includes(q))
+      ? data.filter((f) =>
+          `${f.first_name} ${f.last_name ?? ""}`.toLowerCase().includes(q),
+        )
       : data;
 
     const scheduled: FriendRow[] = [];

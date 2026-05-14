@@ -10,7 +10,8 @@ import type {
 const SEED_PREFIX = "[Seed]";
 
 interface SeedFriend {
-  display_name: string;
+  first_name: string;
+  last_name: string | null;
   general_notes: string | null;
   cadence_preset: CadencePreset | null;
   cadence_amount: number | null;
@@ -42,7 +43,8 @@ function isoOffsetDays(days: number): string {
 
 const FRIENDS: SeedFriend[] = [
   {
-    display_name: `${SEED_PREFIX} Alex Chen — ~30d overdue`,
+    first_name: `${SEED_PREFIX} Alex`,
+    last_name: "Chen — ~30d overdue",
     general_notes: "College roommate. Loves climbing.",
     cadence_preset: "weekly",
     cadence_amount: 1,
@@ -72,7 +74,8 @@ const FRIENDS: SeedFriend[] = [
     ],
   },
   {
-    display_name: `${SEED_PREFIX} Bailey Park — 100d overdue`,
+    first_name: `${SEED_PREFIX} Bailey`,
+    last_name: "Park — 100d overdue",
     general_notes:
       "From the Boston team. Has two kids; partner's name is Sam.",
     cadence_preset: "weekly",
@@ -102,7 +105,8 @@ const FRIENDS: SeedFriend[] = [
     ],
   },
   {
-    display_name: `${SEED_PREFIX} Cam Rivera — 1d overdue`,
+    first_name: `${SEED_PREFIX} Cam`,
+    last_name: "Rivera — 1d overdue",
     general_notes: null,
     cadence_preset: "weekly",
     cadence_amount: 1,
@@ -122,7 +126,8 @@ const FRIENDS: SeedFriend[] = [
     ],
   },
   {
-    display_name: `${SEED_PREFIX} Dana Wu — 1d overdue (monthly)`,
+    first_name: `${SEED_PREFIX} Dana`,
+    last_name: "Wu — 1d overdue (monthly)",
     general_notes: null,
     cadence_preset: "monthly",
     cadence_amount: 1,
@@ -142,7 +147,8 @@ const FRIENDS: SeedFriend[] = [
     ],
   },
   {
-    display_name: `${SEED_PREFIX} Eli Brooks — never caught up`,
+    first_name: `${SEED_PREFIX} Eli`,
+    last_name: "Brooks — never caught up",
     general_notes:
       "Met at conference last month — promised to keep in touch but haven't yet.",
     cadence_preset: "monthly",
@@ -153,7 +159,8 @@ const FRIENDS: SeedFriend[] = [
     events: [],
   },
   {
-    display_name: `${SEED_PREFIX} Faye Holloway — due tomorrow`,
+    first_name: `${SEED_PREFIX} Faye`,
+    last_name: "Holloway — due tomorrow",
     general_notes: null,
     cadence_preset: "weekly",
     cadence_amount: 1,
@@ -182,7 +189,8 @@ const FRIENDS: SeedFriend[] = [
     ],
   },
   {
-    display_name: `${SEED_PREFIX} Gabriella Constantinopoulos-Whitfield — due in 3 weeks`,
+    first_name: `${SEED_PREFIX} Gabriella`,
+    last_name: "Constantinopoulos-Whitfield — due in 3 weeks",
     general_notes: "Old high school friend. Lives in Athens now.",
     cadence_preset: "monthly",
     cadence_amount: 1,
@@ -220,7 +228,8 @@ const FRIENDS: SeedFriend[] = [
     ],
   },
   {
-    display_name: `${SEED_PREFIX} Harper Singh — caught up 2d ago`,
+    first_name: `${SEED_PREFIX} Harper`,
+    last_name: "Singh — caught up 2d ago",
     general_notes: null,
     cadence_preset: "6_months",
     cadence_amount: 6,
@@ -241,7 +250,8 @@ const FRIENDS: SeedFriend[] = [
     ],
   },
   {
-    display_name: `${SEED_PREFIX} Indra Olamide — no cadence set`,
+    first_name: `${SEED_PREFIX} Indra`,
+    last_name: "Olamide — no cadence set",
     general_notes: "Loose connection. Catch up whenever.",
     cadence_preset: null,
     cadence_amount: null,
@@ -261,7 +271,8 @@ const FRIENDS: SeedFriend[] = [
     ],
   },
   {
-    display_name: `${SEED_PREFIX} Jules Marchetti-Andersen — overdue 3d, long name for layout`,
+    first_name: `${SEED_PREFIX} Jules`,
+    last_name: "Marchetti-Andersen — overdue 3d, long name for layout",
     general_notes: null,
     cadence_preset: "weekly",
     cadence_amount: 1,
@@ -302,7 +313,7 @@ export async function clearSeedData(userId: string): Promise<number> {
     .from("friends")
     .select("id")
     .eq("user_id", userId)
-    .like("display_name", `${SEED_PREFIX}%`);
+    .like("first_name", `${SEED_PREFIX}%`);
   if (selErr) throw selErr;
   const ids = (existing ?? []).map((f) => f.id);
   if (ids.length === 0) return 0;
@@ -320,7 +331,8 @@ export async function seedExampleData(userId: string): Promise<SeedResult> {
 
   const friendRows = FRIENDS.map((f) => ({
     user_id: userId,
-    display_name: f.display_name,
+    first_name: f.first_name,
+    last_name: f.last_name,
     general_notes: f.general_notes,
     cadence_preset: f.cadence_preset,
     cadence_amount: f.cadence_amount,
@@ -332,13 +344,18 @@ export async function seedExampleData(userId: string): Promise<SeedResult> {
   const { data: inserted, error: insErr } = await supabase
     .from("friends")
     .insert(friendRows)
-    .select("id, display_name");
+    .select("id, first_name, last_name");
   if (insErr) throw insErr;
-  const insertedFriends = (inserted ?? []) as Pick<Friend, "id" | "display_name">[];
+  const insertedFriends = (inserted ?? []) as Pick<
+    Friend,
+    "id" | "first_name" | "last_name"
+  >[];
 
-  const byName = new Map(insertedFriends.map((f) => [f.display_name, f.id]));
+  const keyOf = (f: { first_name: string; last_name: string | null }) =>
+    `${f.first_name} ${f.last_name ?? ""}`;
+  const byName = new Map(insertedFriends.map((f) => [keyOf(f), f.id]));
   const eventRows = FRIENDS.flatMap((f) => {
-    const fid = byName.get(f.display_name);
+    const fid = byName.get(keyOf(f));
     if (!fid) return [];
     return f.events.map((e) => {
       const ts = isoOffsetDays(e.offsetDays);

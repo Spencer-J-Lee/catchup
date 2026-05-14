@@ -122,9 +122,10 @@ export type Database = {
           contact_snapshot: Json | null
           contact_synced_at: string | null
           created_at: string
-          display_name: string
+          first_name: string
           general_notes: string | null
           id: string
+          last_name: string | null
           updated_at: string
           user_id: string
         }
@@ -137,9 +138,10 @@ export type Database = {
           contact_snapshot?: Json | null
           contact_synced_at?: string | null
           created_at?: string
-          display_name: string
+          first_name: string
           general_notes?: string | null
           id?: string
+          last_name?: string | null
           updated_at?: string
           user_id: string
         }
@@ -152,9 +154,10 @@ export type Database = {
           contact_snapshot?: Json | null
           contact_synced_at?: string | null
           created_at?: string
-          display_name?: string
+          first_name?: string
           general_notes?: string | null
           id?: string
+          last_name?: string | null
           updated_at?: string
           user_id?: string
         }

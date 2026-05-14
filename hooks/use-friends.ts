@@ -13,7 +13,11 @@ const FRIENDS_KEY = ["friends"] as const;
 
 async function fetchFriends(): Promise<FriendWithStatus[]> {
   const [friendsRes, statusRes] = await Promise.all([
-    supabase.from("friends").select("*").order("display_name"),
+    supabase
+      .from("friends")
+      .select("*")
+      .order("first_name")
+      .order("last_name", { nullsFirst: false }),
     supabase.from("friend_cadence_status").select("*"),
   ]);
   if (friendsRes.error) throw friendsRes.error;

@@ -18,6 +18,29 @@ export function formatRelative(d: Date | string): string {
   return formatDistanceToNowStrict(date, { addSuffix: true });
 }
 
+export function fullName(parts: {
+  first_name: string;
+  last_name?: string | null;
+}): string {
+  const last = parts.last_name?.trim();
+  return last ? `${parts.first_name} ${last}` : parts.first_name;
+}
+
+export function initialsOf(
+  firstName: string,
+  lastName?: string | null,
+): string {
+  const first = firstName.trim();
+  const last = lastName?.trim() ?? "";
+  if (first && last) {
+    return (first[0]! + last[0]!).toUpperCase();
+  }
+  if (first) {
+    return first.slice(0, 2).toUpperCase();
+  }
+  return "?";
+}
+
 export function formatMedium(m: Medium | null | undefined): string {
   switch (m) {
     case "text":

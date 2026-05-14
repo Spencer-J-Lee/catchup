@@ -1,7 +1,7 @@
 import { Link, useRouter, type Href } from "expo-router";
 import { Image, Pressable, Text, View } from "react-native";
 
-import { formatRelative } from "@/lib/format";
+import { formatRelative, fullName, initialsOf } from "@/lib/format";
 import type { FriendWithStatus } from "@/hooks/use-friends";
 
 export type FriendItemAction = "schedule" | "checkin" | "reschedule";
@@ -12,13 +12,6 @@ interface Props {
   scheduledAt?: string | null;
   scheduledEventId?: string | null;
   isDue?: boolean;
-}
-
-function initialsOf(name: string): string {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  if (parts.length === 0) return "?";
-  if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase();
-  return (parts[0]![0]! + parts[parts.length - 1]![0]!).toUpperCase();
 }
 
 const ACTION_META: Record<
@@ -76,11 +69,11 @@ export function FriendListItem({
           />
         ) : (
           <View className="h-14 w-14 rounded-full bg-surface-elevated items-center justify-center">
-            <Text className="text-fg text-base font-semibold">{initialsOf(friend.display_name)}</Text>
+            <Text className="text-fg text-base font-semibold">{initialsOf(friend.first_name, friend.last_name)}</Text>
           </View>
         )}
         <View className="flex-1">
-          <Text className="text-lg font-semibold text-fg">{friend.display_name}</Text>
+          <Text className="text-lg font-semibold text-fg">{fullName(friend)}</Text>
           <Text className={`text-sm mt-0.5 ${subClass}`}>{subLabel}</Text>
         </View>
         <Pressable

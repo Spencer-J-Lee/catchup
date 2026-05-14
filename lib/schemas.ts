@@ -21,7 +21,14 @@ export const eventStatusSchema = z.enum([
 
 export const friendInputSchema = z
   .object({
-    display_name: z.string().trim().min(1, "Name is required").max(100),
+    first_name: z.string().trim().min(1, "First name is required").max(100),
+    last_name: z
+      .string()
+      .trim()
+      .max(100)
+      .transform((v) => (v === "" ? null : v))
+      .nullable()
+      .optional(),
     general_notes: z.string().max(5000).nullable().optional(),
     cadence_preset: cadencePresetSchema.nullable().optional(),
     cadence_amount: z.number().int().positive().nullable().optional(),
