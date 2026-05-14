@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/Button";
 import { Row } from "@/components/ui/Row";
 import { Screen } from "@/components/ui/Screen";
 import { useDeleteEvent, useEvent, useUpdateEvent } from "@/hooks/use-events";
-import { formatDateTime, formatMedium } from "@/lib/format";
+import { formatDateTime, formatMedium, formatStatus } from "@/lib/format";
 
 export default function EventDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -99,7 +99,7 @@ export default function EventDetailScreen() {
 
       <View className="gap-4">
         <View className="bg-surface-elevated rounded-2xl p-4 gap-2">
-          <Row label="Status" value={event.status} />
+          <Row label="Status" value={formatStatus(event.status)} />
           {event.scheduled_at ? (
             <Row label="Scheduled" value={formatDateTime(event.scheduled_at)} />
           ) : null}

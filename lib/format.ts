@@ -1,6 +1,6 @@
 import { format, formatDistanceToNowStrict } from "date-fns";
 
-import type { Medium } from "@/types/database";
+import type { EventStatus, Medium } from "@/types/database";
 
 export function formatDate(d: Date | string): string {
   return format(typeof d === "string" ? new Date(d) : d, "MMM d, yyyy");
@@ -39,6 +39,19 @@ export function initialsOf(
     return first.slice(0, 2).toUpperCase();
   }
   return "?";
+}
+
+export function formatStatus(s: EventStatus): string {
+  switch (s) {
+    case "scheduled":
+      return "Scheduled";
+    case "completed":
+      return "Completed";
+    case "missed":
+      return "Missed";
+    case "cancelled":
+      return "Cancelled";
+  }
 }
 
 export function formatMedium(m: Medium | null | undefined): string {
