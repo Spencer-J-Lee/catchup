@@ -42,10 +42,18 @@ export function Button({
     >
       {loading ? (
         <ActivityIndicator
-          color={variant === "primary" ? "#1a1a1a" : variant === "destructive" ? "white" : "white"}
+          color={
+            variant === "primary"
+              ? "#1a1a1a"
+              : variant === "destructive"
+                ? "white"
+                : "white"
+          }
         />
       ) : (
-        <Text className={`font-semibold text-base ${TEXT_CLASSES[variant]}`}>{children}</Text>
+        <Text className={`font-semibold text-base ${TEXT_CLASSES[variant]}`}>
+          {children}
+        </Text>
       )}
     </Pressable>
   );

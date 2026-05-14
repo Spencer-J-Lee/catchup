@@ -7,7 +7,7 @@ interface Props {
   onChange: (v: Medium) => void;
 }
 
-const OPTIONS: Array<{ value: Medium; label: string }> = [
+const OPTIONS: { value: Medium; label: string }[] = [
   { value: "text", label: "Text" },
   { value: "call", label: "Call" },
   { value: "video", label: "Video" },
@@ -29,7 +29,11 @@ export function MediumPicker({ value, onChange }: Props) {
                 selected ? "bg-brand-300" : "bg-surface-elevated"
               }`}
             >
-              <Text className={selected ? "text-surface font-medium" : "text-fg"}>{o.label}</Text>
+              <Text
+                className={selected ? "text-surface font-medium" : "text-fg"}
+              >
+                {o.label}
+              </Text>
             </Pressable>
           );
         })}

@@ -47,7 +47,10 @@ export default function SettingsScreen() {
               const n = await clearSeedData(user.id);
               qc.invalidateQueries({ queryKey: ["friends"] });
               qc.invalidateQueries({ queryKey: ["events"] });
-              Alert.alert("Seed data cleared", `Removed ${n} friend${n === 1 ? "" : "s"}.`);
+              Alert.alert(
+                "Seed data cleared",
+                `Removed ${n} friend${n === 1 ? "" : "s"}.`,
+              );
             } catch (e) {
               Alert.alert("Failed to clear", (e as Error).message);
             } finally {
@@ -73,14 +76,19 @@ export default function SettingsScreen() {
             Developer
           </Text>
           <Text className="text-sm text-fg-muted">
-            Loads a curated set of example friends and catch-up events covering due,
-            not-due, missing-cadence, never-caught-up, scheduled, missed, and cancelled
-            cases. Re-running replaces previous seed data.
+            Loads a curated set of example friends and catch-up events covering
+            due, not-due, missing-cadence, never-caught-up, scheduled, missed,
+            and cancelled cases. Re-running replaces previous seed data.
           </Text>
           <Button onPress={onSeed} loading={seeding} disabled={clearing}>
             Load example data
           </Button>
-          <Button variant="secondary" onPress={onClear} loading={clearing} disabled={seeding}>
+          <Button
+            variant="secondary"
+            onPress={onClear}
+            loading={clearing}
+            disabled={seeding}
+          >
             Clear seed data
           </Button>
         </View>

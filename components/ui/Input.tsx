@@ -12,7 +12,9 @@ export const Input = forwardRef<TextInput, InputProps>(function Input(
 ) {
   return (
     <View className="gap-1">
-      {label ? <Text className="text-sm font-medium text-fg-muted">{label}</Text> : null}
+      {label ? (
+        <Text className="text-sm font-medium text-fg-muted">{label}</Text>
+      ) : null}
       <TextInput
         ref={ref}
         className={`border border-surface-border rounded-xl px-3 py-3 text-base bg-surface-elevated text-fg ${

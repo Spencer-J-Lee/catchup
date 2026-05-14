@@ -56,6 +56,9 @@ export type PushToken = Omit<PushTokenRow, "platform"> & {
   platform: Platform;
 };
 
-export type FriendCadenceStatus = Omit<FriendCadenceStatusRow, "cadence_unit"> & {
+export type FriendCadenceStatus = Omit<
+  FriendCadenceStatusRow,
+  "cadence_unit"
+> & {
   cadence_unit: CadenceUnit | null;
 };

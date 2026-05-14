@@ -39,7 +39,11 @@ export default function SignupScreen() {
     <Screen>
       <View className="flex-1 justify-center gap-4">
         <Text className="text-3xl font-bold text-fg">Create account</Text>
-        <Input label="Display name" value={displayName} onChangeText={setDisplayName} />
+        <Input
+          label="Display name"
+          value={displayName}
+          onChangeText={setDisplayName}
+        />
         <Input
           label="Email"
           autoCapitalize="none"

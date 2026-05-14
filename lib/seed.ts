@@ -85,8 +85,7 @@ const FRIENDS: SeedFriend[] = [
   {
     first_name: "Bailey",
     last_name: mark("Park"),
-    general_notes:
-      "From the Boston team. Has two kids; partner's name is Sam.",
+    general_notes: "From the Boston team. Has two kids; partner's name is Sam.",
     cadence_preset: "weekly",
     cadence_amount: 1,
     cadence_unit: "weeks",
@@ -109,7 +108,8 @@ const FRIENDS: SeedFriend[] = [
         medium_detail: null,
         location_text: null,
         location_address: null,
-        event_notes: "Missed — they had to cancel last minute, never rescheduled.",
+        event_notes:
+          "Missed — they had to cancel last minute, never rescheduled.",
       },
     ],
   },
@@ -131,7 +131,8 @@ const FRIENDS: SeedFriend[] = [
         medium_detail: null,
         location_text: "Sightglass",
         location_address: "270 7th St, San Francisco, CA",
-        event_notes: "Walked through their startup idea. Interesting but very early.",
+        event_notes:
+          "Walked through their startup idea. Interesting but very early.",
       },
     ],
   },
@@ -228,7 +229,8 @@ const FRIENDS: SeedFriend[] = [
         medium_detail: null,
         location_text: null,
         location_address: null,
-        event_notes: "Cancelled — she had a work emergency. Rescheduled the week after.",
+        event_notes:
+          "Cancelled — she had a work emergency. Rescheduled the week after.",
       },
       {
         offsetDays: -38,
@@ -380,7 +382,10 @@ export async function seedExampleData(userId: string): Promise<SeedResult> {
       return {
         user_id: userId,
         friend_id: fid,
-        scheduled_at: isScheduled || e.status === "cancelled" || e.status === "missed" ? ts : null,
+        scheduled_at:
+          isScheduled || e.status === "cancelled" || e.status === "missed"
+            ? ts
+            : null,
         occurred_at: e.status === "completed" ? ts : null,
         status: e.status,
         medium: e.medium,

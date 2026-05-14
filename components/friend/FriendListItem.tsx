@@ -51,8 +51,14 @@ export function FriendListItem({
     action === "reschedule" && scheduledEventId
       ? { pathname: "/event/[id]/edit", params: { id: scheduledEventId } }
       : action === "schedule"
-        ? { pathname: "/event/new", params: { friend_id: friend.id, mode: "schedule" } }
-        : { pathname: "/event/new", params: { friend_id: friend.id, mode: "checkin" } };
+        ? {
+            pathname: "/event/new",
+            params: { friend_id: friend.id, mode: "schedule" },
+          }
+        : {
+            pathname: "/event/new",
+            params: { friend_id: friend.id, mode: "checkin" },
+          };
 
   function onActionPress() {
     router.push(actionHref);
@@ -69,11 +75,15 @@ export function FriendListItem({
           />
         ) : (
           <View className="h-14 w-14 rounded-full bg-surface-elevated items-center justify-center">
-            <Text className="text-fg text-base font-semibold">{initialsOf(friend.first_name, friend.last_name)}</Text>
+            <Text className="text-fg text-base font-semibold">
+              {initialsOf(friend.first_name, friend.last_name)}
+            </Text>
           </View>
         )}
         <View className="flex-1">
-          <Text className="text-lg font-semibold text-fg">{fullName(friend)}</Text>
+          <Text className="text-lg font-semibold text-fg">
+            {fullName(friend)}
+          </Text>
           <Text className={`text-sm mt-0.5 ${subClass}`}>{subLabel}</Text>
         </View>
         <Pressable

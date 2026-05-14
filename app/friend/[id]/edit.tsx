@@ -62,7 +62,11 @@ export default function EditFriendScreen() {
   return (
     <Screen scroll>
       <View className="gap-4">
-        <Input label="First name" value={firstName} onChangeText={setFirstName} />
+        <Input
+          label="First name"
+          value={firstName}
+          onChangeText={setFirstName}
+        />
         <Input label="Last name" value={lastName} onChangeText={setLastName} />
         <Input
           label="Notes"
@@ -74,7 +78,11 @@ export default function EditFriendScreen() {
           className="h-24"
         />
         <CadencePicker value={cadence} onChange={setCadence} />
-        <Button onPress={onSave} loading={update.isPending} disabled={!firstName.trim()}>
+        <Button
+          onPress={onSave}
+          loading={update.isPending}
+          disabled={!firstName.trim()}
+        >
           Save
         </Button>
       </View>

@@ -8,7 +8,8 @@ export default function CalendarScreen() {
       <View className="flex-1 items-center justify-center gap-2">
         <Text className="text-2xl font-bold text-fg">Calendar</Text>
         <Text className="text-fg-muted text-center">
-          Phase 1.6 — agenda + month view of past and upcoming catch-ups will live here.
+          Phase 1.6 — agenda + month view of past and upcoming catch-ups will
+          live here.
         </Text>
       </View>
     </Screen>

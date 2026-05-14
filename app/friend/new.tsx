@@ -59,7 +59,10 @@ export default function NewFriendScreen() {
       cadence_unit: cadence.unit,
     });
     if (!parsed.success) {
-      Alert.alert("Invalid input", parsed.error.issues[0]?.message ?? "Please check the fields");
+      Alert.alert(
+        "Invalid input",
+        parsed.error.issues[0]?.message ?? "Please check the fields",
+      );
       return;
     }
     try {
@@ -115,7 +118,11 @@ export default function NewFriendScreen() {
           </View>
         ) : null}
 
-        <Input label="First name" value={firstName} onChangeText={setFirstName} />
+        <Input
+          label="First name"
+          value={firstName}
+          onChangeText={setFirstName}
+        />
         <Input label="Last name" value={lastName} onChangeText={setLastName} />
         <Input
           label="Notes"
@@ -127,7 +134,11 @@ export default function NewFriendScreen() {
           className="h-24"
         />
         <CadencePicker value={cadence} onChange={setCadence} />
-        <Button onPress={onSave} loading={create.isPending} disabled={!firstName.trim()}>
+        <Button
+          onPress={onSave}
+          loading={create.isPending}
+          disabled={!firstName.trim()}
+        >
           Save
         </Button>
       </View>

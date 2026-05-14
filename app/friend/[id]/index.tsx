@@ -1,7 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
 import { format } from "date-fns";
 import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { ActivityIndicator, Alert, FlatList, Pressable, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
 
 import { Screen } from "@/components/ui/Screen";
 import {
@@ -10,7 +17,7 @@ import {
   useLinkFriendContact,
 } from "@/hooks/use-friends";
 import { useEventsForFriend } from "@/hooks/use-events";
-import { formatDateTime, formatMedium, formatRelative, fullName } from "@/lib/format";
+import { formatDateTime, formatMedium, formatRelative } from "@/lib/format";
 import {
   openCall,
   openContactCard,
@@ -38,20 +45,26 @@ export default function FriendDetailScreen() {
     );
   }
 
-  const lastCompleted = events?.find((e) => e.status === "completed" && e.occurred_at);
+  const lastCompleted = events?.find(
+    (e) => e.status === "completed" && e.occurred_at,
+  );
 
   function onDelete() {
-    Alert.alert("Delete friend?", "This will also delete all catch-up history.", [
-      { text: "Cancel", style: "cancel" },
-      {
-        text: "Delete",
-        style: "destructive",
-        onPress: async () => {
-          await del.mutateAsync(id!);
-          router.back();
+    Alert.alert(
+      "Delete friend?",
+      "This will also delete all catch-up history.",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            await del.mutateAsync(id!);
+            router.back();
+          },
         },
-      },
-    ]);
+      ],
+    );
   }
 
   const snapshot = snapshotFrom(friend.contact_snapshot);
@@ -75,7 +88,10 @@ export default function FriendDetailScreen() {
 
   function onMessage() {
     if (!phone) {
-      Alert.alert("No phone number", "This contact has no phone number on file.");
+      Alert.alert(
+        "No phone number",
+        "This contact has no phone number on file.",
+      );
       return;
     }
     openMessage(phone);
@@ -83,7 +99,10 @@ export default function FriendDetailScreen() {
 
   function onCall() {
     if (!phone) {
-      Alert.alert("No phone number", "This contact has no phone number on file.");
+      Alert.alert(
+        "No phone number",
+        "This contact has no phone number on file.",
+      );
       return;
     }
     openCall(phone);
@@ -98,7 +117,7 @@ export default function FriendDetailScreen() {
     <Screen scroll>
       <Stack.Screen
         options={{
-          title: fullName(friend),
+          title: friend.display_name,
           headerRight: () => (
             <Link href={`/friend/${id}/edit`} asChild>
               <Pressable className="px-2">
@@ -174,7 +193,10 @@ export default function FriendDetailScreen() {
 
         <View className="flex-row gap-2">
           <Link
-            href={{ pathname: "/event/new", params: { friend_id: id, mode: "schedule" } }}
+            href={{
+              pathname: "/event/new",
+              params: { friend_id: id, mode: "schedule" },
+            }}
             asChild
           >
             <Pressable className="flex-1 bg-brand-300 active:bg-brand-400 rounded-full px-4 py-3 items-center justify-center flex-row gap-2">
@@ -183,7 +205,10 @@ export default function FriendDetailScreen() {
             </Pressable>
           </Link>
           <Link
-            href={{ pathname: "/event/new", params: { friend_id: id, mode: "checkin" } }}
+            href={{
+              pathname: "/event/new",
+              params: { friend_id: id, mode: "checkin" },
+            }}
             asChild
           >
             <Pressable className="flex-1 bg-surface-elevated active:bg-surface-high rounded-full px-4 py-3 items-center justify-center flex-row gap-2">
@@ -318,7 +343,9 @@ function HistoryItem({ event }: { event: CatchUpEvent }) {
             {mediumText}
           </Text>
           <View className={`px-2 py-0.5 rounded-full border ${meta.pill}`}>
-            <Text className={`text-xs font-semibold ${meta.text}`}>{meta.label}</Text>
+            <Text className={`text-xs font-semibold ${meta.text}`}>
+              {meta.label}
+            </Text>
           </View>
         </View>
 

@@ -124,7 +124,9 @@ export async function pickContact(): Promise<PickedContact | null> {
   };
 }
 
-export function snapshotFrom(raw: Record<string, unknown> | null): ContactSnapshot | null {
+export function snapshotFrom(
+  raw: Record<string, unknown> | null,
+): ContactSnapshot | null {
   if (!raw) return null;
   return raw as unknown as ContactSnapshot;
 }
@@ -144,7 +146,9 @@ export function openCall(phone: string) {
 
 export async function openContactCard(contactId: string) {
   try {
-    await Contacts.presentFormAsync(contactId, undefined, { allowsEditing: false });
+    await Contacts.presentFormAsync(contactId, undefined, {
+      allowsEditing: false,
+    });
   } catch (e) {
     Alert.alert("Cannot open contact", (e as Error).message);
   }

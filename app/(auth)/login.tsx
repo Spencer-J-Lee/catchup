@@ -14,7 +14,10 @@ export default function LoginScreen() {
 
   async function onSignIn() {
     setSubmitting(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
     setSubmitting(false);
     if (error) Alert.alert("Sign in failed", error.message);
   }
@@ -39,11 +42,15 @@ export default function LoginScreen() {
           value={password}
           onChangeText={setPassword}
         />
-        <Button onPress={onSignIn} loading={submitting} disabled={!email || !password}>
+        <Button
+          onPress={onSignIn}
+          loading={submitting}
+          disabled={!email || !password}
+        >
           Sign in
         </Button>
         <Link href="/(auth)/signup" className="text-center text-brand-300 mt-2">
-          <Text>Don't have an account? Sign up</Text>
+          <Text>{"Don't have an account? Sign up"}</Text>
         </Link>
       </View>
     </Screen>

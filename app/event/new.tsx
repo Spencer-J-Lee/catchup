@@ -2,7 +2,11 @@ import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import { Alert, Text, View } from "react-native";
 
-import { EventForm, type EventFormValue, type EventMode } from "@/components/event/EventForm";
+import {
+  EventForm,
+  type EventFormValue,
+  type EventMode,
+} from "@/components/event/EventForm";
 import { Button } from "@/components/ui/Button";
 import { Screen } from "@/components/ui/Screen";
 import { useAuth } from "@/hooks/use-auth";

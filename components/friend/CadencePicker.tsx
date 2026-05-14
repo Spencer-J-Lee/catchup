@@ -14,7 +14,7 @@ interface CadencePickerProps {
   onChange: (v: Value) => void;
 }
 
-const PRESET_KEYS: Array<Exclude<CadencePreset, "custom">> = [
+const PRESET_KEYS: Exclude<CadencePreset, "custom">[] = [
   "daily",
   "weekly",
   "monthly",
@@ -35,7 +35,8 @@ export function CadencePicker({ value, onChange }: CadencePickerProps) {
   const customSelected = value.preset === "custom";
   const customAmountText =
     customSelected && value.amount != null ? String(value.amount) : "";
-  const customUnit: CadenceUnit = customSelected && value.unit ? value.unit : "weeks";
+  const customUnit: CadenceUnit =
+    customSelected && value.unit ? value.unit : "weeks";
 
   function setCustomAmount(text: string) {
     const digits = text.replace(/[^0-9]/g, "");
@@ -65,7 +66,9 @@ export function CadencePicker({ value, onChange }: CadencePickerProps) {
 
   return (
     <View className="gap-2">
-      <Text className="text-sm font-medium text-fg-muted">Catch-up cadence</Text>
+      <Text className="text-sm font-medium text-fg-muted">
+        Catch-up cadence
+      </Text>
       <View className="flex-row flex-wrap gap-2">
         <Chip
           selected={value.preset == null}
@@ -80,7 +83,11 @@ export function CadencePicker({ value, onChange }: CadencePickerProps) {
               selected={value.preset === key}
               label={preset.label}
               onPress={() =>
-                onChange({ preset: key, amount: preset.amount, unit: preset.unit })
+                onChange({
+                  preset: key,
+                  amount: preset.amount,
+                  unit: preset.unit,
+                })
               }
             />
           );
@@ -102,7 +109,9 @@ export function CadencePicker({ value, onChange }: CadencePickerProps) {
             <View className="flex-row gap-2">
               {UNITS.map((unit) => {
                 const isOne = (value.amount ?? 0) === 1;
-                const label = isOne ? UNIT_LABEL[unit].singular : UNIT_LABEL[unit].plural;
+                const label = isOne
+                  ? UNIT_LABEL[unit].singular
+                  : UNIT_LABEL[unit].plural;
                 return (
                   <Chip
                     key={unit}
@@ -136,7 +145,9 @@ function Chip({
         selected ? "bg-brand-300" : "bg-surface-elevated"
       }`}
     >
-      <Text className={selected ? "text-surface font-medium" : "text-fg"}>{label}</Text>
+      <Text className={selected ? "text-surface font-medium" : "text-fg"}>
+        {label}
+      </Text>
     </Pressable>
   );
 }

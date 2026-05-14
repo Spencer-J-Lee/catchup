@@ -22,9 +22,11 @@ export function useAuth() {
       setLoading(false);
     });
 
-    const { data: subscription } = supabase.auth.onAuthStateChange((_event, s) => {
-      setSession(s);
-    });
+    const { data: subscription } = supabase.auth.onAuthStateChange(
+      (_event, s) => {
+        setSession(s);
+      },
+    );
 
     Linking.getInitialURL().then((url) => {
       if (url) handleAuthUrl(url);

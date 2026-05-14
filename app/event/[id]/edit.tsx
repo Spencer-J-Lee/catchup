@@ -2,7 +2,11 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Alert, Text, View } from "react-native";
 
-import { EventForm, type EventFormValue, type EventMode } from "@/components/event/EventForm";
+import {
+  EventForm,
+  type EventFormValue,
+  type EventMode,
+} from "@/components/event/EventForm";
 import { Button } from "@/components/ui/Button";
 import { Screen } from "@/components/ui/Screen";
 import { useEvent, useUpdateEvent } from "@/hooks/use-events";
@@ -36,7 +40,8 @@ export default function EditEventScreen() {
     );
   }
 
-  const mode: EventMode = event.scheduled_at && event.status === "scheduled" ? "schedule" : "edit";
+  const mode: EventMode =
+    event.scheduled_at && event.status === "scheduled" ? "schedule" : "edit";
 
   async function onSave() {
     if (!event || !value) return;
@@ -44,8 +49,12 @@ export default function EditEventScreen() {
     try {
       await update.mutateAsync({
         id: event.id,
-        scheduled_at: isScheduled ? value.date.toISOString() : event.scheduled_at ?? null,
-        occurred_at: !isScheduled ? value.date.toISOString() : event.occurred_at ?? null,
+        scheduled_at: isScheduled
+          ? value.date.toISOString()
+          : (event.scheduled_at ?? null),
+        occurred_at: !isScheduled
+          ? value.date.toISOString()
+          : (event.occurred_at ?? null),
         medium: value.medium,
         medium_detail:
           value.medium && value.medium !== "in_person" && value.mediumDetail

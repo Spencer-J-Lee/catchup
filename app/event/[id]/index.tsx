@@ -1,5 +1,13 @@
 import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { ActivityIndicator, Alert, Linking, Platform, Pressable, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  Linking,
+  Platform,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
 
 import { Button } from "@/components/ui/Button";
 import { Screen } from "@/components/ui/Screen";
@@ -67,10 +75,7 @@ export default function EventDetailScreen() {
   function openMaps() {
     if (!event?.location_address) return;
     const q = encodeURIComponent(event.location_address);
-    const url =
-      Platform.OS === "ios"
-        ? `maps://?q=${q}`
-        : `geo:0,0?q=${q}`;
+    const url = Platform.OS === "ios" ? `maps://?q=${q}` : `geo:0,0?q=${q}`;
     Linking.openURL(url).catch(() =>
       Linking.openURL(`https://maps.google.com/?q=${q}`),
     );
@@ -133,7 +138,11 @@ export default function EventDetailScreen() {
             <Button onPress={onMarkComplete} loading={update.isPending}>
               Mark as completed
             </Button>
-            <Button variant="secondary" onPress={onMarkMissed} loading={update.isPending}>
+            <Button
+              variant="secondary"
+              onPress={onMarkMissed}
+              loading={update.isPending}
+            >
               Mark as missed
             </Button>
           </View>

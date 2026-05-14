@@ -54,7 +54,9 @@ export function useEvent(id: string | undefined) {
   });
 }
 
-export function useEventsInRange(args: { from: string; to: string } | undefined) {
+export function useEventsInRange(
+  args: { from: string; to: string } | undefined,
+) {
   return useQuery({
     queryKey: ["events", "range", args?.from, args?.to],
     enabled: !!args,
@@ -85,7 +87,9 @@ export function useCreateEvent() {
     },
     onSuccess: (data) => {
       qc.invalidateQueries({ queryKey: ["events"] });
-      qc.invalidateQueries({ queryKey: ["events", "by-friend", data.friend_id] });
+      qc.invalidateQueries({
+        queryKey: ["events", "by-friend", data.friend_id],
+      });
       qc.invalidateQueries({ queryKey: ["friends"] });
     },
   });
@@ -94,7 +98,10 @@ export function useCreateEvent() {
 export function useUpdateEvent() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async ({ id, ...input }: Partial<EventInput> & { id: string }) => {
+    mutationFn: async ({
+      id,
+      ...input
+    }: Partial<EventInput> & { id: string }) => {
       const { data, error } = await supabase
         .from("catch_up_events")
         .update(input)
@@ -107,7 +114,9 @@ export function useUpdateEvent() {
     onSuccess: (data) => {
       qc.invalidateQueries({ queryKey: ["events"] });
       qc.invalidateQueries({ queryKey: ["event", data.id] });
-      qc.invalidateQueries({ queryKey: ["events", "by-friend", data.friend_id] });
+      qc.invalidateQueries({
+        queryKey: ["events", "by-friend", data.friend_id],
+      });
       qc.invalidateQueries({ queryKey: ["friends"] });
     },
   });
@@ -117,7 +126,10 @@ export function useDeleteEvent() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("catch_up_events").delete().eq("id", id);
+      const { error } = await supabase
+        .from("catch_up_events")
+        .delete()
+        .eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {

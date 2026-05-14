@@ -20,14 +20,24 @@ export const CADENCE_PRESETS: Record<
   yearly: { label: "Yearly", amount: 12, unit: "months" },
 };
 
-export function presetFromAmount(amount: number, unit: CadenceUnit): CadencePreset {
-  const match = (Object.entries(CADENCE_PRESETS) as Array<
-    [Exclude<CadencePreset, "custom">, { amount: number; unit: CadenceUnit }]
-  >).find(([, v]) => v.amount === amount && v.unit === unit);
+export function presetFromAmount(
+  amount: number,
+  unit: CadenceUnit,
+): CadencePreset {
+  const match = (
+    Object.entries(CADENCE_PRESETS) as [
+      Exclude<CadencePreset, "custom">,
+      { amount: number; unit: CadenceUnit },
+    ][]
+  ).find(([, v]) => v.amount === amount && v.unit === unit);
   return match ? match[0] : "custom";
 }
 
-export function addCadence(date: Date, amount: number, unit: CadenceUnit): Date {
+export function addCadence(
+  date: Date,
+  amount: number,
+  unit: CadenceUnit,
+): Date {
   switch (unit) {
     case "days":
       return addDays(date, amount);

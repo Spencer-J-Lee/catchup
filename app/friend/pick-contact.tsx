@@ -196,12 +196,18 @@ export default function PickContactScreen() {
               ) : (
                 <View className="h-12 w-12 rounded-full bg-surface-elevated items-center justify-center">
                   <Text className="text-fg text-base font-semibold">
-                    {initialsOf(item.first_name ?? item.display_name, item.last_name)}
+                    {initialsOf(
+                      item.first_name ?? item.display_name,
+                      item.last_name,
+                    )}
                   </Text>
                 </View>
               )}
               <View className="flex-1">
-                <Text className="text-base font-semibold text-fg" numberOfLines={1}>
+                <Text
+                  className="text-base font-semibold text-fg"
+                  numberOfLines={1}
+                >
                   {item.display_name}
                 </Text>
                 {item.phone ? (

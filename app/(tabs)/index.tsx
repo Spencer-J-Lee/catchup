@@ -1,9 +1,18 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import { useMemo, useState } from "react";
-import { ActivityIndicator, FlatList, Pressable, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
 
-import { FriendListItem, type FriendItemAction } from "@/components/friend/FriendListItem";
+import {
+  FriendListItem,
+  type FriendItemAction,
+} from "@/components/friend/FriendListItem";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Screen } from "@/components/ui/Screen";
@@ -40,7 +49,8 @@ export default function FriendsScreen() {
       const existing = nextScheduledByFriend.get(ev.friend_id);
       if (
         !existing ||
-        new Date(ev.scheduled_at).getTime() < new Date(existing.scheduled_at).getTime()
+        new Date(ev.scheduled_at).getTime() <
+          new Date(existing.scheduled_at).getTime()
       ) {
         nextScheduledByFriend.set(ev.friend_id, {
           id: ev.id,
@@ -160,13 +170,17 @@ export default function FriendsScreen() {
           <ActivityIndicator color="#ffffff" />
         </View>
       ) : error ? (
-        <Text className="text-red-400">Failed to load friends: {(error as Error).message}</Text>
+        <Text className="text-red-400">
+          Failed to load friends: {(error as Error).message}
+        </Text>
       ) : !hasFriends ? (
         <View className="flex-1 items-center justify-center px-8">
           <View className="h-20 w-20 rounded-full bg-surface-elevated items-center justify-center mb-5">
             <Ionicons name="people-outline" size={36} color="#f49b7c" />
           </View>
-          <Text className="text-xl font-semibold text-fg mb-2">No friends yet</Text>
+          <Text className="text-xl font-semibold text-fg mb-2">
+            No friends yet
+          </Text>
           <Text className="text-fg-muted text-center mb-6">
             Add a friend to start tracking your catch-ups.
           </Text>
@@ -176,7 +190,9 @@ export default function FriendsScreen() {
         </View>
       ) : sections.length === 0 ? (
         <View className="flex-1 items-center justify-center">
-          <Text className="text-fg-muted">No friends match &ldquo;{search.trim()}&rdquo;</Text>
+          <Text className="text-fg-muted">
+            {`No friends match “${search.trim()}”`}
+          </Text>
         </View>
       ) : (
         <FlatList
@@ -184,7 +200,11 @@ export default function FriendsScreen() {
           keyExtractor={(s, i) =>
             s.kind === "header" ? `h-${s.title}-${i}` : `f-${s.row.friend.id}`
           }
-          ItemSeparatorComponent={({ leadingItem }: { leadingItem: Section }) => (
+          ItemSeparatorComponent={({
+            leadingItem,
+          }: {
+            leadingItem: Section;
+          }) => (
             <View className={leadingItem?.kind === "header" ? "h-0" : "h-1"} />
           )}
           renderItem={({ item }) =>

@@ -36,8 +36,12 @@ export const friendInputSchema = z
   })
   .refine(
     (v) =>
-      (v.cadence_preset == null && v.cadence_amount == null && v.cadence_unit == null) ||
-      (v.cadence_preset != null && v.cadence_amount != null && v.cadence_unit != null),
+      (v.cadence_preset == null &&
+        v.cadence_amount == null &&
+        v.cadence_unit == null) ||
+      (v.cadence_preset != null &&
+        v.cadence_amount != null &&
+        v.cadence_unit != null),
     { message: "Cadence preset, amount, and unit must all be set together" },
   );
 
