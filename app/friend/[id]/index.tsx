@@ -31,7 +31,7 @@ export default function FriendDetailScreen() {
     return (
       <Screen>
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator />
+          <ActivityIndicator color="#ffffff" />
         </View>
       </Screen>
     );
@@ -100,7 +100,7 @@ export default function FriendDetailScreen() {
           headerRight: () => (
             <Link href={`/friend/${id}/edit`} asChild>
               <Pressable className="px-2">
-                <Text className="text-brand-600 font-medium">Edit</Text>
+                <Text className="text-brand-300 font-medium">Edit</Text>
               </Pressable>
             </Link>
           ),
@@ -108,26 +108,26 @@ export default function FriendDetailScreen() {
       />
 
       <View className="gap-4">
-        <View className="bg-white border border-gray-200 rounded-2xl p-4 gap-2">
-          <Text className="text-sm text-gray-500">Last caught up</Text>
-          <Text className="text-base text-gray-900">
+        <View className="bg-surface-elevated rounded-2xl p-4 gap-2">
+          <Text className="text-sm text-fg-muted">Last caught up</Text>
+          <Text className="text-base text-fg">
             {lastCompleted?.occurred_at
               ? `${formatRelative(lastCompleted.occurred_at)} (${formatDateTime(lastCompleted.occurred_at)})`
               : "No catch-ups yet"}
           </Text>
           {friend.cadence_amount && friend.cadence_unit ? (
-            <Text className="text-sm text-gray-500 mt-1">
+            <Text className="text-sm text-fg-muted mt-1">
               Cadence: every {friend.cadence_amount} {friend.cadence_unit}
             </Text>
           ) : (
-            <Text className="text-sm text-gray-500 mt-1">No cadence set</Text>
+            <Text className="text-sm text-fg-muted mt-1">No cadence set</Text>
           )}
         </View>
 
         {friend.general_notes ? (
-          <View className="bg-white border border-gray-200 rounded-2xl p-4">
-            <Text className="text-sm text-gray-500 mb-1">Notes</Text>
-            <Text className="text-base text-gray-900">{friend.general_notes}</Text>
+          <View className="bg-surface-elevated rounded-2xl p-4">
+            <Text className="text-sm text-fg-muted mb-1">Notes</Text>
+            <Text className="text-base text-fg">{friend.general_notes}</Text>
           </View>
         ) : null}
 
@@ -155,18 +155,18 @@ export default function FriendDetailScreen() {
           <Pressable
             onPress={onLinkContact}
             disabled={linkContact.isPending}
-            className="bg-white border border-gray-200 rounded-2xl p-4 flex-row items-center gap-3"
+            className="bg-surface-elevated rounded-2xl p-4 flex-row items-center gap-3"
           >
-            <Ionicons name="person-add" size={20} color="#2563eb" />
+            <Ionicons name="person-add" size={20} color="#f49b7c" />
             <View className="flex-1">
-              <Text className="text-base font-medium text-gray-900">
+              <Text className="text-base font-medium text-fg">
                 {linkContact.isPending ? "Linking…" : "Link to phone contact"}
               </Text>
-              <Text className="text-xs text-gray-500 mt-0.5">
+              <Text className="text-xs text-fg-muted mt-0.5">
                 Enables Message, Call, and Contact actions.
               </Text>
             </View>
-            <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+            <Ionicons name="chevron-forward" size={18} color="#6e6e73" />
           </Pressable>
         )}
 
@@ -175,18 +175,18 @@ export default function FriendDetailScreen() {
             href={{ pathname: "/event/new", params: { friend_id: id, mode: "schedule" } }}
             asChild
           >
-            <Pressable className="flex-1 bg-brand-600 active:bg-brand-700 rounded-xl px-4 py-3 items-center justify-center flex-row gap-2">
-              <Ionicons name="calendar" size={18} color="white" />
-              <Text className="text-white font-semibold">Schedule</Text>
+            <Pressable className="flex-1 bg-brand-300 active:bg-brand-400 rounded-full px-4 py-3 items-center justify-center flex-row gap-2">
+              <Ionicons name="calendar" size={18} color="#1a1a1a" />
+              <Text className="text-surface font-semibold">Schedule</Text>
             </Pressable>
           </Link>
           <Link
             href={{ pathname: "/event/new", params: { friend_id: id, mode: "checkin" } }}
             asChild
           >
-            <Pressable className="flex-1 bg-gray-200 active:bg-gray-300 rounded-xl px-4 py-3 items-center justify-center flex-row gap-2">
-              <Ionicons name="checkmark-circle" size={18} color="#111827" />
-              <Text className="text-gray-900 font-semibold">Check in</Text>
+            <Pressable className="flex-1 bg-surface-elevated active:bg-surface-high rounded-full px-4 py-3 items-center justify-center flex-row gap-2">
+              <Ionicons name="checkmark-circle" size={18} color="#ffffff" />
+              <Text className="text-fg font-semibold">Check in</Text>
             </Pressable>
           </Link>
         </View>
@@ -198,7 +198,7 @@ export default function FriendDetailScreen() {
             className="self-center py-1 px-2"
             hitSlop={8}
           >
-            <Text className="text-xs text-gray-500">
+            <Text className="text-xs text-fg-muted">
               {linkContact.isPending
                 ? "Updating…"
                 : `Linked${snapshot?.name ? ` to ${snapshot.name}` : ""} · change`}
@@ -207,9 +207,9 @@ export default function FriendDetailScreen() {
         ) : null}
 
         <View>
-          <Text className="text-lg font-semibold text-gray-900 mb-2">History</Text>
+          <Text className="text-lg font-semibold text-fg mb-2">History</Text>
           {!events || events.length === 0 ? (
-            <Text className="text-gray-500">No events yet.</Text>
+            <Text className="text-fg-muted">No events yet.</Text>
           ) : (
             <FlatList
               scrollEnabled={false}
@@ -227,7 +227,7 @@ export default function FriendDetailScreen() {
           className="self-center py-2 px-3 mt-2"
           hitSlop={8}
         >
-          <Text className="text-sm text-red-600 font-medium">
+          <Text className="text-sm text-red-400 font-medium">
             {del.isPending ? "Deleting…" : "Delete friend"}
           </Text>
         </Pressable>
@@ -251,12 +251,12 @@ function ContactActionButton({
     <Pressable
       onPress={onPress}
       disabled={disabled}
-      className={`flex-1 bg-white border border-gray-200 rounded-xl py-3 items-center justify-center gap-1 ${
-        disabled ? "opacity-40" : "active:bg-gray-50"
+      className={`flex-1 bg-surface-elevated rounded-xl py-3 items-center justify-center gap-1 ${
+        disabled ? "opacity-40" : "active:bg-surface-high"
       }`}
     >
-      <Ionicons name={icon} size={22} color="#2563eb" />
-      <Text className="text-xs font-medium text-gray-900">{label}</Text>
+      <Ionicons name={icon} size={22} color="#f49b7c" />
+      <Text className="text-xs font-medium text-fg">{label}</Text>
     </Pressable>
   );
 }
@@ -267,23 +267,23 @@ const STATUS_META: Record<
 > = {
   scheduled: {
     label: "Scheduled",
-    pill: "bg-blue-50 border-blue-200",
-    text: "text-blue-700",
+    pill: "bg-brand-700/30 border-brand-700",
+    text: "text-brand-300",
   },
   completed: {
     label: "Completed",
-    pill: "bg-green-50 border-green-200",
-    text: "text-green-700",
+    pill: "bg-emerald-900/40 border-emerald-700",
+    text: "text-emerald-300",
   },
   missed: {
     label: "Missed",
-    pill: "bg-red-50 border-red-200",
-    text: "text-red-700",
+    pill: "bg-red-900/40 border-red-700",
+    text: "text-red-300",
   },
   cancelled: {
     label: "Cancelled",
-    pill: "bg-gray-100 border-gray-200",
-    text: "text-gray-600",
+    pill: "bg-surface-high border-surface-border",
+    text: "text-fg-muted",
   },
 };
 
@@ -300,20 +300,20 @@ function HistoryItem({ event }: { event: CatchUpEvent }) {
 
   return (
     <Link href={`/event/${event.id}`} asChild>
-      <Pressable className="bg-white border border-gray-200 rounded-xl p-3 gap-2">
+      <Pressable className="bg-surface-elevated rounded-xl p-3 gap-2">
         <View className="flex-row items-center justify-between gap-2">
           <View
             className={`px-2 py-0.5 rounded-full border ${meta.pill}`}
           >
             <Text className={`text-xs font-semibold ${meta.text}`}>{meta.label}</Text>
           </View>
-          <Text className="text-xs text-gray-500">{whenLabel}</Text>
+          <Text className="text-xs text-fg-muted">{whenLabel}</Text>
         </View>
 
-        <Text className="text-sm font-medium text-gray-900">{mediumLabel}</Text>
+        <Text className="text-sm font-medium text-fg">{mediumLabel}</Text>
 
         {event.event_notes ? (
-          <Text className="text-sm text-gray-600" numberOfLines={3}>
+          <Text className="text-sm text-fg-muted" numberOfLines={3}>
             {event.event_notes}
           </Text>
         ) : null}

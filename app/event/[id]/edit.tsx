@@ -30,7 +30,7 @@ export default function EditEventScreen() {
   if (!event || !value) {
     return (
       <Screen>
-        <Text>Loading…</Text>
+        <Text className="text-fg-muted">Loading…</Text>
       </Screen>
     );
   }

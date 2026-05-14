@@ -62,7 +62,7 @@ export default function NewFriendScreen() {
         <Button onPress={onSave} loading={create.isPending} disabled={!displayName.trim()}>
           Save
         </Button>
-        <Text className="text-xs text-gray-500 text-center">
+        <Text className="text-xs text-fg-muted text-center">
           Phase 2 will add a "Pick from contacts" button here.
         </Text>
       </View>

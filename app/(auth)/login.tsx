@@ -22,8 +22,8 @@ export default function LoginScreen() {
   return (
     <Screen>
       <View className="flex-1 justify-center gap-4">
-        <Text className="text-3xl font-bold text-gray-900">Welcome back</Text>
-        <Text className="text-gray-600">Sign in to keep up with friends.</Text>
+        <Text className="text-3xl font-bold text-fg">Welcome back</Text>
+        <Text className="text-fg-muted">Sign in to keep up with friends.</Text>
         <Input
           label="Email"
           autoCapitalize="none"
@@ -42,7 +42,7 @@ export default function LoginScreen() {
         <Button onPress={onSignIn} loading={submitting} disabled={!email || !password}>
           Sign in
         </Button>
-        <Link href="/(auth)/signup" className="text-center text-brand-600 mt-2">
+        <Link href="/(auth)/signup" className="text-center text-brand-300 mt-2">
           <Text>Don't have an account? Sign up</Text>
         </Link>
       </View>

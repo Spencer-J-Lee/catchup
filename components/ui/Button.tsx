@@ -10,16 +10,16 @@ interface ButtonProps {
 }
 
 const VARIANT_CLASSES: Record<NonNullable<ButtonProps["variant"]>, string> = {
-  primary: "bg-brand-600 active:bg-brand-700",
-  secondary: "bg-gray-200 active:bg-gray-300",
-  ghost: "bg-transparent active:bg-gray-100",
+  primary: "bg-brand-300 active:bg-brand-400",
+  secondary: "bg-surface-elevated active:bg-surface-high",
+  ghost: "bg-transparent active:bg-surface-elevated",
   destructive: "bg-red-600 active:bg-red-700",
 };
 
 const TEXT_CLASSES: Record<NonNullable<ButtonProps["variant"]>, string> = {
-  primary: "text-white",
-  secondary: "text-gray-900",
-  ghost: "text-gray-900",
+  primary: "text-surface",
+  secondary: "text-fg",
+  ghost: "text-fg",
   destructive: "text-white",
 };
 
@@ -36,12 +36,14 @@ export function Button({
     <Pressable
       onPress={onPress}
       disabled={isDisabled}
-      className={`rounded-xl px-4 py-3 items-center justify-center ${VARIANT_CLASSES[variant]} ${
+      className={`rounded-full px-4 py-3 items-center justify-center ${VARIANT_CLASSES[variant]} ${
         isDisabled ? "opacity-50" : ""
       } ${className ?? ""}`}
     >
       {loading ? (
-        <ActivityIndicator color={variant === "primary" || variant === "destructive" ? "white" : "black"} />
+        <ActivityIndicator
+          color={variant === "primary" ? "#1a1a1a" : variant === "destructive" ? "white" : "white"}
+        />
       ) : (
         <Text className={`font-semibold text-base ${TEXT_CLASSES[variant]}`}>{children}</Text>
       )}

@@ -28,6 +28,13 @@ function useProtectedRoute(loading: boolean, isAuthed: boolean) {
   }, [loading, isAuthed, segments, router]);
 }
 
+const STACK_HEADER_OPTIONS = {
+  headerStyle: { backgroundColor: "#1a1a1a" },
+  headerTintColor: "#ffffff",
+  headerTitleStyle: { color: "#ffffff" },
+  contentStyle: { backgroundColor: "#1a1a1a" },
+} as const;
+
 export default function RootLayout() {
   const { session, loading } = useAuth();
   useProtectedRoute(loading, !!session);
@@ -37,38 +44,48 @@ export default function RootLayout() {
   }, [loading]);
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1, backgroundColor: "#1a1a1a" }}>
       <SafeAreaProvider>
         <QueryClientProvider client={queryClient}>
-          <Stack screenOptions={{ headerShown: false }}>
+          <Stack screenOptions={{ headerShown: false, ...STACK_HEADER_OPTIONS }}>
             <Stack.Screen name="(auth)" />
             <Stack.Screen name="(tabs)" />
             <Stack.Screen
               name="friend/new"
-              options={{ presentation: "modal", headerShown: true, title: "Add friend" }}
+              options={{
+                presentation: "modal",
+                headerShown: true,
+                title: "Add friend",
+                ...STACK_HEADER_OPTIONS,
+              }}
             />
             <Stack.Screen
               name="friend/[id]/index"
-              options={{ headerShown: true, title: "" }}
+              options={{ headerShown: true, title: "", ...STACK_HEADER_OPTIONS }}
             />
             <Stack.Screen
               name="friend/[id]/edit"
-              options={{ headerShown: true, title: "Edit friend" }}
+              options={{ headerShown: true, title: "Edit friend", ...STACK_HEADER_OPTIONS }}
             />
             <Stack.Screen
               name="event/new"
-              options={{ presentation: "modal", headerShown: true, title: "New catch-up" }}
+              options={{
+                presentation: "modal",
+                headerShown: true,
+                title: "New catch-up",
+                ...STACK_HEADER_OPTIONS,
+              }}
             />
             <Stack.Screen
               name="event/[id]/index"
-              options={{ headerShown: true, title: "Catch-up" }}
+              options={{ headerShown: true, title: "Catch-up", ...STACK_HEADER_OPTIONS }}
             />
             <Stack.Screen
               name="event/[id]/edit"
-              options={{ headerShown: true, title: "Edit catch-up" }}
+              options={{ headerShown: true, title: "Edit catch-up", ...STACK_HEADER_OPTIONS }}
             />
           </Stack>
-          <StatusBar style="auto" />
+          <StatusBar style="light" />
         </QueryClientProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>

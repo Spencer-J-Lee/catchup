@@ -65,7 +65,7 @@ export function CadencePicker({ value, onChange }: CadencePickerProps) {
 
   return (
     <View className="gap-2">
-      <Text className="text-sm font-medium text-gray-700">Catch-up cadence</Text>
+      <Text className="text-sm font-medium text-fg-muted">Catch-up cadence</Text>
       <View className="flex-row flex-wrap gap-2">
         <Chip
           selected={value.preset == null}
@@ -89,15 +89,15 @@ export function CadencePicker({ value, onChange }: CadencePickerProps) {
       </View>
       {customSelected ? (
         <View className="gap-2 mt-1">
-          <Text className="text-xs text-gray-500">Every</Text>
+          <Text className="text-xs text-fg-muted">Every</Text>
           <View className="flex-row items-center gap-2">
             <TextInput
               value={customAmountText}
               onChangeText={setCustomAmount}
               keyboardType="number-pad"
               placeholder="1"
-              placeholderTextColor="#9ca3af"
-              className="border border-gray-300 rounded-xl px-3 py-2 text-base bg-white w-20 text-center"
+              placeholderTextColor="#6e6e73"
+              className="border border-surface-border rounded-xl px-3 py-2 text-base bg-surface-elevated text-fg w-20 text-center"
             />
             <View className="flex-row gap-2">
               {UNITS.map((unit) => {
@@ -132,11 +132,11 @@ function Chip({
   return (
     <Pressable
       onPress={onPress}
-      className={`px-3 py-2 rounded-full border ${
-        selected ? "bg-brand-600 border-brand-600" : "bg-white border-gray-300"
+      className={`px-3 py-2 rounded-full ${
+        selected ? "bg-brand-300" : "bg-surface-elevated"
       }`}
     >
-      <Text className={selected ? "text-white" : "text-gray-900"}>{label}</Text>
+      <Text className={selected ? "text-surface font-medium" : "text-fg"}>{label}</Text>
     </Pressable>
   );
 }

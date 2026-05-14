@@ -38,7 +38,7 @@ export default function SignupScreen() {
   return (
     <Screen>
       <View className="flex-1 justify-center gap-4">
-        <Text className="text-3xl font-bold text-gray-900">Create account</Text>
+        <Text className="text-3xl font-bold text-fg">Create account</Text>
         <Input label="Display name" value={displayName} onChangeText={setDisplayName} />
         <Input
           label="Email"
@@ -62,7 +62,7 @@ export default function SignupScreen() {
         >
           Sign up
         </Button>
-        <Link href="/(auth)/login" className="text-center text-brand-600 mt-2">
+        <Link href="/(auth)/login" className="text-center text-brand-300 mt-2">
           <Text>Already have an account? Sign in</Text>
         </Link>
       </View>

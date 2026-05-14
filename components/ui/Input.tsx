@@ -12,16 +12,16 @@ export const Input = forwardRef<TextInput, InputProps>(function Input(
 ) {
   return (
     <View className="gap-1">
-      {label ? <Text className="text-sm font-medium text-gray-700">{label}</Text> : null}
+      {label ? <Text className="text-sm font-medium text-fg-muted">{label}</Text> : null}
       <TextInput
         ref={ref}
-        className={`border border-gray-300 rounded-xl px-3 py-3 text-base bg-white ${
+        className={`border border-surface-border rounded-xl px-3 py-3 text-base bg-surface-elevated text-fg ${
           error ? "border-red-500" : ""
         } ${className ?? ""}`}
-        placeholderTextColor="#9ca3af"
+        placeholderTextColor="#6e6e73"
         {...props}
       />
-      {error ? <Text className="text-xs text-red-600">{error}</Text> : null}
+      {error ? <Text className="text-xs text-red-400">{error}</Text> : null}
     </View>
   );
 });

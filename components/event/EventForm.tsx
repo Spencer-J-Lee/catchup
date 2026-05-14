@@ -29,12 +29,12 @@ export function EventForm({ mode, value, onChange }: Props) {
   return (
     <View className="gap-4">
       <View className="gap-1">
-        <Text className="text-sm font-medium text-gray-700">When</Text>
+        <Text className="text-sm font-medium text-fg-muted">When</Text>
         <Pressable
           onPress={() => setShowPicker(true)}
-          className="border border-gray-300 rounded-xl px-3 py-3 bg-white"
+          className="border border-surface-border rounded-xl px-3 py-3 bg-surface-elevated"
         >
-          <Text className="text-base text-gray-900">
+          <Text className="text-base text-fg">
             {formatDateTime(value.date)}
           </Text>
         </Pressable>
@@ -43,6 +43,7 @@ export function EventForm({ mode, value, onChange }: Props) {
             value={value.date}
             mode="datetime"
             display={Platform.OS === "ios" ? "spinner" : "default"}
+            themeVariant="dark"
             onChange={(_, d) => {
               setShowPicker(Platform.OS === "ios");
               if (d) onChange({ ...value, date: d });

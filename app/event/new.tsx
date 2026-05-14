@@ -65,7 +65,7 @@ export default function NewEventScreen() {
   if (!params.friend_id) {
     return (
       <Screen>
-        <Text className="text-red-600">Missing friend_id</Text>
+        <Text className="text-red-400">Missing friend_id</Text>
       </Screen>
     );
   }

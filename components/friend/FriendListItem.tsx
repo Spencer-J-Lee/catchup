@@ -14,9 +14,11 @@ interface Props {
   isDue?: boolean;
 }
 
-function daysBetween(a: Date, b: Date): number {
-  const ms = a.getTime() - b.getTime();
-  return Math.floor(ms / (1000 * 60 * 60 * 24));
+function initialsOf(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "?";
+  if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase();
+  return (parts[0]![0]! + parts[parts.length - 1]![0]!).toUpperCase();
 }
 
 const ACTION_META: Record<
@@ -37,25 +39,17 @@ export function FriendListItem({
 }: Props) {
   const router = useRouter();
 
-  const hideLastLabel = action === "reschedule" || isDue;
-  const lastLabel =
-    !hideLastLabel && friend.last_caught_up_at
-      ? `Last caught up ${formatRelative(friend.last_caught_up_at)}`
-      : null;
-
-  let subLabel: string | null = null;
-  let subClass = "text-gray-500";
+  let subLabel: string;
+  let subClass: string;
   if (action === "reschedule" && scheduledAt) {
     subLabel = `Scheduled ${formatRelative(scheduledAt)}`;
-    subClass = "text-blue-700 font-medium";
-  } else if (isDue && friend.next_due_at) {
-    const due = new Date(friend.next_due_at);
-    const now = new Date();
-    const overdueDays = Math.max(1, daysBetween(now, due));
-    subLabel = `${overdueDays} day${overdueDays === 1 ? "" : "s"} overdue`;
-    subClass = "text-red-600 font-semibold";
-  } else if (friend.next_due_at) {
-    subLabel = `Due ${formatRelative(friend.next_due_at)}`;
+    subClass = "text-brand-300 font-medium";
+  } else if (friend.last_caught_up_at) {
+    subLabel = `Checked in ${formatRelative(friend.last_caught_up_at)}`;
+    subClass = isDue ? "text-brand-300 font-medium" : "text-fg-muted";
+  } else {
+    subLabel = "No catch-ups yet";
+    subClass = isDue ? "text-brand-300 font-medium" : "text-fg-muted";
   }
 
   const meta = ACTION_META[action];
@@ -73,27 +67,25 @@ export function FriendListItem({
 
   return (
     <Link href={`/friend/${friend.id}`} asChild>
-      <Pressable className="bg-white border border-gray-200 rounded-2xl p-4 flex-row items-center gap-3">
+      <Pressable className="flex-row items-center gap-3 py-2 active:opacity-70">
+        <View className="h-14 w-14 rounded-full bg-surface-elevated items-center justify-center">
+          <Text className="text-fg text-base font-semibold">{initialsOf(friend.display_name)}</Text>
+        </View>
         <View className="flex-1">
-          <Text className="text-lg font-semibold text-gray-900">{friend.display_name}</Text>
-          {lastLabel ? (
-            <Text className="text-sm text-gray-500 mt-1">{lastLabel}</Text>
-          ) : null}
-          {subLabel ? (
-            <Text className={`text-sm mt-0.5 ${subClass}`}>{subLabel}</Text>
-          ) : null}
+          <Text className="text-lg font-semibold text-fg">{friend.display_name}</Text>
+          <Text className={`text-sm mt-0.5 ${subClass}`}>{subLabel}</Text>
         </View>
         <Pressable
           onPress={onActionPress}
           hitSlop={8}
-          className={`rounded-full px-3 py-2 ${
+          className={`rounded-full px-4 py-2 ${
             meta.primary
-              ? "bg-brand-600 active:bg-brand-700"
-              : "bg-gray-100 active:bg-gray-200"
+              ? "bg-brand-300 active:bg-brand-400"
+              : "bg-surface-elevated active:bg-surface-high"
           }`}
         >
           <Text
-            className={`text-sm font-medium ${meta.primary ? "text-white" : "text-gray-900"}`}
+            className={`text-sm font-medium ${meta.primary ? "text-surface" : "text-fg"}`}
           >
             {meta.label}
           </Text>

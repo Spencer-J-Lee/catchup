@@ -62,17 +62,17 @@ export default function SettingsScreen() {
   return (
     <Screen scroll>
       <View className="gap-4">
-        <Text className="text-2xl font-bold text-gray-900">Settings</Text>
+        <Text className="text-2xl font-bold text-fg">Settings</Text>
         <View className="gap-1">
-          <Text className="text-sm text-gray-500">Signed in as</Text>
-          <Text className="text-base text-gray-900">{user?.email ?? "—"}</Text>
+          <Text className="text-sm text-fg-muted">Signed in as</Text>
+          <Text className="text-base text-fg">{user?.email ?? "—"}</Text>
         </View>
 
         <View className="gap-2 mt-4">
-          <Text className="text-xs uppercase tracking-wide font-semibold text-gray-500">
+          <Text className="text-xs uppercase tracking-wide font-semibold text-fg-muted">
             Developer
           </Text>
-          <Text className="text-sm text-gray-600">
+          <Text className="text-sm text-fg-muted">
             Loads a curated set of example friends and catch-up events covering due,
             not-due, missing-cadence, never-caught-up, scheduled, missed, and cancelled
             cases. Re-running replaces previous seed data.

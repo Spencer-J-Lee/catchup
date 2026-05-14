@@ -130,10 +130,10 @@ export default function FriendsScreen() {
   return (
     <Screen>
       <View className="flex-row items-center justify-between mb-4">
-        <Text className="text-2xl font-bold text-gray-900">Friends</Text>
+        <Text className="text-3xl font-bold text-fg">Catchup</Text>
         <Link href="/friend/new" asChild>
-          <Pressable className="rounded-full bg-brand-600 p-2">
-            <Ionicons name="add" size={20} color="white" />
+          <Pressable className="h-10 w-10 rounded-full bg-surface-elevated items-center justify-center active:bg-surface-high">
+            <Ionicons name="add" size={22} color="#ffffff" />
           </Pressable>
         </Link>
       </View>
@@ -154,20 +154,20 @@ export default function FriendsScreen() {
 
       {isLoading ? (
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator />
+          <ActivityIndicator color="#ffffff" />
         </View>
       ) : error ? (
-        <Text className="text-red-600">Failed to load friends: {(error as Error).message}</Text>
+        <Text className="text-red-400">Failed to load friends: {(error as Error).message}</Text>
       ) : !hasFriends ? (
         <View className="flex-1 items-center justify-center gap-2">
-          <Text className="text-gray-600">No friends yet.</Text>
-          <Link href="/friend/new" className="text-brand-600 font-medium">
+          <Text className="text-fg-muted">No friends yet.</Text>
+          <Link href="/friend/new" className="text-brand-300 font-medium">
             <Text>Add your first friend</Text>
           </Link>
         </View>
       ) : sections.length === 0 ? (
         <View className="flex-1 items-center justify-center">
-          <Text className="text-gray-500">No friends match &ldquo;{search.trim()}&rdquo;</Text>
+          <Text className="text-fg-muted">No friends match &ldquo;{search.trim()}&rdquo;</Text>
         </View>
       ) : (
         <FlatList
@@ -176,13 +176,13 @@ export default function FriendsScreen() {
             s.kind === "header" ? `h-${s.title}-${i}` : `f-${s.row.friend.id}`
           }
           ItemSeparatorComponent={({ leadingItem }: { leadingItem: Section }) => (
-            <View className={leadingItem?.kind === "header" ? "h-0" : "h-2"} />
+            <View className={leadingItem?.kind === "header" ? "h-0" : "h-1"} />
           )}
           renderItem={({ item }) =>
             item.kind === "header" ? (
-              <View className="mt-2 mb-2">
-                <Text className="text-xs uppercase tracking-wide font-semibold text-gray-500">
-                  {item.title} · {item.count}
+              <View className="mt-4 mb-1">
+                <Text className="text-base font-normal text-fg-muted">
+                  {item.title}
                 </Text>
               </View>
             ) : (

@@ -5,7 +5,13 @@ export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "#2563eb",
+        tabBarActiveTintColor: "#f49b7c",
+        tabBarInactiveTintColor: "#8e8e93",
+        tabBarStyle: {
+          backgroundColor: "#1a1a1a",
+          borderTopColor: "#2f2f31",
+        },
+        tabBarLabelStyle: { display: "none" },
         headerShown: false,
       }}
     >
@@ -13,7 +19,7 @@ export default function TabsLayout() {
         name="index"
         options={{
           title: "Friends",
-          tabBarIcon: ({ color, size }) => <Ionicons name="people" size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => <Ionicons name="person" size={size} color={color} />,
         }}
       />
       <Tabs.Screen
@@ -27,7 +33,7 @@ export default function TabsLayout() {
         name="settings"
         options={{
           title: "Settings",
-          tabBarIcon: ({ color, size }) => <Ionicons name="settings" size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => <Ionicons name="settings-sharp" size={size} color={color} />,
         }}
       />
     </Tabs>

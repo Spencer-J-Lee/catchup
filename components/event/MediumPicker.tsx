@@ -17,7 +17,7 @@ const OPTIONS: Array<{ value: Medium; label: string }> = [
 export function MediumPicker({ value, onChange }: Props) {
   return (
     <View className="gap-2">
-      <Text className="text-sm font-medium text-gray-700">Medium</Text>
+      <Text className="text-sm font-medium text-fg-muted">Medium</Text>
       <View className="flex-row flex-wrap gap-2">
         {OPTIONS.map((o) => {
           const selected = value === o.value;
@@ -25,11 +25,11 @@ export function MediumPicker({ value, onChange }: Props) {
             <Pressable
               key={o.value}
               onPress={() => onChange(o.value)}
-              className={`px-3 py-2 rounded-full border ${
-                selected ? "bg-brand-600 border-brand-600" : "bg-white border-gray-300"
+              className={`px-3 py-2 rounded-full ${
+                selected ? "bg-brand-300" : "bg-surface-elevated"
               }`}
             >
-              <Text className={selected ? "text-white" : "text-gray-900"}>{o.label}</Text>
+              <Text className={selected ? "text-surface font-medium" : "text-fg"}>{o.label}</Text>
             </Pressable>
           );
         })}

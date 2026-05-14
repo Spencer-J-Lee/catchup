@@ -17,7 +17,7 @@ export default function EventDetailScreen() {
     return (
       <Screen>
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator />
+          <ActivityIndicator color="#ffffff" />
         </View>
       </Screen>
     );
@@ -84,7 +84,7 @@ export default function EventDetailScreen() {
           headerRight: () => (
             <Link href={`/event/${id}/edit`} asChild>
               <Pressable className="px-2">
-                <Text className="text-brand-600 font-medium">Edit</Text>
+                <Text className="text-brand-300 font-medium">Edit</Text>
               </Pressable>
             </Link>
           ),
@@ -92,7 +92,7 @@ export default function EventDetailScreen() {
       />
 
       <View className="gap-4">
-        <View className="bg-white border border-gray-200 rounded-2xl p-4 gap-2">
+        <View className="bg-surface-elevated rounded-2xl p-4 gap-2">
           <Row label="Status" value={event.status} />
           {event.scheduled_at ? (
             <Row label="Scheduled" value={formatDateTime(event.scheduled_at)} />
@@ -108,11 +108,11 @@ export default function EventDetailScreen() {
           ) : null}
           {event.location_text || event.location_address ? (
             <View>
-              <Text className="text-sm text-gray-500">Location</Text>
-              <Text className="text-base text-gray-900">{event.location_text}</Text>
+              <Text className="text-sm text-fg-muted">Location</Text>
+              <Text className="text-base text-fg">{event.location_text}</Text>
               {event.location_address ? (
                 <Pressable onPress={openMaps}>
-                  <Text className="text-base text-brand-600 underline">
+                  <Text className="text-base text-brand-300 underline">
                     {event.location_address}
                   </Text>
                 </Pressable>
@@ -122,9 +122,9 @@ export default function EventDetailScreen() {
         </View>
 
         {event.event_notes ? (
-          <View className="bg-white border border-gray-200 rounded-2xl p-4">
-            <Text className="text-sm text-gray-500 mb-1">Notes</Text>
-            <Text className="text-base text-gray-900">{event.event_notes}</Text>
+          <View className="bg-surface-elevated rounded-2xl p-4">
+            <Text className="text-sm text-fg-muted mb-1">Notes</Text>
+            <Text className="text-base text-fg">{event.event_notes}</Text>
           </View>
         ) : null}
 
@@ -145,7 +145,7 @@ export default function EventDetailScreen() {
           className="self-center py-2 px-3 mt-2"
           hitSlop={8}
         >
-          <Text className="text-sm text-red-600 font-medium">
+          <Text className="text-sm text-red-400 font-medium">
             {del.isPending ? "Deleting…" : "Delete"}
           </Text>
         </Pressable>
@@ -157,8 +157,8 @@ export default function EventDetailScreen() {
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <View className="flex-row justify-between">
-      <Text className="text-sm text-gray-500">{label}</Text>
-      <Text className="text-base text-gray-900">{value}</Text>
+      <Text className="text-sm text-fg-muted">{label}</Text>
+      <Text className="text-base text-fg">{value}</Text>
     </View>
   );
 }
