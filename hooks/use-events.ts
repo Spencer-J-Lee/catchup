@@ -4,16 +4,14 @@ import { supabase } from "@/lib/supabase";
 import type { EventInput } from "@/lib/schemas";
 import type { CatchUpEvent } from "@/types/database";
 
-export function useUpcomingScheduledEvents() {
+export function useScheduledEvents() {
   return useQuery({
-    queryKey: ["events", "upcoming-scheduled"],
+    queryKey: ["events", "scheduled"],
     queryFn: async () => {
-      const nowIso = new Date().toISOString();
       const { data, error } = await supabase
         .from("catch_up_events")
         .select("*")
         .eq("status", "scheduled")
-        .gte("scheduled_at", nowIso)
         .order("scheduled_at", { ascending: true });
       if (error) throw error;
       return data as CatchUpEvent[];

@@ -59,6 +59,19 @@ export default function EventDetailScreen() {
     }
   }
 
+  async function onMarkCancelled() {
+    if (!event) return;
+    try {
+      await update.mutateAsync({
+        id: event.id,
+        status: "cancelled",
+        friend_id: event.friend_id,
+      });
+    } catch (e) {
+      Alert.alert("Failed", (e as Error).message);
+    }
+  }
+
   function onDelete() {
     Alert.alert("Delete event?", "", [
       { text: "Cancel", style: "cancel" },
@@ -145,6 +158,13 @@ export default function EventDetailScreen() {
               loading={update.isPending}
             >
               Mark as missed
+            </Button>
+            <Button
+              variant="secondary"
+              onPress={onMarkCancelled}
+              loading={update.isPending}
+            >
+              Mark as cancelled
             </Button>
           </View>
         ) : null}

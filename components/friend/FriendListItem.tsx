@@ -9,7 +9,11 @@ import ReanimatedSwipeable, {
 import { formatRelative, fullName, initialsOf } from "@/lib/format";
 import { useDeleteFriend, type FriendWithStatus } from "@/hooks/use-friends";
 
-export type FriendItemAction = "schedule" | "checkin" | "reschedule";
+export type FriendItemAction =
+  | "schedule"
+  | "checkin"
+  | "reschedule"
+  | "followup";
 
 interface Props {
   friend: FriendWithStatus;
@@ -26,6 +30,7 @@ const ACTION_META: Record<
   schedule: { label: "Schedule", primary: true },
   checkin: { label: "Check in", primary: false },
   reschedule: { label: "Re-schedule", primary: false },
+  followup: { label: "Follow up", primary: true },
 };
 
 export function FriendListItem({
@@ -73,7 +78,10 @@ export function FriendListItem({
 
   let subLabel: string;
   let subClass: string;
-  if (action === "reschedule" && scheduledAt) {
+  if (action === "followup" && scheduledAt) {
+    subLabel = `Was scheduled ${formatRelative(scheduledAt)}`;
+    subClass = "text-brand-300 font-medium";
+  } else if (action === "reschedule" && scheduledAt) {
     subLabel = `Scheduled ${formatRelative(scheduledAt)}`;
     subClass = "text-brand-300 font-medium";
   } else if (friend.last_caught_up_at) {
@@ -87,17 +95,19 @@ export function FriendListItem({
   const meta = ACTION_META[action];
 
   const actionHref: Href =
-    action === "reschedule" && scheduledEventId
-      ? { pathname: "/event/[id]/edit", params: { id: scheduledEventId } }
-      : action === "schedule"
-        ? {
-            pathname: "/event/new",
-            params: { friend_id: friend.id, mode: "schedule" },
-          }
-        : {
-            pathname: "/event/new",
-            params: { friend_id: friend.id, mode: "checkin" },
-          };
+    action === "followup" && scheduledEventId
+      ? { pathname: "/event/[id]", params: { id: scheduledEventId } }
+      : action === "reschedule" && scheduledEventId
+        ? { pathname: "/event/[id]/edit", params: { id: scheduledEventId } }
+        : action === "schedule"
+          ? {
+              pathname: "/event/new",
+              params: { friend_id: friend.id, mode: "schedule" },
+            }
+          : {
+              pathname: "/event/new",
+              params: { friend_id: friend.id, mode: "checkin" },
+            };
 
   function onActionPress() {
     router.push(actionHref);

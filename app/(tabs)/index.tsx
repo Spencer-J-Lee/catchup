@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Screen } from "@/components/ui/Screen";
 import { useFriends, type FriendWithStatus } from "@/hooks/use-friends";
-import { useUpcomingScheduledEvents } from "@/hooks/use-events";
+import { useScheduledEvents } from "@/hooks/use-events";
 
 type FriendRow = {
   friend: FriendWithStatus;
@@ -33,26 +33,33 @@ type Section =
 
 export default function FriendsScreen() {
   const { data, isLoading, error, refetch, isRefetching } = useFriends();
-  const { data: scheduledEvents } = useUpcomingScheduledEvents();
+  const { data: scheduledEvents } = useScheduledEvents();
   const [search, setSearch] = useState("");
 
   const sections = useMemo<Section[]>(() => {
     if (!data) return [];
     const now = Date.now();
 
-    const nextScheduledByFriend = new Map<
+    const pastByFriend = new Map<string, { id: string; scheduled_at: string }>();
+    const upcomingByFriend = new Map<
       string,
       { id: string; scheduled_at: string }
     >();
     for (const ev of scheduledEvents ?? []) {
       if (!ev.scheduled_at) continue;
-      const existing = nextScheduledByFriend.get(ev.friend_id);
-      if (
+      const isPast = new Date(ev.scheduled_at).getTime() < now;
+      const bucket = isPast ? pastByFriend : upcomingByFriend;
+      const existing = bucket.get(ev.friend_id);
+      // For past: pick the oldest (longest awaiting). For upcoming: pick the soonest.
+      const replace =
         !existing ||
-        new Date(ev.scheduled_at).getTime() <
-          new Date(existing.scheduled_at).getTime()
-      ) {
-        nextScheduledByFriend.set(ev.friend_id, {
+        (isPast
+          ? new Date(ev.scheduled_at).getTime() <
+            new Date(existing.scheduled_at).getTime()
+          : new Date(ev.scheduled_at).getTime() <
+            new Date(existing.scheduled_at).getTime());
+      if (replace) {
+        bucket.set(ev.friend_id, {
           id: ev.id,
           scheduled_at: ev.scheduled_at,
         });
@@ -66,12 +73,24 @@ export default function FriendsScreen() {
         )
       : data;
 
+    const followup: FriendRow[] = [];
     const scheduled: FriendRow[] = [];
     const due: FriendRow[] = [];
     const notDue: FriendRow[] = [];
 
     for (const f of filtered) {
-      const next = nextScheduledByFriend.get(f.id);
+      const past = pastByFriend.get(f.id);
+      if (past) {
+        followup.push({
+          friend: f,
+          action: "followup",
+          scheduledAt: past.scheduled_at,
+          scheduledEventId: past.id,
+          isDue: true,
+        });
+        continue;
+      }
+      const next = upcomingByFriend.get(f.id);
       if (next) {
         scheduled.push({
           friend: f,
@@ -103,6 +122,10 @@ export default function FriendsScreen() {
       }
     }
 
+    followup.sort(
+      (a, b) =>
+        new Date(a.scheduledAt!).getTime() - new Date(b.scheduledAt!).getTime(),
+    );
     scheduled.sort(
       (a, b) =>
         new Date(a.scheduledAt!).getTime() - new Date(b.scheduledAt!).getTime(),
@@ -123,6 +146,14 @@ export default function FriendsScreen() {
     });
 
     const out: Section[] = [];
+    if (followup.length > 0) {
+      out.push({
+        kind: "header",
+        title: "Awaiting follow-up",
+        count: followup.length,
+      });
+      for (const r of followup) out.push({ kind: "friend", row: r });
+    }
     if (due.length > 0) {
       out.push({ kind: "header", title: "Due", count: due.length });
       for (const r of due) out.push({ kind: "friend", row: r });
