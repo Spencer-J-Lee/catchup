@@ -25,7 +25,12 @@ import {
   pickContact,
   snapshotFrom,
 } from "@/lib/contacts";
-import { formatDateTime, formatMedium, formatRelative } from "@/lib/format";
+import {
+  formatDateTime,
+  formatMedium,
+  formatRelative,
+  fullName,
+} from "@/lib/format";
 import type { CatchUpEvent, EventStatus } from "@/types/database";
 
 export default function FriendDetailScreen() {
@@ -118,7 +123,7 @@ export default function FriendDetailScreen() {
     <Screen scroll>
       <Stack.Screen
         options={{
-          title: friend.display_name,
+          title: fullName(friend),
           headerRight: () => (
             <Link href={`/friend/${id}/edit`} asChild>
               <Pressable className="px-2">

@@ -32,6 +32,7 @@ const STACK_HEADER_OPTIONS = {
   headerStyle: { backgroundColor: "#1a1a1a" },
   headerTintColor: "#ffffff",
   headerTitleStyle: { color: "#ffffff" },
+  headerBackTitle: "Back",
   contentStyle: { backgroundColor: "#1a1a1a" },
 } as const;
 
