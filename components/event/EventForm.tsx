@@ -12,10 +12,20 @@ export type EventMode = "schedule" | "checkin" | "edit";
 export interface EventFormValue {
   date: Date;
   medium: Medium | null;
+  mediumDetail: string;
   locationText: string;
   locationAddress: string;
   notes: string;
 }
+
+const MEDIUM_DETAIL_PLACEHOLDER: Record<
+  Exclude<Medium, "in_person">,
+  string
+> = {
+  text: "e.g. iMessage, WhatsApp",
+  call: "e.g. Phone, Discord",
+  video: "e.g. Zoom, FaceTime",
+};
 
 interface Props {
   mode: EventMode;
@@ -72,6 +82,13 @@ export function EventForm({ mode, value, onChange }: Props) {
             onChangeText={(t) => onChange({ ...value, locationAddress: t })}
           />
         </>
+      ) : value.medium ? (
+        <Input
+          label="Detail"
+          placeholder={MEDIUM_DETAIL_PLACEHOLDER[value.medium]}
+          value={value.mediumDetail}
+          onChangeText={(t) => onChange({ ...value, mediumDetail: t })}
+        />
       ) : null}
 
       <Input

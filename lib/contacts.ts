@@ -7,11 +7,52 @@ export interface ContactSnapshot {
   email: string | null;
   phones: { label: string | null; number: string }[];
   emails: { label: string | null; email: string }[];
+  image_uri: string | null;
 }
 
-export async function pickContact(): Promise<
-  { contact_id: string; snapshot: ContactSnapshot } | null
-> {
+export interface PickedContact {
+  contact_id: string;
+  snapshot: ContactSnapshot;
+  avatar_url: string | null;
+}
+
+function snapshotFromContact(contact: Contacts.Contact): ContactSnapshot {
+  const phones = (contact.phoneNumbers ?? [])
+    .map((p) => ({ label: p.label ?? null, number: p.number ?? "" }))
+    .filter((p) => p.number);
+  const emails = (contact.emails ?? [])
+    .map((e) => ({ label: e.label ?? null, email: e.email ?? "" }))
+    .filter((e) => e.email);
+  const imageUri = contact.image?.uri ?? null;
+
+  return {
+    name: contact.name ?? null,
+    phone: phones[0]?.number ?? null,
+    email: emails[0]?.email ?? null,
+    phones,
+    emails,
+    image_uri: imageUri,
+  };
+}
+
+async function loadContactWithImage(
+  contactId: string,
+): Promise<Contacts.Contact | null> {
+  try {
+    const full = await Contacts.getContactByIdAsync(contactId, [
+      Contacts.Fields.Name,
+      Contacts.Fields.PhoneNumbers,
+      Contacts.Fields.Emails,
+      Contacts.Fields.Image,
+      Contacts.Fields.ImageAvailable,
+    ]);
+    return full ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export async function pickContact(): Promise<PickedContact | null> {
   if (Platform.OS === "android") {
     const { status } = await Contacts.requestPermissionsAsync();
     if (status !== "granted") {
@@ -23,25 +64,17 @@ export async function pickContact(): Promise<
     }
   }
 
-  const contact = await Contacts.presentContactPickerAsync();
-  if (!contact || !contact.id) return null;
+  const picked = await Contacts.presentContactPickerAsync();
+  if (!picked || !picked.id) return null;
 
-  const phones = (contact.phoneNumbers ?? [])
-    .map((p) => ({ label: p.label ?? null, number: p.number ?? "" }))
-    .filter((p) => p.number);
-  const emails = (contact.emails ?? [])
-    .map((e) => ({ label: e.label ?? null, email: e.email ?? "" }))
-    .filter((e) => e.email);
+  const enriched = (await loadContactWithImage(picked.id)) ?? picked;
+  const snapshot = snapshotFromContact(enriched);
 
-  const snapshot: ContactSnapshot = {
-    name: contact.name ?? null,
-    phone: phones[0]?.number ?? null,
-    email: emails[0]?.email ?? null,
-    phones,
-    emails,
+  return {
+    contact_id: picked.id,
+    snapshot,
+    avatar_url: snapshot.image_uri,
   };
-
-  return { contact_id: contact.id, snapshot };
 }
 
 export function snapshotFrom(raw: Record<string, unknown> | null): ContactSnapshot | null {

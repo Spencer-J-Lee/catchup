@@ -21,6 +21,7 @@ export default function EditEventScreen() {
     setValue({
       date: dateStr ? new Date(dateStr) : new Date(),
       medium: event.medium,
+      mediumDetail: event.medium_detail ?? "",
       locationText: event.location_text ?? "",
       locationAddress: event.location_address ?? "",
       notes: event.event_notes ?? "",
@@ -46,7 +47,10 @@ export default function EditEventScreen() {
         scheduled_at: isScheduled ? value.date.toISOString() : event.scheduled_at ?? null,
         occurred_at: !isScheduled ? value.date.toISOString() : event.occurred_at ?? null,
         medium: value.medium,
-        medium_detail: event.medium_detail ?? null,
+        medium_detail:
+          value.medium && value.medium !== "in_person" && value.mediumDetail
+            ? value.mediumDetail
+            : null,
         location_text: value.locationText || null,
         location_address: value.locationAddress || null,
         event_notes: value.notes || null,

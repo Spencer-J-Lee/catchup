@@ -26,6 +26,7 @@ export default function NewEventScreen() {
           ? new Date(now.getTime() + 24 * 60 * 60 * 1000)
           : now,
       medium: null,
+      mediumDetail: "",
       locationText: "",
       locationAddress: "",
       notes: "",
@@ -44,7 +45,10 @@ export default function NewEventScreen() {
       occurred_at: !isScheduled ? value.date.toISOString() : null,
       status: status as "scheduled" | "completed",
       medium: value.medium,
-      medium_detail: null,
+      medium_detail:
+        value.medium && value.medium !== "in_person" && value.mediumDetail
+          ? value.mediumDetail
+          : null,
       location_text: value.locationText || null,
       location_address: value.locationAddress || null,
       event_notes: value.notes || null,

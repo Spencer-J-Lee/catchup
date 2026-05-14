@@ -94,13 +94,15 @@ export function useLinkFriendContact() {
       id: string;
       contact_id: string | null;
       contact_snapshot: Record<string, unknown> | null;
+      avatar_url: string | null;
     }) => {
-      const { id, contact_id, contact_snapshot } = args;
+      const { id, contact_id, contact_snapshot, avatar_url } = args;
       const { data, error } = await supabase
         .from("friends")
         .update({
           contact_id,
           contact_snapshot,
+          avatar_url,
           contact_synced_at: contact_id ? new Date().toISOString() : null,
         })
         .eq("id", id)

@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { format } from "date-fns";
 import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { ActivityIndicator, Alert, FlatList, Pressable, Text, View } from "react-native";
 
@@ -9,7 +10,7 @@ import {
   useLinkFriendContact,
 } from "@/hooks/use-friends";
 import { useEventsForFriend } from "@/hooks/use-events";
-import { formatDateTime, formatRelative } from "@/lib/format";
+import { formatDateTime, formatMedium, formatRelative } from "@/lib/format";
 import {
   openCall,
   openContactCard,
@@ -65,6 +66,7 @@ export default function FriendDetailScreen() {
         id: id!,
         contact_id: picked.contact_id,
         contact_snapshot: picked.snapshot as unknown as Record<string, unknown>,
+        avatar_url: picked.avatar_url,
       });
     } catch (e) {
       Alert.alert("Couldn't link contact", (e as Error).message);
@@ -289,28 +291,36 @@ const STATUS_META: Record<
 
 function HistoryItem({ event }: { event: CatchUpEvent }) {
   const meta = STATUS_META[event.status];
-  const whenLabel = event.occurred_at
-    ? formatDateTime(event.occurred_at)
-    : event.scheduled_at
-      ? formatDateTime(event.scheduled_at)
-      : "";
-  const mediumLabel = event.medium
-    ? `${event.medium}${event.medium_detail ? ` · ${event.medium_detail}` : ""}`
+  const whenISO = event.occurred_at ?? event.scheduled_at;
+  const when = whenISO ? new Date(whenISO) : null;
+  const mediumText = event.medium
+    ? `${formatMedium(event.medium)}${event.medium_detail ? ` · ${event.medium_detail}` : ""}`
     : "—";
 
   return (
     <Link href={`/event/${event.id}`} asChild>
       <Pressable className="bg-surface-elevated rounded-xl p-3 gap-2">
-        <View className="flex-row items-center justify-between gap-2">
-          <View
-            className={`px-2 py-0.5 rounded-full border ${meta.pill}`}
+        <View className="flex-row items-center gap-3">
+          {when ? (
+            <View className="h-12 w-12 rounded-lg bg-surface-high items-center justify-center">
+              <Text className="text-[10px] font-semibold uppercase text-fg-subtle tracking-wider">
+                {format(when, "MMM")}
+              </Text>
+              <Text className="text-xl font-bold text-fg leading-tight">
+                {format(when, "d")}
+              </Text>
+            </View>
+          ) : null}
+          <Text
+            className="flex-1 text-base font-medium text-fg"
+            numberOfLines={1}
           >
+            {mediumText}
+          </Text>
+          <View className={`px-2 py-0.5 rounded-full border ${meta.pill}`}>
             <Text className={`text-xs font-semibold ${meta.text}`}>{meta.label}</Text>
           </View>
-          <Text className="text-xs text-fg-muted">{whenLabel}</Text>
         </View>
-
-        <Text className="text-sm font-medium text-fg">{mediumLabel}</Text>
 
         {event.event_notes ? (
           <Text className="text-sm text-fg-muted" numberOfLines={3}>

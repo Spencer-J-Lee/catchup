@@ -15,9 +15,14 @@ interface SeedFriend {
   cadence_preset: CadencePreset | null;
   cadence_amount: number | null;
   cadence_unit: CadenceUnit | null;
+  avatar_url: string | null;
   /** How many days ago this friend was "created" — used to back-date created_at for the no-events fallback. */
   createdDaysAgo: number;
   events: SeedEvent[];
+}
+
+function avatarFor(seed: string): string {
+  return `https://api.dicebear.com/9.x/avataaars/png?seed=${seed}`;
 }
 
 interface SeedEvent {
@@ -42,6 +47,7 @@ const FRIENDS: SeedFriend[] = [
     cadence_preset: "weekly",
     cadence_amount: 1,
     cadence_unit: "weeks",
+    avatar_url: avatarFor("alex-chen"),
     createdDaysAgo: 200,
     events: [
       {
@@ -72,6 +78,7 @@ const FRIENDS: SeedFriend[] = [
     cadence_preset: "weekly",
     cadence_amount: 1,
     cadence_unit: "weeks",
+    avatar_url: null,
     createdDaysAgo: 365,
     events: [
       {
@@ -100,13 +107,14 @@ const FRIENDS: SeedFriend[] = [
     cadence_preset: "weekly",
     cadence_amount: 1,
     cadence_unit: "weeks",
+    avatar_url: null,
     createdDaysAgo: 90,
     events: [
       {
         offsetDays: -8,
         status: "completed",
         medium: "in_person",
-        medium_detail: "Coffee",
+        medium_detail: null,
         location_text: "Sightglass",
         location_address: "270 7th St, San Francisco, CA",
         event_notes: "Walked through their startup idea. Interesting but very early.",
@@ -119,6 +127,7 @@ const FRIENDS: SeedFriend[] = [
     cadence_preset: "monthly",
     cadence_amount: 1,
     cadence_unit: "months",
+    avatar_url: avatarFor("dana-wu"),
     createdDaysAgo: 120,
     events: [
       {
@@ -139,6 +148,7 @@ const FRIENDS: SeedFriend[] = [
     cadence_preset: "monthly",
     cadence_amount: 1,
     cadence_unit: "months",
+    avatar_url: null,
     createdDaysAgo: 60,
     events: [],
   },
@@ -148,6 +158,7 @@ const FRIENDS: SeedFriend[] = [
     cadence_preset: "weekly",
     cadence_amount: 1,
     cadence_unit: "weeks",
+    avatar_url: avatarFor("faye-holloway"),
     createdDaysAgo: 40,
     events: [
       {
@@ -176,6 +187,7 @@ const FRIENDS: SeedFriend[] = [
     cadence_preset: "monthly",
     cadence_amount: 1,
     cadence_unit: "months",
+    avatar_url: null,
     createdDaysAgo: 400,
     events: [
       {
@@ -213,13 +225,14 @@ const FRIENDS: SeedFriend[] = [
     cadence_preset: "6_months",
     cadence_amount: 6,
     cadence_unit: "months",
+    avatar_url: avatarFor("harper-singh"),
     createdDaysAgo: 200,
     events: [
       {
         offsetDays: -2,
         status: "completed",
         medium: "in_person",
-        medium_detail: "Dinner",
+        medium_detail: null,
         location_text: "Liholiho Yacht Club",
         location_address: "871 Sutter St, San Francisco, CA",
         event_notes:
@@ -233,6 +246,7 @@ const FRIENDS: SeedFriend[] = [
     cadence_preset: null,
     cadence_amount: null,
     cadence_unit: null,
+    avatar_url: null,
     createdDaysAgo: 90,
     events: [
       {
@@ -252,6 +266,7 @@ const FRIENDS: SeedFriend[] = [
     cadence_preset: "weekly",
     cadence_amount: 1,
     cadence_unit: "weeks",
+    avatar_url: avatarFor("jules-marchetti"),
     createdDaysAgo: 90,
     events: [
       {
@@ -267,7 +282,7 @@ const FRIENDS: SeedFriend[] = [
         offsetDays: 5,
         status: "scheduled",
         medium: "in_person",
-        medium_detail: "Lunch",
+        medium_detail: null,
         location_text: "Tartine Manufactory",
         location_address: "595 Alabama St, San Francisco, CA",
         event_notes: null,
@@ -310,6 +325,7 @@ export async function seedExampleData(userId: string): Promise<SeedResult> {
     cadence_preset: f.cadence_preset,
     cadence_amount: f.cadence_amount,
     cadence_unit: f.cadence_unit,
+    avatar_url: f.avatar_url,
     created_at: isoOffsetDays(-f.createdDaysAgo),
   }));
 

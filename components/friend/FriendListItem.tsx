@@ -1,5 +1,5 @@
 import { Link, useRouter, type Href } from "expo-router";
-import { Pressable, Text, View } from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 
 import { formatRelative } from "@/lib/format";
 import type { FriendWithStatus } from "@/hooks/use-friends";
@@ -68,9 +68,17 @@ export function FriendListItem({
   return (
     <Link href={`/friend/${friend.id}`} asChild>
       <Pressable className="flex-row items-center gap-3 py-2 active:opacity-70">
-        <View className="h-14 w-14 rounded-full bg-surface-elevated items-center justify-center">
-          <Text className="text-fg text-base font-semibold">{initialsOf(friend.display_name)}</Text>
-        </View>
+        {friend.avatar_url ? (
+          <Image
+            source={{ uri: friend.avatar_url }}
+            className="h-14 w-14 rounded-full bg-surface-elevated"
+            resizeMode="cover"
+          />
+        ) : (
+          <View className="h-14 w-14 rounded-full bg-surface-elevated items-center justify-center">
+            <Text className="text-fg text-base font-semibold">{initialsOf(friend.display_name)}</Text>
+          </View>
+        )}
         <View className="flex-1">
           <Text className="text-lg font-semibold text-fg">{friend.display_name}</Text>
           <Text className={`text-sm mt-0.5 ${subClass}`}>{subLabel}</Text>

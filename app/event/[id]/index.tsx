@@ -4,7 +4,7 @@ import { ActivityIndicator, Alert, Linking, Platform, Pressable, Text, View } fr
 import { Button } from "@/components/ui/Button";
 import { Screen } from "@/components/ui/Screen";
 import { useDeleteEvent, useEvent, useUpdateEvent } from "@/hooks/use-events";
-import { formatDateTime } from "@/lib/format";
+import { formatDateTime, formatMedium } from "@/lib/format";
 
 export default function EventDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -103,7 +103,7 @@ export default function EventDetailScreen() {
           {event.medium ? (
             <Row
               label="Medium"
-              value={`${event.medium}${event.medium_detail ? ` · ${event.medium_detail}` : ""}`}
+              value={`${formatMedium(event.medium)}${event.medium_detail ? ` · ${event.medium_detail}` : ""}`}
             />
           ) : null}
           {event.location_text || event.location_address ? (

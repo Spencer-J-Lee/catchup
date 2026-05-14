@@ -114,6 +114,7 @@ export type Database = {
       }
       friends: {
         Row: {
+          avatar_url: string | null
           cadence_amount: number | null
           cadence_preset: string | null
           cadence_unit: string | null
@@ -128,6 +129,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          avatar_url?: string | null
           cadence_amount?: number | null
           cadence_preset?: string | null
           cadence_unit?: string | null
@@ -142,6 +144,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          avatar_url?: string | null
           cadence_amount?: number | null
           cadence_preset?: string | null
           cadence_unit?: string | null
