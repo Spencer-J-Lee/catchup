@@ -382,6 +382,46 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
+  // scenario: scheduled event 2d in the past — awaiting follow-up (mark complete/missed/cancelled)
+  {
+    first_name: "Kai",
+    last_name: mark("Nakamura"),
+    general_notes: "Used to work together. Always great to catch up.",
+    cadence_preset: "monthly",
+    cadence_amount: 1,
+    cadence_unit: "months",
+    avatar_url: avatarFor("kai-nakamura"),
+    contact: contactFor({
+      id: "seed-contact-kai-nakamura",
+      name: "Kai Nakamura",
+      phone: "+12135550168",
+      email: "kai.nakamura@example.com",
+      imageUri: avatarFor("kai-nakamura"),
+      syncedDaysAgo: 20,
+    }),
+    createdDaysAgo: 150,
+    events: [
+      {
+        offsetDays: -34,
+        status: "completed",
+        medium: "call",
+        medium_detail: null,
+        location_text: null,
+        location_address: null,
+        event_notes: "Talked about their team change. Sounds promising.",
+      },
+      {
+        offsetDays: -2,
+        status: "scheduled",
+        medium: "in_person",
+        medium_detail: null,
+        location_text: "Blue Bottle",
+        location_address: "66 Mint St, San Francisco, CA",
+        event_notes: "Coffee before their flight out.",
+        pre_reminder_minutes: 60,
+      },
+    ],
+  },
   // scenario: 3d overdue, long hyphenated last name for layout, scheduled event w/ day-ahead reminder
   {
     first_name: "Jules",
