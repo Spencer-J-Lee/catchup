@@ -10,6 +10,7 @@ import {
 } from "react-native";
 
 import { Button } from "@/components/ui/Button";
+import { Row } from "@/components/ui/Row";
 import { Screen } from "@/components/ui/Screen";
 import { useDeleteEvent, useEvent, useUpdateEvent } from "@/hooks/use-events";
 import { formatDateTime, formatMedium } from "@/lib/format";
@@ -163,11 +164,3 @@ export default function EventDetailScreen() {
   );
 }
 
-function Row({ label, value }: { label: string; value: string }) {
-  return (
-    <View className="flex-row justify-between">
-      <Text className="text-sm text-fg-muted">{label}</Text>
-      <Text className="text-base text-fg">{value}</Text>
-    </View>
-  );
-}

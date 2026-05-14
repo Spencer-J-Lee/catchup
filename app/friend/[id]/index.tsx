@@ -10,6 +10,7 @@ import {
   View,
 } from "react-native";
 
+import { Row } from "@/components/ui/Row";
 import { Screen } from "@/components/ui/Screen";
 import { useEventsForFriend } from "@/hooks/use-events";
 import {
@@ -130,19 +131,22 @@ export default function FriendDetailScreen() {
 
       <View className="gap-4">
         <View className="bg-surface-elevated rounded-2xl p-4 gap-2">
-          <Text className="text-sm text-fg-muted">Last caught up</Text>
-          <Text className="text-base text-fg">
-            {lastCompleted?.occurred_at
-              ? `${formatRelative(lastCompleted.occurred_at)} (${formatDateTime(lastCompleted.occurred_at)})`
-              : "No catch-ups yet"}
-          </Text>
-          {friend.cadence_amount && friend.cadence_unit ? (
-            <Text className="text-sm text-fg-muted mt-1">
-              Cadence: every {friend.cadence_amount} {friend.cadence_unit}
-            </Text>
-          ) : (
-            <Text className="text-sm text-fg-muted mt-1">No cadence set</Text>
-          )}
+          <Row
+            label="Last caught up"
+            value={
+              lastCompleted?.occurred_at
+                ? `${formatRelative(lastCompleted.occurred_at)} (${formatDateTime(lastCompleted.occurred_at)})`
+                : "No catch-ups yet"
+            }
+          />
+          <Row
+            label="Cadence"
+            value={
+              friend.cadence_amount && friend.cadence_unit
+                ? `every ${friend.cadence_amount} ${friend.cadence_unit}`
+                : "Not set"
+            }
+          />
         </View>
 
         {friend.general_notes ? (
