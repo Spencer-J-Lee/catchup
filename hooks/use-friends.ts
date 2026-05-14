@@ -55,10 +55,18 @@ export function useFriend(id: string | undefined) {
   });
 }
 
+type CreateFriendInput = FriendInput & {
+  user_id: string;
+  contact_id?: string | null;
+  contact_snapshot?: Record<string, unknown> | null;
+  avatar_url?: string | null;
+  contact_synced_at?: string | null;
+};
+
 export function useCreateFriend() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async (input: FriendInput & { user_id: string }) => {
+    mutationFn: async (input: CreateFriendInput) => {
       const { data, error } = await supabase
         .from("friends")
         .insert(input)

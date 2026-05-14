@@ -16,6 +16,16 @@ export interface PickedContact {
   avatar_url: string | null;
 }
 
+export interface ContactListItem {
+  id: string;
+  display_name: string;
+  first_name: string | null;
+  last_name: string | null;
+  phone: string | null;
+  image_uri: string | null;
+  snapshot: ContactSnapshot;
+}
+
 function snapshotFromContact(contact: Contacts.Contact): ContactSnapshot {
   const phones = (contact.phoneNumbers ?? [])
     .map((p) => ({ label: p.label ?? null, number: p.number ?? "" }))
@@ -50,6 +60,43 @@ async function loadContactWithImage(
   } catch {
     return null;
   }
+}
+
+export async function requestContactsPermission(): Promise<Contacts.PermissionStatus> {
+  const { status } = await Contacts.requestPermissionsAsync();
+  return status;
+}
+
+export async function listContacts(): Promise<ContactListItem[]> {
+  const { data } = await Contacts.getContactsAsync({
+    fields: [
+      Contacts.Fields.Name,
+      Contacts.Fields.FirstName,
+      Contacts.Fields.LastName,
+      Contacts.Fields.PhoneNumbers,
+      Contacts.Fields.Emails,
+      Contacts.Fields.Image,
+    ],
+    sort: Contacts.SortTypes.FirstName,
+  });
+  const items: ContactListItem[] = [];
+  for (const c of data) {
+    if (!c.id) continue;
+    const fallbackName =
+      `${c.firstName ?? ""} ${c.lastName ?? ""}`.trim() || c.name?.trim() || "";
+    if (!fallbackName) continue;
+    const snapshot = snapshotFromContact(c);
+    items.push({
+      id: c.id,
+      display_name: fallbackName,
+      first_name: c.firstName ?? null,
+      last_name: c.lastName ?? null,
+      phone: snapshot.phone,
+      image_uri: snapshot.image_uri,
+      snapshot,
+    });
+  }
+  return items;
 }
 
 export async function pickContact(): Promise<PickedContact | null> {

@@ -134,7 +134,7 @@ export default function FriendsScreen() {
     <Screen>
       <View className="flex-row items-center justify-between mb-4">
         <Text className="text-3xl font-bold text-fg">Catchup</Text>
-        <Link href="/friend/new" asChild>
+        <Link href="/friend/pick-contact" asChild>
           <Pressable className="h-10 w-10 rounded-full bg-surface-elevated items-center justify-center active:bg-surface-high">
             <Ionicons name="add" size={22} color="#ffffff" />
           </Pressable>
@@ -170,7 +170,7 @@ export default function FriendsScreen() {
           <Text className="text-fg-muted text-center mb-6">
             Add a friend to start tracking your catch-ups.
           </Text>
-          <Link href="/friend/new" asChild>
+          <Link href="/friend/pick-contact" asChild>
             <Button className="px-6">Add your first friend</Button>
           </Link>
         </View>

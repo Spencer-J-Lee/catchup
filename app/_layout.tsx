@@ -51,9 +51,17 @@ export default function RootLayout() {
             <Stack.Screen name="(auth)" />
             <Stack.Screen name="(tabs)" />
             <Stack.Screen
-              name="friend/new"
+              name="friend/pick-contact"
               options={{
                 presentation: "modal",
+                headerShown: true,
+                title: "Add friend",
+                ...STACK_HEADER_OPTIONS,
+              }}
+            />
+            <Stack.Screen
+              name="friend/new"
+              options={{
                 headerShown: true,
                 title: "Add friend",
                 ...STACK_HEADER_OPTIONS,
