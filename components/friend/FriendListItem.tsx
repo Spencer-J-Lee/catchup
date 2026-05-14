@@ -6,7 +6,12 @@ import ReanimatedSwipeable, {
   type SwipeableMethods,
 } from "react-native-gesture-handler/ReanimatedSwipeable";
 
-import { formatRelative, fullName, initialsOf } from "@/lib/format";
+import {
+  formatOverdueDays,
+  formatRelative,
+  fullName,
+  initialsOf,
+} from "@/lib/format";
 import { useDeleteFriend, type FriendWithStatus } from "@/hooks/use-friends";
 
 export type FriendItemAction =
@@ -83,6 +88,9 @@ export function FriendListItem({
     subClass = "text-brand-300 font-medium";
   } else if (action === "reschedule" && scheduledAt) {
     subLabel = `Scheduled ${formatRelative(scheduledAt)}`;
+    subClass = "text-brand-300 font-medium";
+  } else if (action === "schedule" && friend.next_due_at) {
+    subLabel = formatOverdueDays(friend.next_due_at);
     subClass = "text-brand-300 font-medium";
   } else if (friend.last_caught_up_at) {
     subLabel = `Checked in ${formatRelative(friend.last_caught_up_at)}`;

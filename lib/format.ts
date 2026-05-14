@@ -1,4 +1,8 @@
-import { format, formatDistanceToNowStrict } from "date-fns";
+import {
+  differenceInCalendarDays,
+  format,
+  formatDistanceToNowStrict,
+} from "date-fns";
 
 import type { EventStatus, Medium } from "@/types/database";
 
@@ -16,6 +20,13 @@ export function formatDateTime(d: Date | string): string {
 export function formatRelative(d: Date | string): string {
   const date = typeof d === "string" ? new Date(d) : d;
   return formatDistanceToNowStrict(date, { addSuffix: true });
+}
+
+export function formatOverdueDays(dueAt: Date | string): string {
+  const date = typeof dueAt === "string" ? new Date(dueAt) : dueAt;
+  const days = differenceInCalendarDays(new Date(), date);
+  if (days <= 0) return "Due today";
+  return days === 1 ? "1 day overdue" : `${days} days overdue`;
 }
 
 export function fullName(parts: {
