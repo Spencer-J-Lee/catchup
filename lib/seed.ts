@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import type { ContactSnapshot } from "@/lib/contacts";
 import type {
   CadencePreset,
   CadenceUnit,
@@ -16,6 +17,13 @@ function mark(lastName: string): string {
   return `${lastName}${SEED_MARKER}`;
 }
 
+interface SeedContact {
+  /** Synthetic id — the native Contact card open will fail gracefully if tapped. */
+  id: string;
+  snapshot: ContactSnapshot;
+  syncedDaysAgo: number;
+}
+
 interface SeedFriend {
   first_name: string;
   last_name: string | null;
@@ -24,6 +32,8 @@ interface SeedFriend {
   cadence_amount: number | null;
   cadence_unit: CadenceUnit | null;
   avatar_url: string | null;
+  /** When set, populates contact_id / contact_snapshot / contact_synced_at to simulate a linked phone contact. */
+  contact: SeedContact | null;
   /** How many days ago this friend was "created" — used to back-date created_at for the no-events fallback. */
   createdDaysAgo: number;
   events: SeedEvent[];
@@ -31,6 +41,28 @@ interface SeedFriend {
 
 function avatarFor(seed: string): string {
   return `https://api.dicebear.com/9.x/avataaars/png?seed=${seed}`;
+}
+
+function contactFor(args: {
+  id: string;
+  name: string;
+  phone: string;
+  email: string;
+  imageUri?: string | null;
+  syncedDaysAgo: number;
+}): SeedContact {
+  return {
+    id: args.id,
+    syncedDaysAgo: args.syncedDaysAgo,
+    snapshot: {
+      name: args.name,
+      phone: args.phone,
+      email: args.email,
+      phones: [{ label: "mobile", number: args.phone }],
+      emails: [{ label: "personal", email: args.email }],
+      image_uri: args.imageUri ?? null,
+    },
+  };
 }
 
 interface SeedEvent {
@@ -42,6 +74,7 @@ interface SeedEvent {
   location_text: string | null;
   location_address: string | null;
   event_notes: string | null;
+  pre_reminder_minutes?: number | null;
 }
 
 function isoOffsetDays(days: number): string {
@@ -49,7 +82,7 @@ function isoOffsetDays(days: number): string {
 }
 
 const FRIENDS: SeedFriend[] = [
-  // scenario: ~30d overdue (weekly cadence)
+  // scenario: ~30d overdue (weekly cadence), linked contact
   {
     first_name: "Alex",
     last_name: mark("Chen"),
@@ -58,6 +91,14 @@ const FRIENDS: SeedFriend[] = [
     cadence_amount: 1,
     cadence_unit: "weeks",
     avatar_url: avatarFor("alex-chen"),
+    contact: contactFor({
+      id: "seed-contact-alex-chen",
+      name: "Alex Chen",
+      phone: "+14155550181",
+      email: "alex.chen@example.com",
+      imageUri: avatarFor("alex-chen"),
+      syncedDaysAgo: 30,
+    }),
     createdDaysAgo: 200,
     events: [
       {
@@ -81,7 +122,7 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
-  // scenario: 100d overdue (weekly cadence), includes a missed event
+  // scenario: 100d overdue (weekly cadence), includes a missed event, linked contact w/o avatar
   {
     first_name: "Bailey",
     last_name: mark("Park"),
@@ -90,6 +131,13 @@ const FRIENDS: SeedFriend[] = [
     cadence_amount: 1,
     cadence_unit: "weeks",
     avatar_url: null,
+    contact: contactFor({
+      id: "seed-contact-bailey-park",
+      name: "Bailey Park",
+      phone: "+16175550144",
+      email: "bailey.park@example.com",
+      syncedDaysAgo: 90,
+    }),
     createdDaysAgo: 365,
     events: [
       {
@@ -113,7 +161,7 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
-  // scenario: 1d overdue (weekly cadence)
+  // scenario: 1d overdue (weekly cadence), unlinked
   {
     first_name: "Cam",
     last_name: mark("Rivera"),
@@ -122,6 +170,7 @@ const FRIENDS: SeedFriend[] = [
     cadence_amount: 1,
     cadence_unit: "weeks",
     avatar_url: null,
+    contact: null,
     createdDaysAgo: 90,
     events: [
       {
@@ -136,7 +185,7 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
-  // scenario: 1d overdue (monthly cadence)
+  // scenario: 1d overdue (monthly cadence), linked contact
   {
     first_name: "Dana",
     last_name: mark("Wu"),
@@ -145,6 +194,14 @@ const FRIENDS: SeedFriend[] = [
     cadence_amount: 1,
     cadence_unit: "months",
     avatar_url: avatarFor("dana-wu"),
+    contact: contactFor({
+      id: "seed-contact-dana-wu",
+      name: "Dana Wu",
+      phone: "+12065550199",
+      email: "dana.wu@example.com",
+      imageUri: avatarFor("dana-wu"),
+      syncedDaysAgo: 60,
+    }),
     createdDaysAgo: 120,
     events: [
       {
@@ -158,7 +215,7 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
-  // scenario: never caught up (no events)
+  // scenario: never caught up (no events), recently linked contact
   {
     first_name: "Eli",
     last_name: mark("Brooks"),
@@ -168,10 +225,17 @@ const FRIENDS: SeedFriend[] = [
     cadence_amount: 1,
     cadence_unit: "months",
     avatar_url: null,
+    contact: contactFor({
+      id: "seed-contact-eli-brooks",
+      name: "Eli Brooks",
+      phone: "+13105550172",
+      email: "eli.brooks@example.com",
+      syncedDaysAgo: 5,
+    }),
     createdDaysAgo: 60,
     events: [],
   },
-  // scenario: due tomorrow, has an upcoming scheduled event
+  // scenario: due tomorrow, has an upcoming scheduled event w/ pre-reminder
   {
     first_name: "Faye",
     last_name: mark("Holloway"),
@@ -180,6 +244,14 @@ const FRIENDS: SeedFriend[] = [
     cadence_amount: 1,
     cadence_unit: "weeks",
     avatar_url: avatarFor("faye-holloway"),
+    contact: contactFor({
+      id: "seed-contact-faye-holloway",
+      name: "Faye Holloway",
+      phone: "+19175550127",
+      email: "faye.holloway@example.com",
+      imageUri: avatarFor("faye-holloway"),
+      syncedDaysAgo: 14,
+    }),
     createdDaysAgo: 40,
     events: [
       {
@@ -199,10 +271,12 @@ const FRIENDS: SeedFriend[] = [
         location_text: null,
         location_address: null,
         event_notes: "Planning to catch up about their new role.",
+        pre_reminder_minutes: 30,
       },
     ],
   },
   // scenario: due in 3 weeks, exercises a long hyphenated last name for layout
+  // and includes a prior-year completed event to exercise the year-on-history-date display
   {
     first_name: "Gabriella",
     last_name: mark("Constantinopoulos-Whitfield"),
@@ -211,6 +285,7 @@ const FRIENDS: SeedFriend[] = [
     cadence_amount: 1,
     cadence_unit: "months",
     avatar_url: null,
+    contact: null,
     createdDaysAgo: 400,
     events: [
       {
@@ -241,9 +316,19 @@ const FRIENDS: SeedFriend[] = [
         location_address: null,
         event_notes: null,
       },
+      {
+        offsetDays: -220,
+        status: "completed",
+        medium: "in_person",
+        medium_detail: null,
+        location_text: "Her parents' place",
+        location_address: "Pasadena, CA",
+        event_notes:
+          "She was back stateside for the holidays. Long catch-up over wine.",
+      },
     ],
   },
-  // scenario: caught up 2d ago (6-month cadence, not due)
+  // scenario: caught up 2d ago (6-month cadence, not due), linked contact
   {
     first_name: "Harper",
     last_name: mark("Singh"),
@@ -252,6 +337,14 @@ const FRIENDS: SeedFriend[] = [
     cadence_amount: 6,
     cadence_unit: "months",
     avatar_url: avatarFor("harper-singh"),
+    contact: contactFor({
+      id: "seed-contact-harper-singh",
+      name: "Harper Singh",
+      phone: "+14085550113",
+      email: "harper.singh@example.com",
+      imageUri: avatarFor("harper-singh"),
+      syncedDaysAgo: 45,
+    }),
     createdDaysAgo: 200,
     events: [
       {
@@ -266,7 +359,7 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
-  // scenario: no cadence set
+  // scenario: no cadence set, unlinked
   {
     first_name: "Indra",
     last_name: mark("Olamide"),
@@ -275,6 +368,7 @@ const FRIENDS: SeedFriend[] = [
     cadence_amount: null,
     cadence_unit: null,
     avatar_url: null,
+    contact: null,
     createdDaysAgo: 90,
     events: [
       {
@@ -288,7 +382,7 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
-  // scenario: 3d overdue, long hyphenated last name for layout
+  // scenario: 3d overdue, long hyphenated last name for layout, scheduled event w/ day-ahead reminder
   {
     first_name: "Jules",
     last_name: mark("Marchetti-Andersen"),
@@ -297,6 +391,7 @@ const FRIENDS: SeedFriend[] = [
     cadence_amount: 1,
     cadence_unit: "weeks",
     avatar_url: avatarFor("jules-marchetti"),
+    contact: null,
     createdDaysAgo: 90,
     events: [
       {
@@ -316,6 +411,7 @@ const FRIENDS: SeedFriend[] = [
         location_text: "Tartine Manufactory",
         location_address: "595 Alabama St, San Francisco, CA",
         event_notes: null,
+        pre_reminder_minutes: 1440,
       },
     ],
   },
@@ -357,6 +453,11 @@ export async function seedExampleData(userId: string): Promise<SeedResult> {
     cadence_amount: f.cadence_amount,
     cadence_unit: f.cadence_unit,
     avatar_url: f.avatar_url,
+    contact_id: f.contact?.id ?? null,
+    contact_snapshot: f.contact
+      ? (f.contact.snapshot as unknown as Record<string, unknown>)
+      : null,
+    contact_synced_at: f.contact ? isoOffsetDays(-f.contact.syncedDaysAgo) : null,
     created_at: isoOffsetDays(-f.createdDaysAgo),
   }));
 
@@ -393,6 +494,7 @@ export async function seedExampleData(userId: string): Promise<SeedResult> {
         location_text: e.location_text,
         location_address: e.location_address,
         event_notes: e.event_notes,
+        pre_reminder_minutes: e.pre_reminder_minutes ?? null,
       };
     });
   });
