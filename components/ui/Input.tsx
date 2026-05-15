@@ -23,14 +23,14 @@ export const Input = forwardRef<TextInput, InputProps>(function Input(
         ref={ref}
         className={classNames(
           "border border-surface-border rounded-xl px-3 py-3 text-base bg-surface-elevated text-fg",
-          { "border-red-500": !!error },
+          { "border-danger-500": !!error },
           className,
         )}
         placeholderTextColor={colors.fg.subtle}
         {...props}
       />
 
-      {error ? <Text className="text-xs text-red-400">{error}</Text> : null}
+      {error ? <Text className="text-xs text-danger-400">{error}</Text> : null}
     </View>
   );
 });

@@ -1,6 +1,8 @@
 import classNames from "classnames";
 import { ActivityIndicator, Pressable, Text } from "react-native";
 
+import { colors } from "@/lib/colors";
+
 import { ButtonVariant, TEXT_CLASSES, VARIANT_CLASSES } from "./styles";
 
 interface ButtonProps {
@@ -33,9 +35,18 @@ export function Button({
       )}
     >
       {loading ? (
-        <ActivityIndicator color={variant === "primary" ? "#1a1a1a" : "white"} />
+        <ActivityIndicator
+          color={
+            variant === "primary" ? colors.surface.DEFAULT : colors.fg.DEFAULT
+          }
+        />
       ) : (
-        <Text className={classNames("font-semibold text-base", TEXT_CLASSES[variant])}>
+        <Text
+          className={classNames(
+            "font-semibold text-base",
+            TEXT_CLASSES[variant],
+          )}
+        >
           {children}
         </Text>
       )}

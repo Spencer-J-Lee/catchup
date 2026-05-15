@@ -10,6 +10,7 @@ interface ScreenProps {
 
 export function Screen({ children, scroll = false, className }: ScreenProps) {
   const Container = scroll ? ScrollView : View;
+
   return (
     <SafeAreaView className="flex-1 bg-surface" edges={["top"]}>
       <Container
