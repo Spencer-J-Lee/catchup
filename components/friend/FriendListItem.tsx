@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import classNames from "classnames";
 import { Link, useRouter, type Href } from "expo-router";
 import { useRef } from "react";
 import { Alert, Image, Pressable, Text, View } from "react-native";
@@ -155,19 +156,25 @@ export function FriendListItem({
             <Text className="text-lg font-semibold text-fg">
               {fullName(friend)}
             </Text>
-            <Text className={`text-sm mt-0.5 ${subClass}`}>{subLabel}</Text>
+            <Text className={classNames("text-sm mt-0.5", subClass)}>
+              {subLabel}
+            </Text>
           </View>
           <Pressable
             onPress={onActionPress}
             hitSlop={8}
-            className={`rounded-full px-4 py-2 ${
+            className={classNames(
+              "rounded-full px-4 py-2",
               meta.primary
                 ? "bg-brand-300 active:bg-brand-400"
-                : "bg-surface-elevated active:bg-surface-high"
-            }`}
+                : "bg-surface-elevated active:bg-surface-high",
+            )}
           >
             <Text
-              className={`text-sm font-medium ${meta.primary ? "text-surface" : "text-fg"}`}
+              className={classNames(
+                "text-sm font-medium",
+                meta.primary ? "text-surface" : "text-fg",
+              )}
             >
               {meta.label}
             </Text>

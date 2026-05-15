@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { ReactNode } from "react";
 import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,7 +15,7 @@ export function Screen({ children, scroll = false, className }: ScreenProps) {
   return (
     <SafeAreaView className="flex-1 bg-surface" edges={["top"]}>
       <Container
-        className={`flex-1 px-4 ${className ?? ""}`}
+        className={classNames("flex-1 px-4", className)}
         contentContainerClassName={scroll ? "py-4" : undefined}
       >
         {children}

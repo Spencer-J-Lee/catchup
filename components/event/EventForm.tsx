@@ -1,4 +1,5 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
+import classNames from "classnames";
 import { useState } from "react";
 import { Platform, Pressable, Text, View } from "react-native";
 
@@ -57,9 +58,10 @@ export function EventForm({ mode, value, onChange }: Props) {
                 <Pressable
                   key={s}
                   onPress={() => onChange({ ...value, status: s })}
-                  className={`px-3 py-2 rounded-full ${
-                    selected ? "bg-brand-300" : "bg-surface-elevated"
-                  }`}
+                  className={classNames(
+                    "px-3 py-2 rounded-full",
+                    selected ? "bg-brand-300" : "bg-surface-elevated",
+                  )}
                 >
                   <Text
                     className={

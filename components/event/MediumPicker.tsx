@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { Pressable, Text, View } from "react-native";
 
 import { Label } from "@/components/ui/Label";
@@ -26,9 +27,10 @@ export function MediumPicker({ value, onChange }: Props) {
             <Pressable
               key={o.value}
               onPress={() => onChange(o.value)}
-              className={`px-3 py-2 rounded-full ${
-                selected ? "bg-brand-300" : "bg-surface-elevated"
-              }`}
+              className={classNames(
+                "px-3 py-2 rounded-full",
+                selected ? "bg-brand-300" : "bg-surface-elevated",
+              )}
             >
               <Text
                 className={selected ? "text-surface font-medium" : "text-fg"}

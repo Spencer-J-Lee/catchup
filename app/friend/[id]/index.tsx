@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import classNames from "classnames";
 import { format, isThisYear } from "date-fns";
 import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
 import {
@@ -287,9 +288,10 @@ function ContactActionButton({
     <Pressable
       onPress={onPress}
       disabled={disabled}
-      className={`flex-1 bg-surface-elevated rounded-xl py-3 items-center justify-center gap-1 ${
-        disabled ? "opacity-40" : "active:bg-surface-high"
-      }`}
+      className={classNames(
+        "flex-1 bg-surface-elevated rounded-xl py-3 items-center justify-center gap-1",
+        disabled ? "opacity-40" : "active:bg-surface-high",
+      )}
     >
       <Ionicons name={icon} size={22} color="#f49b7c" />
       <Text className="text-xs font-medium text-fg">{label}</Text>
@@ -341,7 +343,10 @@ function HistoryItem({ event }: { event: CatchUpEvent }) {
                 {format(when, "MMM")}
               </Text>
               <Text
-                className={`font-bold text-fg leading-tight ${isThisYear(when) ? "text-xl" : "text-base"}`}
+                className={classNames(
+                  "font-bold text-fg leading-tight",
+                  isThisYear(when) ? "text-xl" : "text-base",
+                )}
               >
                 {format(when, "d")}
               </Text>
@@ -358,8 +363,13 @@ function HistoryItem({ event }: { event: CatchUpEvent }) {
           >
             {mediumText}
           </Text>
-          <View className={`px-2 py-0.5 rounded-full border ${meta.pill}`}>
-            <Text className={`text-xs font-semibold ${meta.text}`}>
+          <View
+            className={classNames(
+              "px-2 py-0.5 rounded-full border",
+              meta.pill,
+            )}
+          >
+            <Text className={classNames("text-xs font-semibold", meta.text)}>
               {meta.label}
             </Text>
           </View>

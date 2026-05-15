@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { Pressable, Text, TextInput, View } from "react-native";
 
 import { Label } from "@/components/ui/Label";
@@ -140,9 +141,10 @@ function Chip({
   return (
     <Pressable
       onPress={onPress}
-      className={`px-3 py-2 rounded-full ${
-        selected ? "bg-brand-300" : "bg-surface-elevated"
-      }`}
+      className={classNames(
+        "px-3 py-2 rounded-full",
+        selected ? "bg-brand-300" : "bg-surface-elevated",
+      )}
     >
       <Text className={selected ? "text-surface font-medium" : "text-fg"}>
         {label}
