@@ -1,6 +1,6 @@
-import classNames from "classnames";
-import { Pressable, Text, View } from "react-native";
+import { View } from "react-native";
 
+import { Chip } from "@/components/ui/Chip";
 import { Label } from "@/components/ui/Label";
 import type { Medium } from "@/types/database";
 
@@ -21,25 +21,14 @@ export const MediumPicker = ({ value, onChange }: MediumPickerProps) => {
     <View className="gap-2">
       <Label>Medium</Label>
       <View className="flex-row flex-wrap gap-2">
-        {OPTIONS.map((o) => {
-          const selected = value === o.value;
-          return (
-            <Pressable
-              key={o.value}
-              onPress={() => onChange(o.value)}
-              className={classNames(
-                "px-3 py-2 rounded-full",
-                selected ? "bg-brand-300" : "bg-surface-elevated",
-              )}
-            >
-              <Text
-                className={selected ? "text-surface font-medium" : "text-fg"}
-              >
-                {o.label}
-              </Text>
-            </Pressable>
-          );
-        })}
+        {OPTIONS.map((o) => (
+          <Chip
+            key={o.value}
+            selected={value === o.value}
+            label={o.label}
+            onPress={() => onChange(o.value)}
+          />
+        ))}
       </View>
     </View>
   );

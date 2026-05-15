@@ -1,9 +1,9 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
-import classNames from "classnames";
 import { useState } from "react";
 import { Platform, Pressable, Text, View } from "react-native";
 
 import { MediumPicker } from "@/components/event/MediumPicker";
+import { Chip } from "@/components/ui/Chip";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { formatDateTime, formatStatus } from "@/lib/format";
@@ -52,27 +52,14 @@ export const EventForm = ({ mode, value, onChange }: EventFormProps) => {
         <View className="gap-2">
           <Label>Status</Label>
           <View className="flex-row flex-wrap gap-2">
-            {STATUS_OPTIONS.map((s) => {
-              const selected = value.status === s;
-              return (
-                <Pressable
-                  key={s}
-                  onPress={() => onChange({ ...value, status: s })}
-                  className={classNames(
-                    "px-3 py-2 rounded-full",
-                    selected ? "bg-brand-300" : "bg-surface-elevated",
-                  )}
-                >
-                  <Text
-                    className={
-                      selected ? "text-surface font-medium" : "text-fg"
-                    }
-                  >
-                    {formatStatus(s)}
-                  </Text>
-                </Pressable>
-              );
-            })}
+            {STATUS_OPTIONS.map((s) => (
+              <Chip
+                key={s}
+                selected={value.status === s}
+                label={formatStatus(s)}
+                onPress={() => onChange({ ...value, status: s })}
+              />
+            ))}
           </View>
         </View>
       ) : null}
