@@ -4,7 +4,7 @@ import { Pressable, Text, View } from "react-native";
 import { Label } from "@/components/ui/Label";
 import type { Medium } from "@/types/database";
 
-interface Props {
+interface MediumPickerProps {
   value: Medium | null;
   onChange: (v: Medium) => void;
 }
@@ -16,7 +16,7 @@ const OPTIONS: { value: Medium; label: string }[] = [
   { value: "in_person", label: "In person" },
 ];
 
-export function MediumPicker({ value, onChange }: Props) {
+export function MediumPicker({ value, onChange }: MediumPickerProps) {
   return (
     <View className="gap-2">
       <Label>Medium</Label>

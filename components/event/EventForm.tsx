@@ -37,13 +37,13 @@ const MEDIUM_DETAIL_PLACEHOLDER: Record<
   video: "e.g. Zoom, FaceTime",
 };
 
-interface Props {
+interface EventFormProps {
   mode: EventMode;
   value: EventFormValue;
   onChange: (v: EventFormValue) => void;
 }
 
-export function EventForm({ mode, value, onChange }: Props) {
+export function EventForm({ mode, value, onChange }: EventFormProps) {
   const [showPicker, setShowPicker] = useState(false);
 
   return (

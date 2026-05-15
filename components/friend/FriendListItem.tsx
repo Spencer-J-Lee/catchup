@@ -21,7 +21,7 @@ export type FriendItemAction =
   | "reschedule"
   | "followup";
 
-interface Props {
+interface FriendListItemProps {
   friend: FriendWithStatus;
   action: FriendItemAction;
   scheduledAt?: string | null;
@@ -49,7 +49,7 @@ export function FriendListItem({
   scheduledEventId,
   missedAt,
   isDue,
-}: Props) {
+}: FriendListItemProps) {
   const router = useRouter();
   const swipeableRef = useRef<SwipeableMethods>(null);
   const del = useDeleteFriend();

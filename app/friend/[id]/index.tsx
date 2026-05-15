@@ -273,17 +273,19 @@ export default function FriendDetailScreen() {
   );
 }
 
+interface ContactActionButtonProps {
+  icon: keyof typeof Ionicons.glyphMap;
+  label: string;
+  onPress: () => void;
+  disabled?: boolean;
+}
+
 function ContactActionButton({
   icon,
   label,
   onPress,
   disabled,
-}: {
-  icon: keyof typeof Ionicons.glyphMap;
-  label: string;
-  onPress: () => void;
-  disabled?: boolean;
-}) {
+}: ContactActionButtonProps) {
   return (
     <Pressable
       onPress={onPress}
@@ -325,7 +327,11 @@ const STATUS_META: Record<
   },
 };
 
-function HistoryItem({ event }: { event: CatchUpEvent }) {
+interface HistoryItemProps {
+  event: CatchUpEvent;
+}
+
+function HistoryItem({ event }: HistoryItemProps) {
   const meta = STATUS_META[event.status];
   const whenISO = event.occurred_at ?? event.scheduled_at;
   const when = whenISO ? new Date(whenISO) : null;
