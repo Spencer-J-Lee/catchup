@@ -78,7 +78,7 @@ export function FriendListItem({
     return (
       <Pressable
         onPress={onDeletePress}
-        className="w-20 bg-red-600 active:bg-red-700 items-center justify-center"
+        className="w-20 bg-danger-600 active:bg-danger-700 items-center justify-center"
       >
         <Ionicons name="trash" size={22} color="#ffffff" />
       </Pressable>

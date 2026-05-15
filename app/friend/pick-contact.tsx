@@ -121,7 +121,7 @@ export default function PickContactScreen() {
             friend manually.
           </Text>
           {error ? (
-            <Text className="text-red-400 text-sm mb-4">{error}</Text>
+            <Text className="text-danger-400 text-sm mb-4">{error}</Text>
           ) : null}
           <Button onPress={() => Linking.openSettings()} className="px-6">
             Open Settings

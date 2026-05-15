@@ -263,7 +263,7 @@ export default function FriendDetailScreen() {
           className="self-center py-2 px-3 mt-2"
           hitSlop={8}
         >
-          <Text className="text-sm text-red-400 font-medium">
+          <Text className="text-sm text-danger-400 font-medium">
             {del.isPending ? "Deleting…" : "Delete friend"}
           </Text>
         </Pressable>
@@ -313,8 +313,8 @@ const STATUS_META: Record<
   },
   missed: {
     label: "Missed",
-    pill: "bg-red-900/40 border-red-700",
-    text: "text-red-300",
+    pill: "bg-danger-900/40 border-danger-700",
+    text: "text-danger-300",
   },
   cancelled: {
     label: "Cancelled",

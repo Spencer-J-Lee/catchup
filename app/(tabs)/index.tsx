@@ -241,7 +241,7 @@ export default function FriendsScreen() {
           <ActivityIndicator color="#ffffff" />
         </View>
       ) : error ? (
-        <Text className="text-red-400">
+        <Text className="text-danger-400">
           Failed to load friends: {(error as Error).message}
         </Text>
       ) : !hasFriends ? (
