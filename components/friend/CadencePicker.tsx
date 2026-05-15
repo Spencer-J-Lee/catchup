@@ -1,6 +1,6 @@
-import classNames from "classnames";
-import { Pressable, Text, TextInput, View } from "react-native";
+import { Text, TextInput, View } from "react-native";
 
+import { Chip } from "@/components/ui/Chip";
 import { Label } from "@/components/ui/Label";
 import { CADENCE_PRESETS } from "@/lib/cadence";
 import type { CadencePreset, CadenceUnit } from "@/types/database";
@@ -129,26 +129,3 @@ export function CadencePicker({ value, onChange }: CadencePickerProps) {
   );
 }
 
-function Chip({
-  selected,
-  label,
-  onPress,
-}: {
-  selected: boolean;
-  label: string;
-  onPress: () => void;
-}) {
-  return (
-    <Pressable
-      onPress={onPress}
-      className={classNames(
-        "px-3 py-2 rounded-full",
-        selected ? "bg-brand-300" : "bg-surface-elevated",
-      )}
-    >
-      <Text className={selected ? "text-surface font-medium" : "text-fg"}>
-        {label}
-      </Text>
-    </Pressable>
-  );
-}
