@@ -14,14 +14,14 @@ interface ButtonProps {
   className?: string;
 }
 
-export function Button({
+export const Button = ({
   onPress,
   children,
   variant = "primary",
   disabled,
   loading,
   className,
-}: ButtonProps) {
+}: ButtonProps) => {
   const isDisabled = disabled || loading;
   return (
     <Pressable
@@ -52,4 +52,4 @@ export function Button({
       )}
     </Pressable>
   );
-}
+};

@@ -6,41 +6,41 @@ import {
 
 import type { EventStatus, Medium } from "@/types/database";
 
-export function formatDate(d: Date | string): string {
+export const formatDate = (d: Date | string): string => {
   return format(typeof d === "string" ? new Date(d) : d, "MMM d, yyyy");
-}
+};
 
-export function formatDateTime(d: Date | string): string {
+export const formatDateTime = (d: Date | string): string => {
   return format(
     typeof d === "string" ? new Date(d) : d,
     "MMM d, yyyy 'at' h:mm a",
   );
-}
+};
 
-export function formatRelative(d: Date | string): string {
+export const formatRelative = (d: Date | string): string => {
   const date = typeof d === "string" ? new Date(d) : d;
   return formatDistanceToNowStrict(date, { addSuffix: true });
-}
+};
 
-export function formatOverdueDays(dueAt: Date | string): string {
+export const formatOverdueDays = (dueAt: Date | string): string => {
   const date = typeof dueAt === "string" ? new Date(dueAt) : dueAt;
   const days = differenceInCalendarDays(new Date(), date);
   if (days <= 0) return "Due today";
   return days === 1 ? "1 day overdue" : `${days} days overdue`;
-}
+};
 
-export function fullName(parts: {
+export const fullName = (parts: {
   first_name: string;
   last_name?: string | null;
-}): string {
+}): string => {
   const last = parts.last_name?.trim();
   return last ? `${parts.first_name} ${last}` : parts.first_name;
-}
+};
 
-export function initialsOf(
+export const initialsOf = (
   firstName: string,
   lastName?: string | null,
-): string {
+): string => {
   const first = firstName.trim();
   const last = lastName?.trim() ?? "";
   if (first && last) {
@@ -50,9 +50,9 @@ export function initialsOf(
     return first.slice(0, 2).toUpperCase();
   }
   return "?";
-}
+};
 
-export function formatStatus(s: EventStatus): string {
+export const formatStatus = (s: EventStatus): string => {
   switch (s) {
     case "scheduled":
       return "Scheduled";
@@ -63,9 +63,9 @@ export function formatStatus(s: EventStatus): string {
     case "cancelled":
       return "Cancelled";
   }
-}
+};
 
-export function formatMedium(m: Medium | null | undefined): string {
+export const formatMedium = (m: Medium | null | undefined): string => {
   switch (m) {
     case "text":
       return "Text";
@@ -78,4 +78,4 @@ export function formatMedium(m: Medium | null | undefined): string {
     default:
       return "";
   }
-}
+};

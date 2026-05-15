@@ -13,9 +13,9 @@ import type {
 // resembles real entries while staying easy to identify for cleanup.
 const SEED_MARKER = "·";
 
-function mark(lastName: string): string {
+const mark = (lastName: string): string => {
   return `${lastName}${SEED_MARKER}`;
-}
+};
 
 interface SeedContact {
   /** Synthetic id — the native Contact card open will fail gracefully if tapped. */
@@ -39,18 +39,18 @@ interface SeedFriend {
   events: SeedEvent[];
 }
 
-function avatarFor(seed: string): string {
+const avatarFor = (seed: string): string => {
   return `https://api.dicebear.com/9.x/avataaars/png?seed=${seed}`;
-}
+};
 
-function contactFor(args: {
+const contactFor = (args: {
   id: string;
   name: string;
   phone: string;
   email: string;
   imageUri?: string | null;
   syncedDaysAgo: number;
-}): SeedContact {
+}): SeedContact => {
   return {
     id: args.id,
     syncedDaysAgo: args.syncedDaysAgo,
@@ -63,7 +63,7 @@ function contactFor(args: {
       image_uri: args.imageUri ?? null,
     },
   };
-}
+};
 
 interface SeedEvent {
   /** Offset in days from now. Negative = past, positive = future. */
@@ -77,9 +77,9 @@ interface SeedEvent {
   pre_reminder_minutes?: number | null;
 }
 
-function isoOffsetDays(days: number): string {
+const isoOffsetDays = (days: number): string => {
   return new Date(Date.now() + days * 86_400_000).toISOString();
-}
+};
 
 const FRIENDS: SeedFriend[] = [
   // scenario: ~30d overdue (weekly cadence), linked contact
@@ -507,7 +507,7 @@ export interface SeedResult {
   friendsDeleted: number;
 }
 
-export async function clearSeedData(userId: string): Promise<number> {
+export const clearSeedData = async (userId: string): Promise<number> => {
   const { data: existing, error: selErr } = await supabase
     .from("friends")
     .select("id")
@@ -523,9 +523,9 @@ export async function clearSeedData(userId: string): Promise<number> {
     .in("id", ids);
   if (delErr) throw delErr;
   return ids.length;
-}
+};
 
-export async function seedExampleData(userId: string): Promise<SeedResult> {
+export const seedExampleData = async (userId: string): Promise<SeedResult> => {
   const friendsDeleted = await clearSeedData(userId);
 
   const friendRows = FRIENDS.map((f) => ({
@@ -597,4 +597,4 @@ export async function seedExampleData(userId: string): Promise<SeedResult> {
     eventsCreated,
     friendsDeleted,
   };
-}
+};

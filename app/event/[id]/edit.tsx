@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/Button";
 import { Screen } from "@/components/ui/Screen";
 import { useEvent, useUpdateEvent } from "@/hooks/use-events";
 
-export default function EditEventScreen() {
+const EditEventScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const { data: event } = useEvent(id);
@@ -43,7 +43,7 @@ export default function EditEventScreen() {
 
   const mode: EventMode = "edit";
 
-  async function onSave() {
+  const onSave = async () => {
     if (!event || !value) return;
     const isScheduled = value.status === "scheduled";
     try {
@@ -68,7 +68,7 @@ export default function EditEventScreen() {
     } catch (e) {
       Alert.alert("Failed to save", (e as Error).message);
     }
-  }
+  };
 
   return (
     <Screen scroll>
@@ -80,4 +80,6 @@ export default function EditEventScreen() {
       </View>
     </Screen>
   );
-}
+};
+
+export default EditEventScreen;

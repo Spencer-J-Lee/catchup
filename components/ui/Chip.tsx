@@ -7,7 +7,7 @@ interface ChipProps {
   onPress: () => void;
 }
 
-export function Chip({ selected, label, onPress }: ChipProps) {
+export const Chip = ({ selected, label, onPress }: ChipProps) => {
   return (
     <Pressable
       onPress={onPress}
@@ -21,4 +21,4 @@ export function Chip({ selected, label, onPress }: ChipProps) {
       </Text>
     </Pressable>
   );
-}
+};

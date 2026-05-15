@@ -10,7 +10,7 @@ import { useFriend, useUpdateFriend } from "@/hooks/use-friends";
 import { friendInputSchema } from "@/lib/schemas";
 import type { CadencePreset, CadenceUnit } from "@/types/database";
 
-export default function EditFriendScreen() {
+const EditFriendScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const { data: friend } = useFriend(id);
@@ -37,7 +37,7 @@ export default function EditFriendScreen() {
     });
   }, [friend]);
 
-  async function onSave() {
+  const onSave = async () => {
     if (!id) return;
     const parsed = friendInputSchema.safeParse({
       first_name: firstName,
@@ -57,7 +57,7 @@ export default function EditFriendScreen() {
     } catch (e) {
       Alert.alert("Failed to save", (e as Error).message);
     }
-  }
+  };
 
   return (
     <Screen scroll>
@@ -88,4 +88,6 @@ export default function EditFriendScreen() {
       </View>
     </Screen>
   );
-}
+};
+
+export default EditFriendScreen;

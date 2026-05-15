@@ -7,12 +7,12 @@ import { Input } from "@/components/ui/Input";
 import { Screen } from "@/components/ui/Screen";
 import { supabase } from "@/lib/supabase";
 
-export default function LoginScreen() {
+const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  async function onSignIn() {
+  const onSignIn = async () => {
     setSubmitting(true);
     const { error } = await supabase.auth.signInWithPassword({
       email,
@@ -20,7 +20,7 @@ export default function LoginScreen() {
     });
     setSubmitting(false);
     if (error) Alert.alert("Sign in failed", error.message);
-  }
+  };
 
   return (
     <Screen>
@@ -55,4 +55,6 @@ export default function LoginScreen() {
       </View>
     </Screen>
   );
-}
+};
+
+export default LoginScreen;

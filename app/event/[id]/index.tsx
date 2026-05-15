@@ -15,7 +15,7 @@ import { Screen } from "@/components/ui/Screen";
 import { useDeleteEvent, useEvent, useUpdateEvent } from "@/hooks/use-events";
 import { formatDateTime, formatMedium, formatStatus } from "@/lib/format";
 
-export default function EventDetailScreen() {
+const EventDetailScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const { data: event, isLoading } = useEvent(id);
@@ -32,7 +32,7 @@ export default function EventDetailScreen() {
     );
   }
 
-  async function onMarkComplete() {
+  const onMarkComplete = async () => {
     if (!event) return;
     try {
       await update.mutateAsync({
@@ -44,9 +44,9 @@ export default function EventDetailScreen() {
     } catch (e) {
       Alert.alert("Failed", (e as Error).message);
     }
-  }
+  };
 
-  async function onMarkMissed() {
+  const onMarkMissed = async () => {
     if (!event) return;
     try {
       await update.mutateAsync({
@@ -57,9 +57,9 @@ export default function EventDetailScreen() {
     } catch (e) {
       Alert.alert("Failed", (e as Error).message);
     }
-  }
+  };
 
-  async function onMarkCancelled() {
+  const onMarkCancelled = async () => {
     if (!event) return;
     try {
       await update.mutateAsync({
@@ -70,9 +70,9 @@ export default function EventDetailScreen() {
     } catch (e) {
       Alert.alert("Failed", (e as Error).message);
     }
-  }
+  };
 
-  function onDelete() {
+  const onDelete = () => {
     Alert.alert("Delete event?", "", [
       { text: "Cancel", style: "cancel" },
       {
@@ -84,16 +84,16 @@ export default function EventDetailScreen() {
         },
       },
     ]);
-  }
+  };
 
-  function openMaps() {
+  const openMaps = () => {
     if (!event?.location_address) return;
     const q = encodeURIComponent(event.location_address);
     const url = Platform.OS === "ios" ? `maps://?q=${q}` : `geo:0,0?q=${q}`;
     Linking.openURL(url).catch(() =>
       Linking.openURL(`https://maps.google.com/?q=${q}`),
     );
-  }
+  };
 
   return (
     <Screen scroll>
@@ -182,5 +182,7 @@ export default function EventDetailScreen() {
       </View>
     </Screen>
   );
-}
+};
+
+export default EventDetailScreen;
 

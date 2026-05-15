@@ -13,7 +13,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useCreateEvent } from "@/hooks/use-events";
 import { eventInputSchema } from "@/lib/schemas";
 
-export default function NewEventScreen() {
+const NewEventScreen = () => {
   const params = useLocalSearchParams<{ friend_id?: string; mode?: string }>();
   const router = useRouter();
   const { user } = useAuth();
@@ -40,7 +40,7 @@ export default function NewEventScreen() {
 
   const [value, setValue] = useState<EventFormValue>(initialValue);
 
-  async function onSave() {
+  const onSave = async () => {
     if (!user || !params.friend_id) return;
     const isScheduled = mode === "schedule";
     const status = isScheduled ? "scheduled" : "completed";
@@ -69,7 +69,7 @@ export default function NewEventScreen() {
     } catch (e) {
       Alert.alert("Failed to save", (e as Error).message);
     }
-  }
+  };
 
   if (!params.friend_id) {
     return (
@@ -91,4 +91,6 @@ export default function NewEventScreen() {
       </View>
     </Screen>
   );
-}
+};
+
+export default NewEventScreen;

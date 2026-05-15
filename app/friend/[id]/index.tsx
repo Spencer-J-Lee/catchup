@@ -34,7 +34,7 @@ import {
 } from "@/lib/format";
 import type { CatchUpEvent, EventStatus } from "@/types/database";
 
-export default function FriendDetailScreen() {
+const FriendDetailScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const { data: friend, isLoading } = useFriend(id);
@@ -56,7 +56,7 @@ export default function FriendDetailScreen() {
     (e) => e.status === "completed" && e.occurred_at,
   );
 
-  function onDelete() {
+  const onDelete = () => {
     Alert.alert(
       "Delete friend?",
       "This will also delete all catch-up history.",
@@ -72,13 +72,13 @@ export default function FriendDetailScreen() {
         },
       ],
     );
-  }
+  };
 
   const snapshot = snapshotFrom(friend.contact_snapshot);
   const phone = snapshot?.phone ?? null;
   const contactId = friend.contact_id;
 
-  async function onLinkContact() {
+  const onLinkContact = async () => {
     try {
       const picked = await pickContact();
       if (!picked) return;
@@ -91,9 +91,9 @@ export default function FriendDetailScreen() {
     } catch (e) {
       Alert.alert("Couldn't link contact", (e as Error).message);
     }
-  }
+  };
 
-  function onMessage() {
+  const onMessage = () => {
     if (!phone) {
       Alert.alert(
         "No phone number",
@@ -102,9 +102,9 @@ export default function FriendDetailScreen() {
       return;
     }
     openMessage(phone);
-  }
+  };
 
-  function onCall() {
+  const onCall = () => {
     if (!phone) {
       Alert.alert(
         "No phone number",
@@ -113,12 +113,12 @@ export default function FriendDetailScreen() {
       return;
     }
     openCall(phone);
-  }
+  };
 
-  function onContact() {
+  const onContact = () => {
     if (!contactId) return;
     openContactCard(contactId);
-  }
+  };
 
   return (
     <Screen scroll>
@@ -271,7 +271,9 @@ export default function FriendDetailScreen() {
       </View>
     </Screen>
   );
-}
+};
+
+export default FriendDetailScreen;
 
 interface ContactActionButtonProps {
   icon: keyof typeof Ionicons.glyphMap;
@@ -280,12 +282,12 @@ interface ContactActionButtonProps {
   disabled?: boolean;
 }
 
-function ContactActionButton({
+const ContactActionButton = ({
   icon,
   label,
   onPress,
   disabled,
-}: ContactActionButtonProps) {
+}: ContactActionButtonProps) => {
   return (
     <Pressable
       onPress={onPress}
@@ -299,7 +301,7 @@ function ContactActionButton({
       <Text className="text-xs font-medium text-fg">{label}</Text>
     </Pressable>
   );
-}
+};
 
 const STATUS_META: Record<
   EventStatus,
@@ -331,7 +333,7 @@ interface HistoryItemProps {
   event: CatchUpEvent;
 }
 
-function HistoryItem({ event }: HistoryItemProps) {
+const HistoryItem = ({ event }: HistoryItemProps) => {
   const meta = STATUS_META[event.status];
   const whenISO = event.occurred_at ?? event.scheduled_at;
   const when = whenISO ? new Date(whenISO) : null;
@@ -389,4 +391,4 @@ function HistoryItem({ event }: HistoryItemProps) {
       </Pressable>
     </Link>
   );
-}
+};

@@ -6,7 +6,7 @@ interface LabelProps extends TextProps {
   className?: string;
 }
 
-export function Label({ children, className, ...props }: LabelProps) {
+export const Label = ({ children, className, ...props }: LabelProps) => {
   return (
     <Text
       className={classNames("text-sm font-medium text-fg-muted", className)}
@@ -15,4 +15,4 @@ export function Label({ children, className, ...props }: LabelProps) {
       {children}
     </Text>
   );
-}
+};

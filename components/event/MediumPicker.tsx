@@ -16,7 +16,7 @@ const OPTIONS: { value: Medium; label: string }[] = [
   { value: "in_person", label: "In person" },
 ];
 
-export function MediumPicker({ value, onChange }: MediumPickerProps) {
+export const MediumPicker = ({ value, onChange }: MediumPickerProps) => {
   return (
     <View className="gap-2">
       <Label>Medium</Label>
@@ -43,4 +43,4 @@ export function MediumPicker({ value, onChange }: MediumPickerProps) {
       </View>
     </View>
   );
-}
+};

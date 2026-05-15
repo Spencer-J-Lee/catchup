@@ -8,13 +8,13 @@ import { Input } from "@/components/ui/Input";
 import { Screen } from "@/components/ui/Screen";
 import { supabase } from "@/lib/supabase";
 
-export default function SignupScreen() {
+const SignupScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  async function onSignUp() {
+  const onSignUp = async () => {
     setSubmitting(true);
     const { error } = await supabase.auth.signUp({
       email,
@@ -33,7 +33,7 @@ export default function SignupScreen() {
       "Check your email",
       "If email confirmation is enabled in your Supabase project, follow the link to verify. Otherwise you're signed in.",
     );
-  }
+  };
 
   return (
     <Screen>
@@ -72,4 +72,6 @@ export default function SignupScreen() {
       </View>
     </Screen>
   );
-}
+};
+
+export default SignupScreen;

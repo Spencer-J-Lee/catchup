@@ -4,7 +4,7 @@ import { supabase } from "@/lib/supabase";
 import type { EventInput } from "@/lib/schemas";
 import type { CatchUpEvent } from "@/types/database";
 
-export function useScheduledEvents() {
+export const useScheduledEvents = () => {
   return useQuery({
     queryKey: ["events", "scheduled"],
     queryFn: async () => {
@@ -17,9 +17,9 @@ export function useScheduledEvents() {
       return data as CatchUpEvent[];
     },
   });
-}
+};
 
-export function useMissedEvents() {
+export const useMissedEvents = () => {
   return useQuery({
     queryKey: ["events", "missed"],
     queryFn: async () => {
@@ -32,9 +32,9 @@ export function useMissedEvents() {
       return data as CatchUpEvent[];
     },
   });
-}
+};
 
-export function useEventsForFriend(friendId: string | undefined) {
+export const useEventsForFriend = (friendId: string | undefined) => {
   return useQuery({
     queryKey: ["events", "by-friend", friendId],
     enabled: !!friendId,
@@ -49,9 +49,9 @@ export function useEventsForFriend(friendId: string | undefined) {
       return data as CatchUpEvent[];
     },
   });
-}
+};
 
-export function useEvent(id: string | undefined) {
+export const useEvent = (id: string | undefined) => {
   return useQuery({
     queryKey: ["event", id],
     enabled: !!id,
@@ -65,11 +65,11 @@ export function useEvent(id: string | undefined) {
       return data as CatchUpEvent;
     },
   });
-}
+};
 
-export function useEventsInRange(
+export const useEventsInRange = (
   args: { from: string; to: string } | undefined,
-) {
+) => {
   return useQuery({
     queryKey: ["events", "range", args?.from, args?.to],
     enabled: !!args,
@@ -84,9 +84,9 @@ export function useEventsInRange(
       return data as CatchUpEvent[];
     },
   });
-}
+};
 
-export function useCreateEvent() {
+export const useCreateEvent = () => {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (input: EventInput & { user_id: string }) => {
@@ -106,9 +106,9 @@ export function useCreateEvent() {
       qc.invalidateQueries({ queryKey: ["friends"] });
     },
   });
-}
+};
 
-export function useUpdateEvent() {
+export const useUpdateEvent = () => {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({
@@ -133,9 +133,9 @@ export function useUpdateEvent() {
       qc.invalidateQueries({ queryKey: ["friends"] });
     },
   });
-}
+};
 
-export function useDeleteEvent() {
+export const useDeleteEvent = () => {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
@@ -150,4 +150,4 @@ export function useDeleteEvent() {
       qc.invalidateQueries({ queryKey: ["friends"] });
     },
   });
-}
+};

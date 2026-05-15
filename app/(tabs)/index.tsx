@@ -33,7 +33,7 @@ type Section =
   | { kind: "header"; title: string; count: number }
   | { kind: "friend"; row: FriendRow };
 
-export default function FriendsScreen() {
+const FriendsScreen = () => {
   const { data, isLoading, error, refetch, isRefetching } = useFriends();
   const { data: scheduledEvents } = useScheduledEvents();
   const { data: missedEvents } = useMissedEvents();
@@ -305,4 +305,6 @@ export default function FriendsScreen() {
       )}
     </Screen>
   );
-}
+};
+
+export default FriendsScreen;

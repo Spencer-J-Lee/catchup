@@ -4,15 +4,15 @@ import { useEffect, useState } from "react";
 
 import { supabase } from "@/lib/supabase";
 
-async function handleAuthUrl(url: string) {
+const handleAuthUrl = async (url: string) => {
   const { queryParams } = Linking.parse(url);
   const code = queryParams?.code;
   if (typeof code === "string") {
     await supabase.auth.exchangeCodeForSession(code);
   }
-}
+};
 
-export function useAuth() {
+export const useAuth = () => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -47,4 +47,4 @@ export function useAuth() {
     loading,
     signOut: () => supabase.auth.signOut(),
   };
-}
+};

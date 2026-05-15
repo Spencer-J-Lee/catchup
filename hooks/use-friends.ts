@@ -11,7 +11,7 @@ export type FriendWithStatus = Friend & {
 
 const FRIENDS_KEY = ["friends"] as const;
 
-async function fetchFriends(): Promise<FriendWithStatus[]> {
+const fetchFriends = async (): Promise<FriendWithStatus[]> => {
   const [friendsRes, statusRes] = await Promise.all([
     supabase
       .from("friends")
@@ -33,13 +33,13 @@ async function fetchFriends(): Promise<FriendWithStatus[]> {
       next_due_at: s?.next_due_at ?? null,
     };
   });
-}
+};
 
-export function useFriends() {
+export const useFriends = () => {
   return useQuery({ queryKey: FRIENDS_KEY, queryFn: fetchFriends });
-}
+};
 
-export function useFriend(id: string | undefined) {
+export const useFriend = (id: string | undefined) => {
   return useQuery({
     queryKey: ["friend", id],
     enabled: !!id,
@@ -53,7 +53,7 @@ export function useFriend(id: string | undefined) {
       return data as Friend;
     },
   });
-}
+};
 
 type CreateFriendInput = FriendInput & {
   user_id: string;
@@ -63,7 +63,7 @@ type CreateFriendInput = FriendInput & {
   contact_synced_at?: string | null;
 };
 
-export function useCreateFriend() {
+export const useCreateFriend = () => {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (input: CreateFriendInput) => {
@@ -77,9 +77,9 @@ export function useCreateFriend() {
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: FRIENDS_KEY }),
   });
-}
+};
 
-export function useUpdateFriend() {
+export const useUpdateFriend = () => {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, ...input }: FriendInput & { id: string }) => {
@@ -97,9 +97,9 @@ export function useUpdateFriend() {
       qc.invalidateQueries({ queryKey: ["friend", vars.id] });
     },
   });
-}
+};
 
-export function useLinkFriendContact() {
+export const useLinkFriendContact = () => {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (args: {
@@ -128,9 +128,9 @@ export function useLinkFriendContact() {
       qc.invalidateQueries({ queryKey: ["friend", vars.id] });
     },
   });
-}
+};
 
-export function useDeleteFriend() {
+export const useDeleteFriend = () => {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
@@ -139,4 +139,4 @@ export function useDeleteFriend() {
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: FRIENDS_KEY }),
   });
-}
+};

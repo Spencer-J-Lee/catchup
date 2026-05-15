@@ -11,26 +11,28 @@ interface InputProps extends TextInputProps {
   error?: string;
 }
 
-export const Input = forwardRef<TextInput, InputProps>(function Input(
-  { label, error, className, ...props },
-  ref,
-) {
-  return (
-    <View className="gap-1">
-      {label ? <Label>{label}</Label> : null}
+export const Input = forwardRef<TextInput, InputProps>(
+  ({ label, error, className, ...props }, ref) => {
+    return (
+      <View className="gap-1">
+        {label ? <Label>{label}</Label> : null}
 
-      <TextInput
-        ref={ref}
-        className={classNames(
-          "border border-surface-border rounded-xl px-3 py-3 text-base bg-surface-elevated text-fg",
-          { "border-danger-500": !!error },
-          className,
-        )}
-        placeholderTextColor={colors.fg.subtle}
-        {...props}
-      />
+        <TextInput
+          ref={ref}
+          className={classNames(
+            "border border-surface-border rounded-xl px-3 py-3 text-base bg-surface-elevated text-fg",
+            { "border-danger-500": !!error },
+            className,
+          )}
+          placeholderTextColor={colors.fg.subtle}
+          {...props}
+        />
 
-      {error ? <Text className="text-xs text-danger-400">{error}</Text> : null}
-    </View>
-  );
-});
+        {error ? (
+          <Text className="text-xs text-danger-400">{error}</Text>
+        ) : null}
+      </View>
+    );
+  },
+);
+Input.displayName = "Input";

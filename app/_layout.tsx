@@ -13,7 +13,7 @@ import { queryClient } from "@/lib/query-client";
 
 SplashScreen.preventAutoHideAsync();
 
-function useProtectedRoute(loading: boolean, isAuthed: boolean) {
+const useProtectedRoute = (loading: boolean, isAuthed: boolean) => {
   const segments = useSegments();
   const router = useRouter();
 
@@ -26,7 +26,7 @@ function useProtectedRoute(loading: boolean, isAuthed: boolean) {
       router.replace("/");
     }
   }, [loading, isAuthed, segments, router]);
-}
+};
 
 const STACK_HEADER_OPTIONS = {
   headerStyle: { backgroundColor: "#1a1a1a" },
@@ -36,7 +36,7 @@ const STACK_HEADER_OPTIONS = {
   contentStyle: { backgroundColor: "#1a1a1a" },
 } as const;
 
-export default function RootLayout() {
+const RootLayout = () => {
   const { session, loading } = useAuth();
   useProtectedRoute(loading, !!session);
 
@@ -117,4 +117,6 @@ export default function RootLayout() {
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
-}
+};
+
+export default RootLayout;

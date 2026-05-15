@@ -21,7 +21,7 @@ type ContactParams = {
   contact_snapshot?: string;
 };
 
-export default function NewFriendScreen() {
+const NewFriendScreen = () => {
   const router = useRouter();
   const { user } = useAuth();
   const create = useCreateFriend();
@@ -48,7 +48,7 @@ export default function NewFriendScreen() {
   const contactId = params.contact_id || null;
   const avatarUrl = params.avatar_url || null;
 
-  async function onSave() {
+  const onSave = async () => {
     if (!user) return;
     const parsed = friendInputSchema.safeParse({
       first_name: firstName,
@@ -80,7 +80,7 @@ export default function NewFriendScreen() {
     } catch (e) {
       Alert.alert("Failed to save", (e as Error).message);
     }
-  }
+  };
 
   return (
     <Screen scroll>
@@ -144,4 +144,6 @@ export default function NewFriendScreen() {
       </View>
     </Screen>
   );
-}
+};
+
+export default NewFriendScreen;

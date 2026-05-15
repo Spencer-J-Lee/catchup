@@ -42,19 +42,19 @@ const ACTION_META: Record<
   followup: { label: "Follow up", primary: true },
 };
 
-export function FriendListItem({
+export const FriendListItem = ({
   friend,
   action,
   scheduledAt,
   scheduledEventId,
   missedAt,
   isDue,
-}: FriendListItemProps) {
+}: FriendListItemProps) => {
   const router = useRouter();
   const swipeableRef = useRef<SwipeableMethods>(null);
   const del = useDeleteFriend();
 
-  function onDeletePress() {
+  const onDeletePress = () => {
     Alert.alert(
       `Delete ${fullName(friend)}?`,
       "This will also delete all catch-up history.",
@@ -73,9 +73,9 @@ export function FriendListItem({
         },
       ],
     );
-  }
+  };
 
-  function renderRightActions() {
+  const renderRightActions = () => {
     return (
       <Pressable
         onPress={onDeletePress}
@@ -84,7 +84,7 @@ export function FriendListItem({
         <Ionicons name="trash" size={22} color="#ffffff" />
       </Pressable>
     );
-  }
+  };
 
   let subLabel: string;
   let subClass: string;
@@ -125,9 +125,9 @@ export function FriendListItem({
               params: { friend_id: friend.id, mode: "checkin" },
             };
 
-  function onActionPress() {
+  const onActionPress = () => {
     router.push(actionHref);
-  }
+  };
 
   return (
     <ReanimatedSwipeable
@@ -183,4 +183,4 @@ export function FriendListItem({
       </Link>
     </ReanimatedSwipeable>
   );
-}
+};

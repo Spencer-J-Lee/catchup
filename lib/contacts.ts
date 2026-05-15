@@ -26,7 +26,7 @@ export interface ContactListItem {
   snapshot: ContactSnapshot;
 }
 
-function snapshotFromContact(contact: Contacts.Contact): ContactSnapshot {
+const snapshotFromContact = (contact: Contacts.Contact): ContactSnapshot => {
   const phones = (contact.phoneNumbers ?? [])
     .map((p) => ({ label: p.label ?? null, number: p.number ?? "" }))
     .filter((p) => p.number);
@@ -43,11 +43,11 @@ function snapshotFromContact(contact: Contacts.Contact): ContactSnapshot {
     emails,
     image_uri: imageUri,
   };
-}
+};
 
-async function loadContactWithImage(
+const loadContactWithImage = async (
   contactId: string,
-): Promise<Contacts.Contact | null> {
+): Promise<Contacts.Contact | null> => {
   try {
     const full = await Contacts.getContactByIdAsync(contactId, [
       Contacts.Fields.Name,
@@ -60,14 +60,14 @@ async function loadContactWithImage(
   } catch {
     return null;
   }
-}
+};
 
-export async function requestContactsPermission(): Promise<Contacts.PermissionStatus> {
+export const requestContactsPermission = async (): Promise<Contacts.PermissionStatus> => {
   const { status } = await Contacts.requestPermissionsAsync();
   return status;
-}
+};
 
-export async function listContacts(): Promise<ContactListItem[]> {
+export const listContacts = async (): Promise<ContactListItem[]> => {
   const { data } = await Contacts.getContactsAsync({
     fields: [
       Contacts.Fields.Name,
@@ -97,9 +97,9 @@ export async function listContacts(): Promise<ContactListItem[]> {
     });
   }
   return items;
-}
+};
 
-export async function pickContact(): Promise<PickedContact | null> {
+export const pickContact = async (): Promise<PickedContact | null> => {
   if (Platform.OS === "android") {
     const { status } = await Contacts.requestPermissionsAsync();
     if (status !== "granted") {
@@ -122,29 +122,29 @@ export async function pickContact(): Promise<PickedContact | null> {
     snapshot,
     avatar_url: snapshot.image_uri,
   };
-}
+};
 
-export function snapshotFrom(
+export const snapshotFrom = (
   raw: Record<string, unknown> | null,
-): ContactSnapshot | null {
+): ContactSnapshot | null => {
   if (!raw) return null;
   return raw as unknown as ContactSnapshot;
-}
+};
 
-export function openMessage(phone: string) {
+export const openMessage = (phone: string) => {
   const url = Platform.OS === "ios" ? `sms:${phone}` : `sms:${phone}`;
   Linking.openURL(url).catch(() =>
     Alert.alert("Cannot open Messages", "No SMS app is available."),
   );
-}
+};
 
-export function openCall(phone: string) {
+export const openCall = (phone: string) => {
   Linking.openURL(`tel:${phone}`).catch(() =>
     Alert.alert("Cannot place call", "No phone app is available."),
   );
-}
+};
 
-export async function openContactCard(contactId: string) {
+export const openContactCard = async (contactId: string) => {
   try {
     await Contacts.presentFormAsync(contactId, undefined, {
       allowsEditing: false,
@@ -152,4 +152,4 @@ export async function openContactCard(contactId: string) {
   } catch (e) {
     Alert.alert("Cannot open contact", (e as Error).message);
   }
-}
+};

@@ -57,9 +57,9 @@ export interface FriendStateResult {
   reason: LifecycleReason;
 }
 
-export function deriveFriendState(
+export const deriveFriendState = (
   args: DeriveFriendStateInput,
-): FriendStateResult {
+): FriendStateResult => {
   const nowMs = args.now.getTime();
 
   // 1. A scheduled event sitting in the past beats everything — the user
@@ -103,9 +103,9 @@ export function deriveFriendState(
     };
   }
   return { state: "idle", reason: "no_activity" };
-}
+};
 
-export function formatLifecycleState(s: FriendLifecycleState): string {
+export const formatLifecycleState = (s: FriendLifecycleState): string => {
   switch (s) {
     case "idle":
       return "Idle";
@@ -116,4 +116,4 @@ export function formatLifecycleState(s: FriendLifecycleState): string {
     case "awaiting_followup":
       return "Awaiting follow-up";
   }
-}
+};

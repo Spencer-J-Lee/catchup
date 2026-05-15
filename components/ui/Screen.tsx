@@ -9,7 +9,7 @@ interface ScreenProps {
   className?: string;
 }
 
-export function Screen({ children, scroll = false, className }: ScreenProps) {
+export const Screen = ({ children, scroll = false, className }: ScreenProps) => {
   const Container = scroll ? ScrollView : View;
 
   return (
@@ -22,4 +22,4 @@ export function Screen({ children, scroll = false, className }: ScreenProps) {
       </Container>
     </SafeAreaView>
   );
-}
+};

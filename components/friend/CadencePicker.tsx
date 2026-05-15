@@ -33,14 +33,14 @@ const UNIT_LABEL: Record<CadenceUnit, { singular: string; plural: string }> = {
   months: { singular: "Month", plural: "Months" },
 };
 
-export function CadencePicker({ value, onChange }: CadencePickerProps) {
+export const CadencePicker = ({ value, onChange }: CadencePickerProps) => {
   const customSelected = value.preset === "custom";
   const customAmountText =
     customSelected && value.amount != null ? String(value.amount) : "";
   const customUnit: CadenceUnit =
     customSelected && value.unit ? value.unit : "weeks";
 
-  function setCustomAmount(text: string) {
+  const setCustomAmount = (text: string) => {
     const digits = text.replace(/[^0-9]/g, "");
     if (digits === "") {
       onChange({ preset: "custom", amount: null, unit: customUnit });
@@ -52,19 +52,19 @@ export function CadencePicker({ value, onChange }: CadencePickerProps) {
       return;
     }
     onChange({ preset: "custom", amount, unit: customUnit });
-  }
+  };
 
-  function setCustomUnit(unit: CadenceUnit) {
+  const setCustomUnit = (unit: CadenceUnit) => {
     onChange({ preset: "custom", amount: value.amount, unit });
-  }
+  };
 
-  function selectCustom() {
+  const selectCustom = () => {
     onChange({
       preset: "custom",
       amount: value.amount,
       unit: value.unit ?? "weeks",
     });
-  }
+  };
 
   return (
     <View className="gap-2">
@@ -127,5 +127,5 @@ export function CadencePicker({ value, onChange }: CadencePickerProps) {
       ) : null}
     </View>
   );
-}
+};
 

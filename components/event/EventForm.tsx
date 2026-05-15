@@ -43,7 +43,7 @@ interface EventFormProps {
   onChange: (v: EventFormValue) => void;
 }
 
-export function EventForm({ mode, value, onChange }: EventFormProps) {
+export const EventForm = ({ mode, value, onChange }: EventFormProps) => {
   const [showPicker, setShowPicker] = useState(false);
 
   return (
@@ -146,4 +146,4 @@ export function EventForm({ mode, value, onChange }: EventFormProps) {
       />
     </View>
   );
-}
+};

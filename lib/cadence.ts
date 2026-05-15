@@ -20,10 +20,10 @@ export const CADENCE_PRESETS: Record<
   yearly: { label: "Yearly", amount: 12, unit: "months" },
 };
 
-export function presetFromAmount(
+export const presetFromAmount = (
   amount: number,
   unit: CadenceUnit,
-): CadencePreset {
+): CadencePreset => {
   const match = (
     Object.entries(CADENCE_PRESETS) as [
       Exclude<CadencePreset, "custom">,
@@ -31,13 +31,13 @@ export function presetFromAmount(
     ][]
   ).find(([, v]) => v.amount === amount && v.unit === unit);
   return match ? match[0] : "custom";
-}
+};
 
-export function addCadence(
+export const addCadence = (
   date: Date,
   amount: number,
   unit: CadenceUnit,
-): Date {
+): Date => {
   switch (unit) {
     case "days":
       return addDays(date, amount);
@@ -46,7 +46,7 @@ export function addCadence(
     case "months":
       return addMonths(date, amount);
   }
-}
+};
 
 export interface CadenceStatus {
   lastCaughtUpAt: Date | null;
@@ -55,13 +55,13 @@ export interface CadenceStatus {
   isOverdue: boolean;
 }
 
-export function computeCadenceStatus(args: {
+export const computeCadenceStatus = (args: {
   lastCaughtUpAt: Date | null;
   cadenceAmount: number | null;
   cadenceUnit: CadenceUnit | null;
   fallbackStart: Date; // friend's created_at, used when no completed events exist
   now?: Date;
-}): CadenceStatus {
+}): CadenceStatus => {
   const now = args.now ?? new Date();
   if (args.cadenceAmount == null || args.cadenceUnit == null) {
     return {
@@ -80,4 +80,4 @@ export function computeCadenceStatus(args: {
     daysUntilDue,
     isOverdue: daysUntilDue < 0,
   };
-}
+};

@@ -25,7 +25,7 @@ import { initialsOf } from "@/lib/format";
 
 type PermissionState = "loading" | "granted" | "denied";
 
-export default function PickContactScreen() {
+const PickContactScreen = () => {
   const router = useRouter();
   const { data: friends } = useFriends();
   const [permission, setPermission] = useState<PermissionState>("loading");
@@ -78,7 +78,7 @@ export default function PickContactScreen() {
     });
   }, [contacts, search, linkedContactIds]);
 
-  function goToNewFriend(contact?: ContactListItem) {
+  const goToNewFriend = (contact?: ContactListItem) => {
     if (!contact) {
       router.push("/friend/new");
       return;
@@ -94,7 +94,7 @@ export default function PickContactScreen() {
         contact_snapshot: JSON.stringify(contact.snapshot),
       },
     });
-  }
+  };
 
   if (permission === "loading") {
     return (
@@ -222,4 +222,6 @@ export default function PickContactScreen() {
       </View>
     </Screen>
   );
-}
+};
+
+export default PickContactScreen;

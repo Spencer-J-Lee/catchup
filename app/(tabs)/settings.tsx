@@ -7,13 +7,13 @@ import { Screen } from "@/components/ui/Screen";
 import { useAuth } from "@/hooks/use-auth";
 import { clearSeedData, seedExampleData } from "@/lib/seed";
 
-export default function SettingsScreen() {
+const SettingsScreen = () => {
   const { user, signOut } = useAuth();
   const qc = useQueryClient();
   const [seeding, setSeeding] = useState(false);
   const [clearing, setClearing] = useState(false);
 
-  async function onSeed() {
+  const onSeed = async () => {
     if (!user) return;
     setSeeding(true);
     try {
@@ -29,9 +29,9 @@ export default function SettingsScreen() {
     } finally {
       setSeeding(false);
     }
-  }
+  };
 
-  function onClear() {
+  const onClear = () => {
     if (!user) return;
     Alert.alert(
       "Clear seed data?",
@@ -60,7 +60,7 @@ export default function SettingsScreen() {
         },
       ],
     );
-  }
+  };
 
   return (
     <Screen scroll>
@@ -99,4 +99,6 @@ export default function SettingsScreen() {
       </View>
     </Screen>
   );
-}
+};
+
+export default SettingsScreen;

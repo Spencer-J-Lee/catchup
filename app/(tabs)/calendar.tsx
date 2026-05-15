@@ -2,7 +2,7 @@ import { Text, View } from "react-native";
 
 import { Screen } from "@/components/ui/Screen";
 
-export default function CalendarScreen() {
+const CalendarScreen = () => {
   return (
     <Screen>
       <View className="flex-1 items-center justify-center gap-2">
@@ -14,4 +14,6 @@ export default function CalendarScreen() {
       </View>
     </Screen>
   );
-}
+};
+
+export default CalendarScreen;
