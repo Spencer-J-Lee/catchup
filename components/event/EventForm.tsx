@@ -4,6 +4,7 @@ import { Platform, Pressable, Text, View } from "react-native";
 
 import { MediumPicker } from "@/components/event/MediumPicker";
 import { Input } from "@/components/ui/Input";
+import { Label } from "@/components/ui/Label";
 import { formatDateTime, formatStatus } from "@/lib/format";
 import type { EventStatus, Medium } from "@/types/database";
 
@@ -48,7 +49,7 @@ export function EventForm({ mode, value, onChange }: Props) {
     <View className="gap-4">
       {mode === "edit" ? (
         <View className="gap-2">
-          <Text className="text-sm font-medium text-fg-muted">Status</Text>
+          <Label>Status</Label>
           <View className="flex-row flex-wrap gap-2">
             {STATUS_OPTIONS.map((s) => {
               const selected = value.status === s;
@@ -75,7 +76,7 @@ export function EventForm({ mode, value, onChange }: Props) {
       ) : null}
 
       <View className="gap-1">
-        <Text className="text-sm font-medium text-fg-muted">When</Text>
+        <Label>When</Label>
         <Pressable
           onPress={() => setShowPicker(true)}
           className="border border-surface-border rounded-xl px-3 py-3 bg-surface-elevated"

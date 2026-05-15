@@ -1,5 +1,6 @@
 import { Pressable, Text, View } from "react-native";
 
+import { Label } from "@/components/ui/Label";
 import type { Medium } from "@/types/database";
 
 interface Props {
@@ -17,7 +18,7 @@ const OPTIONS: { value: Medium; label: string }[] = [
 export function MediumPicker({ value, onChange }: Props) {
   return (
     <View className="gap-2">
-      <Text className="text-sm font-medium text-fg-muted">Medium</Text>
+      <Label>Medium</Label>
       <View className="flex-row flex-wrap gap-2">
         {OPTIONS.map((o) => {
           const selected = value === o.value;

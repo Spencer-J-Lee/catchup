@@ -1,5 +1,6 @@
 import { Pressable, Text, TextInput, View } from "react-native";
 
+import { Label } from "@/components/ui/Label";
 import { CADENCE_PRESETS } from "@/lib/cadence";
 import type { CadencePreset, CadenceUnit } from "@/types/database";
 
@@ -66,9 +67,7 @@ export function CadencePicker({ value, onChange }: CadencePickerProps) {
 
   return (
     <View className="gap-2">
-      <Text className="text-sm font-medium text-fg-muted">
-        Catch-up cadence
-      </Text>
+      <Label>Catch-up cadence</Label>
       <View className="flex-row flex-wrap gap-2">
         <Chip
           selected={value.preset == null}

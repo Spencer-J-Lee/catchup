@@ -1,0 +1,18 @@
+import classNames from "classnames";
+import { Text, TextProps } from "react-native";
+
+interface LabelProps extends TextProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export function Label({ children, className, ...props }: LabelProps) {
+  return (
+    <Text
+      className={classNames("text-sm font-medium text-fg-muted", className)}
+      {...props}
+    >
+      {children}
+    </Text>
+  );
+}
