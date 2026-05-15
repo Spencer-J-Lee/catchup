@@ -29,6 +29,7 @@ export default function NewEventScreen() {
         mode === "schedule"
           ? new Date(now.getTime() + 24 * 60 * 60 * 1000)
           : now,
+      status: mode === "schedule" ? "scheduled" : "completed",
       medium: null,
       mediumDetail: "",
       locationText: "",

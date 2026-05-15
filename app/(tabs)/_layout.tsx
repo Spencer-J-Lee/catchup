@@ -10,6 +10,7 @@ export default function TabsLayout() {
         tabBarStyle: {
           backgroundColor: "#1a1a1a",
           borderTopColor: "#2f2f31",
+          paddingTop: 8,
         },
         tabBarLabelStyle: { display: "none" },
         headerShown: false,

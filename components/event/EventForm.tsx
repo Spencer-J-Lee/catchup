@@ -4,19 +4,27 @@ import { Platform, Pressable, Text, View } from "react-native";
 
 import { MediumPicker } from "@/components/event/MediumPicker";
 import { Input } from "@/components/ui/Input";
-import { formatDateTime } from "@/lib/format";
-import type { Medium } from "@/types/database";
+import { formatDateTime, formatStatus } from "@/lib/format";
+import type { EventStatus, Medium } from "@/types/database";
 
 export type EventMode = "schedule" | "checkin" | "edit";
 
 export interface EventFormValue {
   date: Date;
+  status: EventStatus;
   medium: Medium | null;
   mediumDetail: string;
   locationText: string;
   locationAddress: string;
   notes: string;
 }
+
+const STATUS_OPTIONS: EventStatus[] = [
+  "scheduled",
+  "completed",
+  "missed",
+  "cancelled",
+];
 
 const MEDIUM_DETAIL_PLACEHOLDER: Record<
   Exclude<Medium, "in_person">,
@@ -38,6 +46,34 @@ export function EventForm({ mode, value, onChange }: Props) {
 
   return (
     <View className="gap-4">
+      {mode === "edit" ? (
+        <View className="gap-2">
+          <Text className="text-sm font-medium text-fg-muted">Status</Text>
+          <View className="flex-row flex-wrap gap-2">
+            {STATUS_OPTIONS.map((s) => {
+              const selected = value.status === s;
+              return (
+                <Pressable
+                  key={s}
+                  onPress={() => onChange({ ...value, status: s })}
+                  className={`px-3 py-2 rounded-full ${
+                    selected ? "bg-brand-300" : "bg-surface-elevated"
+                  }`}
+                >
+                  <Text
+                    className={
+                      selected ? "text-surface font-medium" : "text-fg"
+                    }
+                  >
+                    {formatStatus(s)}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </View>
+        </View>
+      ) : null}
+
       <View className="gap-1">
         <Text className="text-sm font-medium text-fg-muted">When</Text>
         <Pressable

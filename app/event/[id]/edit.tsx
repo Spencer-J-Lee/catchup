@@ -24,6 +24,7 @@ export default function EditEventScreen() {
     const dateStr = event.scheduled_at ?? event.occurred_at;
     setValue({
       date: dateStr ? new Date(dateStr) : new Date(),
+      status: event.status,
       medium: event.medium,
       mediumDetail: event.medium_detail ?? "",
       locationText: event.location_text ?? "",
@@ -40,21 +41,19 @@ export default function EditEventScreen() {
     );
   }
 
-  const mode: EventMode =
-    event.scheduled_at && event.status === "scheduled" ? "schedule" : "edit";
+  const mode: EventMode = "edit";
 
   async function onSave() {
     if (!event || !value) return;
-    const isScheduled = !!event.scheduled_at && event.status === "scheduled";
+    const isScheduled = value.status === "scheduled";
     try {
       await update.mutateAsync({
         id: event.id,
+        status: value.status,
         scheduled_at: isScheduled
           ? value.date.toISOString()
           : (event.scheduled_at ?? null),
-        occurred_at: !isScheduled
-          ? value.date.toISOString()
-          : (event.occurred_at ?? null),
+        occurred_at: isScheduled ? null : value.date.toISOString(),
         medium: value.medium,
         medium_detail:
           value.medium && value.medium !== "in_person" && value.mediumDetail
