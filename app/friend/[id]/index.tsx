@@ -308,8 +308,8 @@ const STATUS_META: Record<
   },
   completed: {
     label: "Completed",
-    pill: "bg-emerald-900/40 border-emerald-700",
-    text: "text-emerald-300",
+    pill: "bg-success-900/40 border-success-700",
+    text: "text-success-300",
   },
   missed: {
     label: "Missed",
