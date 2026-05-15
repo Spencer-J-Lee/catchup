@@ -19,6 +19,21 @@ export function useScheduledEvents() {
   });
 }
 
+export function useMissedEvents() {
+  return useQuery({
+    queryKey: ["events", "missed"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("catch_up_events")
+        .select("*")
+        .eq("status", "missed")
+        .order("scheduled_at", { ascending: false });
+      if (error) throw error;
+      return data as CatchUpEvent[];
+    },
+  });
+}
+
 export function useEventsForFriend(friendId: string | undefined) {
   return useQuery({
     queryKey: ["events", "by-friend", friendId],

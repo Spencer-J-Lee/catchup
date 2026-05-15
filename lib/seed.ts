@@ -122,7 +122,9 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
-  // scenario: 100d overdue (weekly cadence), includes a missed event, linked contact w/o avatar
+  // scenario: reaching out via missed_pending — last completion is much older than
+  // the missed event, so the auto-flow surfaces a "Missed Nd ago" hint (also long
+  // overdue by cadence, but the missed event wins state priority). Linked contact w/o avatar.
   {
     first_name: "Bailey",
     last_name: mark("Park"),
@@ -419,6 +421,48 @@ const FRIENDS: SeedFriend[] = [
         location_address: "66 Mint St, San Francisco, CA",
         event_notes: "Coffee before their flight out.",
         pre_reminder_minutes: 60,
+      },
+    ],
+  },
+  // scenario: clean missed_pending — cadence says not yet due, but a recent missed
+  // event after the last completion pulls the friend into "Reaching out" with
+  // "Missed Nd ago" as the only signal. Tests the missed→reaching-out auto-flow
+  // independent of overdue cadence.
+  {
+    first_name: "Marlowe",
+    last_name: mark("Quinn"),
+    general_notes: "Quarterly-ish coffee. Tried to reconnect after a gap.",
+    cadence_preset: "monthly",
+    cadence_amount: 1,
+    cadence_unit: "months",
+    avatar_url: avatarFor("marlowe-quinn"),
+    contact: contactFor({
+      id: "seed-contact-marlowe-quinn",
+      name: "Marlowe Quinn",
+      phone: "+15035550136",
+      email: "marlowe.quinn@example.com",
+      imageUri: avatarFor("marlowe-quinn"),
+      syncedDaysAgo: 25,
+    }),
+    createdDaysAgo: 180,
+    events: [
+      {
+        offsetDays: -15,
+        status: "completed",
+        medium: "call",
+        medium_detail: null,
+        location_text: null,
+        location_address: null,
+        event_notes: "Short catch-up — agreed to grab coffee in a couple weeks.",
+      },
+      {
+        offsetDays: -3,
+        status: "missed",
+        medium: "in_person",
+        medium_detail: null,
+        location_text: "Ritual Coffee",
+        location_address: "1026 Valencia St, San Francisco, CA",
+        event_notes: "They had to bail last minute. Never rescheduled.",
       },
     ],
   },

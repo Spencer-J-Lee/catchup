@@ -25,6 +25,9 @@ interface Props {
   action: FriendItemAction;
   scheduledAt?: string | null;
   scheduledEventId?: string | null;
+  /** When set and `action === "schedule"`, render a "Missed X ago" hint —
+   * signals the missed→reaching-out auto-flow. */
+  missedAt?: string | null;
   isDue?: boolean;
 }
 
@@ -43,6 +46,7 @@ export function FriendListItem({
   action,
   scheduledAt,
   scheduledEventId,
+  missedAt,
   isDue,
 }: Props) {
   const router = useRouter();
@@ -88,6 +92,9 @@ export function FriendListItem({
     subClass = "text-brand-300 font-medium";
   } else if (action === "reschedule" && scheduledAt) {
     subLabel = `Scheduled ${formatRelative(scheduledAt)}`;
+    subClass = "text-brand-300 font-medium";
+  } else if (action === "schedule" && missedAt) {
+    subLabel = `Missed ${formatRelative(missedAt)}`;
     subClass = "text-brand-300 font-medium";
   } else if (action === "schedule" && friend.next_due_at) {
     subLabel = formatOverdueDays(friend.next_due_at);
