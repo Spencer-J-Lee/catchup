@@ -73,9 +73,8 @@ const EditFriendScreen = () => {
           value={generalNotes}
           onChangeText={setGeneralNotes}
           multiline
-          numberOfLines={4}
           textAlignVertical="top"
-          className="h-24"
+          className="min-h-24 max-h-40"
         />
         <CadencePicker value={cadence} onChange={setCadence} />
         <Button
