@@ -4,7 +4,7 @@ import { Alert, Text, View } from "react-native";
 
 import {
   EventForm,
-  type EventFormValue,
+  type EventFormValues,
   type EventMode,
 } from "@/components/event/EventForm";
 import { Button } from "@/components/ui/Button";
@@ -22,7 +22,7 @@ const NewEventScreen = () => {
   const mode: EventMode = params.mode === "checkin" ? "checkin" : "schedule";
   const title = mode === "schedule" ? "Schedule catch-up" : "Check-in";
 
-  const initialValue = useMemo<EventFormValue>(() => {
+  const initialFormValues = useMemo<EventFormValues>(() => {
     const now = new Date();
     return {
       date:
@@ -38,7 +38,8 @@ const NewEventScreen = () => {
     };
   }, [mode]);
 
-  const [value, setValue] = useState<EventFormValue>(initialValue);
+  const [formValues, setFormValues] =
+    useState<EventFormValues>(initialFormValues);
 
   const onSave = async () => {
     if (!user || !params.friend_id) return;
@@ -46,17 +47,19 @@ const NewEventScreen = () => {
     const status = isScheduled ? "scheduled" : "completed";
     const payload = {
       friend_id: params.friend_id,
-      scheduled_at: isScheduled ? value.date.toISOString() : null,
-      occurred_at: !isScheduled ? value.date.toISOString() : null,
+      scheduled_at: isScheduled ? formValues.date.toISOString() : null,
+      occurred_at: !isScheduled ? formValues.date.toISOString() : null,
       status: status as "scheduled" | "completed",
-      medium: value.medium,
+      medium: formValues.medium,
       medium_detail:
-        value.medium && value.medium !== "in_person" && value.mediumDetail
-          ? value.mediumDetail
+        formValues.medium &&
+        formValues.medium !== "in_person" &&
+        formValues.mediumDetail
+          ? formValues.mediumDetail
           : null,
-      location_text: value.locationText || null,
-      location_address: value.locationAddress || null,
-      event_notes: value.notes || null,
+      location_text: formValues.locationText || null,
+      location_address: formValues.locationAddress || null,
+      event_notes: formValues.notes || null,
     };
     const parsed = eventInputSchema.safeParse(payload);
     if (!parsed.success) {
@@ -83,7 +86,11 @@ const NewEventScreen = () => {
     <Screen scroll>
       <Stack.Screen options={{ title }} />
       <View className="gap-4">
-        <EventForm mode={mode} value={value} onChange={setValue} />
+        <EventForm
+          mode={mode}
+          formValues={formValues}
+          onChange={setFormValues}
+        />
 
         <Button onPress={onSave} loading={create.isPending}>
           {mode === "schedule" ? "Schedule" : "Save check-in"}

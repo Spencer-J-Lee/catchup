@@ -12,7 +12,7 @@ import type { EventStatus, Medium } from "@/types/database";
 
 export type EventMode = "schedule" | "checkin" | "edit";
 
-export interface EventFormValue {
+export interface EventFormValues {
   date: Date;
   status: EventStatus;
   medium: Medium | null;
@@ -40,12 +40,12 @@ const MEDIUM_DETAIL_PLACEHOLDER: Record<
 
 interface EventFormProps {
   mode: EventMode;
-  value: EventFormValue;
-  onChange: (value: EventFormValue) => void;
+  formValues: EventFormValues;
+  onChange: (formValues: EventFormValues) => void;
 }
 
-export const EventForm = ({ mode, value, onChange }: EventFormProps) => {
-  const [showPicker, setShowPicker] = useState(false);
+export const EventForm = ({ mode, formValues, onChange }: EventFormProps) => {
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   return (
     <View className="gap-4">
@@ -56,8 +56,8 @@ export const EventForm = ({ mode, value, onChange }: EventFormProps) => {
               <Chip
                 key={status}
                 label={formatStatus(status)}
-                selected={value.status === status}
-                onPress={() => onChange({ ...value, status })}
+                selected={formValues.status === status}
+                onPress={() => onChange({ ...formValues, status })}
               />
             ))}
           </ChipRow>
@@ -66,55 +66,59 @@ export const EventForm = ({ mode, value, onChange }: EventFormProps) => {
 
       <Field label="When">
         <Pressable
-          onPress={() => setShowPicker(true)}
+          onPress={() => setShowDatePicker(true)}
           className="border border-surface-border rounded-xl px-3 py-3 bg-surface-elevated"
         >
           <Text className="text-base text-fg">
-            {formatDateTime(value.date)}
+            {formatDateTime(formValues.date)}
           </Text>
         </Pressable>
-        {showPicker ? (
+        {showDatePicker ? (
           <DateTimePicker
-            value={value.date}
+            value={formValues.date}
             mode="datetime"
             display={Platform.OS === "ios" ? "spinner" : "default"}
             themeVariant="dark"
             onChange={(_, date) => {
-              setShowPicker(Platform.OS === "ios");
-              if (date) onChange({ ...value, date });
+              setShowDatePicker(Platform.OS === "ios");
+              if (date) onChange({ ...formValues, date });
             }}
           />
         ) : null}
       </Field>
 
       <MediumPicker
-        value={value.medium}
-        onChange={(medium) => onChange({ ...value, medium })}
+        value={formValues.medium}
+        onChange={(medium) => onChange({ ...formValues, medium })}
       />
 
-      {value.medium === "in_person" ? (
+      {formValues.medium === "in_person" ? (
         <>
           <Input
             label="Location"
             placeholder="e.g. Joe's Pizza"
-            value={value.locationText}
-            onChangeText={(text) => onChange({ ...value, locationText: text })}
+            value={formValues.locationText}
+            onChangeText={(text) =>
+              onChange({ ...formValues, locationText: text })
+            }
           />
           <Input
             label="Address"
             placeholder="123 Main St, ..."
-            value={value.locationAddress}
+            value={formValues.locationAddress}
             onChangeText={(text) =>
-              onChange({ ...value, locationAddress: text })
+              onChange({ ...formValues, locationAddress: text })
             }
           />
         </>
-      ) : value.medium ? (
+      ) : formValues.medium ? (
         <Input
           label="Detail"
-          placeholder={MEDIUM_DETAIL_PLACEHOLDER[value.medium]}
-          value={value.mediumDetail}
-          onChangeText={(text) => onChange({ ...value, mediumDetail: text })}
+          placeholder={MEDIUM_DETAIL_PLACEHOLDER[formValues.medium]}
+          value={formValues.mediumDetail}
+          onChangeText={(text) =>
+            onChange({ ...formValues, mediumDetail: text })
+          }
         />
       ) : null}
 
@@ -125,8 +129,8 @@ export const EventForm = ({ mode, value, onChange }: EventFormProps) => {
             ? "Anything to remember about this catch-up?"
             : "What came out of the conversation?"
         }
-        value={value.notes}
-        onChangeText={(text) => onChange({ ...value, notes: text })}
+        value={formValues.notes}
+        onChangeText={(text) => onChange({ ...formValues, notes: text })}
         multiline
         numberOfLines={4}
         textAlignVertical="top"

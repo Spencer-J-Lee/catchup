@@ -4,7 +4,7 @@ import { Alert, Text, View } from "react-native";
 
 import {
   EventForm,
-  type EventFormValue,
+  type EventFormValues,
   type EventMode,
 } from "@/components/event/EventForm";
 import { Button } from "@/components/ui/Button";
@@ -17,12 +17,12 @@ const EditEventScreen = () => {
   const { data: event } = useEvent(id);
   const update = useUpdateEvent();
 
-  const [value, setValue] = useState<EventFormValue | null>(null);
+  const [formValues, setFormValues] = useState<EventFormValues | null>(null);
 
   useEffect(() => {
     if (!event) return;
     const dateStr = event.scheduled_at ?? event.occurred_at;
-    setValue({
+    setFormValues({
       date: dateStr ? new Date(dateStr) : new Date(),
       status: event.status,
       medium: event.medium,
@@ -33,7 +33,7 @@ const EditEventScreen = () => {
     });
   }, [event]);
 
-  if (!event || !value) {
+  if (!event || !formValues) {
     return (
       <Screen>
         <Text className="text-fg-muted">Loading…</Text>
@@ -44,24 +44,26 @@ const EditEventScreen = () => {
   const mode: EventMode = "edit";
 
   const onSave = async () => {
-    if (!event || !value) return;
-    const isScheduled = value.status === "scheduled";
+    if (!event || !formValues) return;
+    const isScheduled = formValues.status === "scheduled";
     try {
       await update.mutateAsync({
         id: event.id,
-        status: value.status,
+        status: formValues.status,
         scheduled_at: isScheduled
-          ? value.date.toISOString()
+          ? formValues.date.toISOString()
           : (event.scheduled_at ?? null),
-        occurred_at: isScheduled ? null : value.date.toISOString(),
-        medium: value.medium,
+        occurred_at: isScheduled ? null : formValues.date.toISOString(),
+        medium: formValues.medium,
         medium_detail:
-          value.medium && value.medium !== "in_person" && value.mediumDetail
-            ? value.mediumDetail
+          formValues.medium &&
+          formValues.medium !== "in_person" &&
+          formValues.mediumDetail
+            ? formValues.mediumDetail
             : null,
-        location_text: value.locationText || null,
-        location_address: value.locationAddress || null,
-        event_notes: value.notes || null,
+        location_text: formValues.locationText || null,
+        location_address: formValues.locationAddress || null,
+        event_notes: formValues.notes || null,
         friend_id: event.friend_id,
       });
       router.back();
@@ -73,7 +75,11 @@ const EditEventScreen = () => {
   return (
     <Screen scroll>
       <View className="gap-4">
-        <EventForm mode={mode} value={value} onChange={setValue} />
+        <EventForm
+          mode={mode}
+          formValues={formValues}
+          onChange={setFormValues}
+        />
         <Button onPress={onSave} loading={update.isPending}>
           Save
         </Button>
