@@ -4,8 +4,9 @@ import { Chip } from "@/components/ui/Chip";
 import { Input } from "@/components/ui/Input";
 import type { CadenceUnit } from "@/types/database";
 
-import { Label } from "../ui/Label";
-import { DEFAULT_CADENCE_UNIT, type CadenceValue } from "./CadencePicker";
+import { Label } from "@/components/ui/Label";
+
+import { DEFAULT_CADENCE_UNIT, type CadenceValue } from ".";
 
 interface CadenceCustomInputProps {
   value: CadenceValue;
