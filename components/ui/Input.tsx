@@ -4,6 +4,7 @@ import { Text, TextInput, TextInputProps, View } from "react-native";
 
 import { colors } from "@/lib/colors";
 
+import { INPUT_SURFACE_CLASS } from "./InputSurface";
 import { Label } from "./Label";
 
 interface InputProps extends TextInputProps {
@@ -20,7 +21,7 @@ export const Input = forwardRef<TextInput, InputProps>(
         <TextInput
           ref={ref}
           className={classNames(
-            "border border-surface-border rounded-xl px-3 py-3 bg-surface-elevated text-fg",
+            INPUT_SURFACE_CLASS,
             { "border-danger-500": !!error },
             className,
           )}

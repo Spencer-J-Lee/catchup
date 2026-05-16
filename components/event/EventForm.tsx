@@ -1,13 +1,12 @@
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { useState } from "react";
-import { Platform, Pressable, Text, View } from "react-native";
+import { View } from "react-native";
 
 import { MediumPicker } from "@/components/event/MediumPicker";
 import { Chip } from "@/components/ui/Chip";
 import { ChipRow } from "@/components/ui/ChipRow";
+import { DateTimeField } from "@/components/ui/DateTimeField";
 import { Field } from "@/components/ui/Field";
 import { Input } from "@/components/ui/Input";
-import { formatDateTime, formatStatus } from "@/lib/format";
+import { formatStatus } from "@/lib/format";
 import type { EventStatus, Medium } from "@/types/database";
 
 export type EventMode = "schedule" | "checkin" | "edit";
@@ -45,8 +44,6 @@ interface EventFormProps {
 }
 
 export const EventForm = ({ mode, formValues, onChange }: EventFormProps) => {
-  const [showDatePicker, setShowDatePicker] = useState(false);
-
   return (
     <View className="gap-4">
       {mode === "edit" ? (
@@ -64,28 +61,11 @@ export const EventForm = ({ mode, formValues, onChange }: EventFormProps) => {
         </Field>
       ) : null}
 
-      <Field label="When">
-        <Pressable
-          onPress={() => setShowDatePicker(true)}
-          className="border border-surface-border rounded-xl px-3 py-3 bg-surface-elevated"
-        >
-          <Text className="text-base text-fg">
-            {formatDateTime(formValues.date)}
-          </Text>
-        </Pressable>
-        {showDatePicker ? (
-          <DateTimePicker
-            value={formValues.date}
-            mode="datetime"
-            display={Platform.OS === "ios" ? "spinner" : "default"}
-            themeVariant="dark"
-            onChange={(_, date) => {
-              setShowDatePicker(Platform.OS === "ios");
-              if (date) onChange({ ...formValues, date });
-            }}
-          />
-        ) : null}
-      </Field>
+      <DateTimeField
+        label="When"
+        value={formValues.date}
+        onChange={(date) => onChange({ ...formValues, date })}
+      />
 
       <MediumPicker
         value={formValues.medium}
