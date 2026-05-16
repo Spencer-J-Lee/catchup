@@ -1,5 +1,4 @@
-import classNames from "classnames";
-import { Pressable, Text } from "react-native";
+import { Pill } from "./Pill";
 
 interface ChipProps {
   selected: boolean;
@@ -9,14 +8,10 @@ interface ChipProps {
 
 export const Chip = ({ selected, label, onPress }: ChipProps) => {
   return (
-    <Pressable
+    <Pill
+      variant={selected ? "primary" : "secondary"}
+      label={label}
       onPress={onPress}
-      className={classNames(
-        "px-3 py-2 rounded-full",
-        selected ? "bg-brand-300" : "bg-surface-elevated",
-      )}
-    >
-      <Text className={selected ? "text-surface" : "text-fg"}>{label}</Text>
-    </Pressable>
+    />
   );
 };

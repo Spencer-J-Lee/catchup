@@ -1,7 +1,6 @@
-import classNames from "classnames";
 import { useRouter } from "expo-router";
-import { Pressable, Text } from "react-native";
 
+import { Pill } from "@/components/ui/Pill";
 import type { FriendWithStatus } from "@/hooks/use-friends";
 
 import { resolveFriendActionHref } from "./friendActionHref";
@@ -36,24 +35,11 @@ export const FriendActionButton = ({
   };
 
   return (
-    <Pressable
+    <Pill
+      variant={meta.primary ? "primary" : "secondary"}
+      label={meta.label}
       onPress={onPress}
       hitSlop={8}
-      className={classNames(
-        "rounded-full px-4 py-2",
-        meta.primary
-          ? "bg-brand-300 active:bg-brand-400"
-          : "bg-surface-elevated active:bg-surface-high",
-      )}
-    >
-      <Text
-        className={classNames(
-          "text-sm font-medium",
-          meta.primary ? "text-surface" : "text-fg",
-        )}
-      >
-        {meta.label}
-      </Text>
-    </Pressable>
+    />
   );
 };
