@@ -1,18 +1,12 @@
 import { View } from "react-native";
 
 import { Label } from "@/components/ui/Label";
-import type { CadencePreset, CadenceUnit } from "@/types/database";
 
 import { CadenceCustomInput } from "./CadenceCustomInput";
 import { CadencePresets } from "./CadencePresets";
+import type { CadenceValue } from "./types";
 
-export interface CadenceValue {
-  preset: CadencePreset | null;
-  amount: number | null;
-  unit: CadenceUnit | null;
-}
-
-export const DEFAULT_CADENCE_UNIT: CadenceUnit = "weeks";
+export { DEFAULT_CADENCE_UNIT, type CadenceValue } from "./types";
 
 interface CadencePickerProps {
   value: CadenceValue;

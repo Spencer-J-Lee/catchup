@@ -7,7 +7,7 @@ import type { CadenceUnit } from "@/types/database";
 
 import { Label } from "@/components/ui/Label";
 
-import { DEFAULT_CADENCE_UNIT, type CadenceValue } from ".";
+import { DEFAULT_CADENCE_UNIT, type CadenceValue } from "./types";
 
 interface CadenceCustomInputProps {
   value: CadenceValue;

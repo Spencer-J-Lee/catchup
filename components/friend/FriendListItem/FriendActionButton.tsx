@@ -29,12 +29,15 @@ const resolveHref = (
   if (action === "followup" && scheduledEventId) {
     return ROUTES.event.detail(scheduledEventId);
   }
+
   if (action === "reschedule" && scheduledEventId) {
     return ROUTES.event.edit(scheduledEventId);
   }
+
   if (action === "schedule") {
     return ROUTES.event.new({ friend_id: friendId, mode: "schedule" });
   }
+
   return ROUTES.event.new({ friend_id: friendId, mode: "checkin" });
 };
 

@@ -4,7 +4,7 @@ import { Chip } from "@/components/ui/Chip";
 import { CADENCE_PRESETS } from "@/lib/cadence";
 import type { CadencePreset } from "@/types/database";
 
-import { DEFAULT_CADENCE_UNIT, type CadenceValue } from ".";
+import { DEFAULT_CADENCE_UNIT, type CadenceValue } from "./types";
 
 interface CadencePresetsProps {
   value: CadenceValue;

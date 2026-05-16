@@ -17,7 +17,7 @@ import {
   type FriendItemAction,
 } from "./FriendActionButton";
 import { FriendAvatar } from "./FriendAvatar";
-import { getFriendSubLabel } from "./friendSubLabel";
+import { getFriendSubLabelData } from "./friendSubLabel";
 
 export type { FriendItemAction };
 
@@ -75,7 +75,7 @@ export const FriendListItem = ({
     );
   };
 
-  const sub = getFriendSubLabel({
+  const subLabelData = getFriendSubLabelData({
     friend,
     action,
     scheduledAt,
@@ -94,14 +94,16 @@ export const FriendListItem = ({
       <Link href={ROUTES.friend.detail(friend.id)} asChild>
         <Pressable className="flex-row items-center gap-3 py-2 px-4 bg-surface active:opacity-70">
           <FriendAvatar friend={friend} />
+
           <View className="flex-1 gap-0.5">
             <Text className="text-lg font-semibold text-fg">
               {fullName(friend)}
             </Text>
-            <Text className={classNames("text-sm", sub.className)}>
-              {sub.label}
+            <Text className={classNames("text-sm", subLabelData.className)}>
+              {subLabelData.label}
             </Text>
           </View>
+
           <FriendActionButton
             friend={friend}
             action={action}
