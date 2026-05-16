@@ -90,11 +90,11 @@ export const FriendListItem = ({
       <Link href={`/friend/${friend.id}`} asChild>
         <Pressable className="flex-row items-center gap-3 py-2 px-4 bg-surface active:opacity-70">
           <FriendAvatar friend={friend} />
-          <View className="flex-1">
+          <View className="flex-1 gap-0.5">
             <Text className="text-lg font-semibold text-fg">
               {fullName(friend)}
             </Text>
-            <Text className={classNames("text-sm mt-0.5", sub.className)}>
+            <Text className={classNames("text-sm", sub.className)}>
               {sub.label}
             </Text>
           </View>

@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { View } from "react-native";
 
 import { Chip } from "@/components/ui/Chip";
@@ -11,6 +12,7 @@ import { DEFAULT_CADENCE_UNIT, type CadenceValue } from ".";
 interface CadenceCustomInputProps {
   value: CadenceValue;
   onChange: (v: CadenceValue) => void;
+  className?: string;
 }
 
 const UNITS: CadenceUnit[] = ["days", "weeks", "months"];
@@ -24,6 +26,7 @@ const UNIT_LABEL: Record<CadenceUnit, { singular: string; plural: string }> = {
 export const CadenceCustomInput = ({
   value,
   onChange,
+  className,
 }: CadenceCustomInputProps) => {
   const amountStr = value.amount === null ? "" : String(value.amount);
   const unit: CadenceUnit = value.unit ?? DEFAULT_CADENCE_UNIT;
@@ -45,7 +48,7 @@ export const CadenceCustomInput = ({
   };
 
   return (
-    <View className="gap-2 mt-1">
+    <View className={classNames("gap-2", className)}>
       <Label>Every</Label>
 
       <View className="flex-row items-center gap-2">

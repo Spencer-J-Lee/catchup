@@ -26,7 +26,7 @@ export const CadencePicker = ({ value, onChange }: CadencePickerProps) => {
       <CadencePresets value={value} onChange={onChange} />
 
       {value.preset === "custom" ? (
-        <CadenceCustomInput value={value} onChange={onChange} />
+        <CadenceCustomInput value={value} onChange={onChange} className="mt-1" />
       ) : null}
     </View>
   );
