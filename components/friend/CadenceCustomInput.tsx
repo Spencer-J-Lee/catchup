@@ -29,15 +29,13 @@ export const CadenceCustomInput = ({
 
   const setAmount = (text: string) => {
     const digits = text.replace(/[^0-9]/g, "");
-    if (digits === "") {
-      onChange({ preset: "custom", amount: null, unit });
-      return;
-    }
     const amount = parseInt(digits, 10);
+
     if (!Number.isFinite(amount) || amount < 1) {
       onChange({ preset: "custom", amount: null, unit });
       return;
     }
+
     onChange({ preset: "custom", amount, unit });
   };
 
