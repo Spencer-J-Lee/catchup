@@ -4,9 +4,9 @@ import { Chip } from "@/components/ui/Chip";
 import { CADENCE_PRESETS } from "@/lib/cadence";
 import type { CadencePreset } from "@/types/database";
 
-import type { CadenceValue } from "./CadencePicker";
+import { DEFAULT_CADENCE_UNIT, type CadenceValue } from "./CadencePicker";
 
-interface CadencePresetsRowProps {
+interface CadencePresetsProps {
   value: CadenceValue;
   onChange: (v: CadenceValue) => void;
 }
@@ -20,25 +20,23 @@ const PRESET_KEYS: Exclude<CadencePreset, "custom">[] = [
   "yearly",
 ];
 
-export const CadencePresetsRow = ({
-  value,
-  onChange,
-}: CadencePresetsRowProps) => {
+export const CadencePresets = ({ value, onChange }: CadencePresetsProps) => {
   return (
     <View className="flex-row flex-wrap gap-2">
       <Chip
-        selected={value.preset == null}
         label="None"
+        selected={value.preset === null}
         onPress={() => onChange({ preset: null, amount: null, unit: null })}
       />
 
       {PRESET_KEYS.map((key) => {
         const preset = CADENCE_PRESETS[key];
+
         return (
           <Chip
             key={key}
-            selected={value.preset === key}
             label={preset.label}
+            selected={value.preset === key}
             onPress={() =>
               onChange({
                 preset: key,
@@ -51,13 +49,13 @@ export const CadencePresetsRow = ({
       })}
 
       <Chip
-        selected={value.preset === "custom"}
         label="Custom"
+        selected={value.preset === "custom"}
         onPress={() =>
           onChange({
             preset: "custom",
             amount: value.amount,
-            unit: value.unit ?? "weeks",
+            unit: value.unit ?? DEFAULT_CADENCE_UNIT,
           })
         }
       />

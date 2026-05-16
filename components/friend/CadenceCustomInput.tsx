@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/Input";
 import type { CadenceUnit } from "@/types/database";
 
 import { Label } from "../ui/Label";
-import type { CadenceValue } from "./CadencePicker";
+import { DEFAULT_CADENCE_UNIT, type CadenceValue } from "./CadencePicker";
 
 interface CadenceCustomInputProps {
   value: CadenceValue;
@@ -24,14 +24,14 @@ export const CadenceCustomInput = ({
   value,
   onChange,
 }: CadenceCustomInputProps) => {
-  const amountText = value.amount === null ? "" : String(value.amount);
-  const unit: CadenceUnit = value.unit ?? "weeks";
+  const amountStr = value.amount === null ? "" : String(value.amount);
+  const unit: CadenceUnit = value.unit ?? DEFAULT_CADENCE_UNIT;
 
   const setAmount = (text: string) => {
     const digits = text.replace(/[^0-9]/g, "");
     const amount = parseInt(digits, 10);
 
-    if (!Number.isFinite(amount) || amount < 1) {
+    if (amount < 1 || !Number.isFinite(amount)) {
       onChange({ preset: "custom", amount: null, unit });
       return;
     }
@@ -49,11 +49,11 @@ export const CadenceCustomInput = ({
 
       <View className="flex-row items-center gap-2">
         <Input
-          value={amountText}
+          value={amountStr}
           onChangeText={setAmount}
           keyboardType="number-pad"
           placeholder="1"
-          className="w-20 text-center"
+          className="min-w-20 max-w-20 text-center"
         />
 
         <View className="flex-row gap-2">
