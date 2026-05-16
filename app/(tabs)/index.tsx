@@ -20,6 +20,7 @@ import { useFriends, type FriendWithStatus } from "@/hooks/use-friends";
 import { useMissedEvents, useScheduledEvents } from "@/hooks/use-events";
 import { colors } from "@/lib/colors";
 import { deriveFriendState } from "@/lib/lifecycle";
+import { ROUTES } from "@/lib/routes";
 
 type FriendRow = {
   friend: FriendWithStatus;
@@ -216,7 +217,7 @@ const FriendsScreen = () => {
     <Screen>
       <View className="flex-row items-center justify-between mb-4">
         <Text className="text-3xl font-bold text-fg">Catchup</Text>
-        <Link href="/friend/pick-contact" asChild>
+        <Link href={ROUTES.friend.pickContact} asChild>
           <Pressable className="h-10 w-10 rounded-full bg-surface-elevated items-center justify-center active:bg-surface-high">
             <Ionicons name="add" size={22} color={colors.fg.DEFAULT} />
           </Pressable>
@@ -256,7 +257,7 @@ const FriendsScreen = () => {
           <Text className="text-fg-muted text-center mb-6">
             Add a friend to start tracking your catch-ups.
           </Text>
-          <Link href="/friend/pick-contact" asChild>
+          <Link href={ROUTES.friend.pickContact} asChild>
             <Button className="px-6">Add your first friend</Button>
           </Link>
         </View>

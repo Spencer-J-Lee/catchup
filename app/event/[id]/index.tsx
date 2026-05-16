@@ -15,6 +15,7 @@ import { Screen } from "@/components/ui/Screen";
 import { useDeleteEvent, useEvent, useUpdateEvent } from "@/hooks/use-events";
 import { colors } from "@/lib/colors";
 import { formatDateTime, formatMedium, formatStatus } from "@/lib/format";
+import { ROUTES } from "@/lib/routes";
 
 const EventDetailScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -102,7 +103,7 @@ const EventDetailScreen = () => {
         options={{
           title: "Catch-up",
           headerRight: () => (
-            <Link href={`/event/${id}/edit`} asChild>
+            <Link href={ROUTES.event.edit(id)} asChild>
               <Pressable className="px-2">
                 <Text className="text-brand-300 font-medium">Edit</Text>
               </Pressable>

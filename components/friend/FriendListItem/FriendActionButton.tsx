@@ -3,6 +3,7 @@ import { useRouter, type Href } from "expo-router";
 import { Pressable, Text } from "react-native";
 
 import type { FriendWithStatus } from "@/hooks/use-friends";
+import { ROUTES } from "@/lib/routes";
 
 export type FriendItemAction =
   | "schedule"
@@ -26,21 +27,15 @@ const resolveHref = (
   scheduledEventId: string | null | undefined,
 ): Href => {
   if (action === "followup" && scheduledEventId) {
-    return { pathname: "/event/[id]", params: { id: scheduledEventId } };
+    return ROUTES.event.detail(scheduledEventId);
   }
   if (action === "reschedule" && scheduledEventId) {
-    return { pathname: "/event/[id]/edit", params: { id: scheduledEventId } };
+    return ROUTES.event.edit(scheduledEventId);
   }
   if (action === "schedule") {
-    return {
-      pathname: "/event/new",
-      params: { friend_id: friendId, mode: "schedule" },
-    };
+    return ROUTES.event.new({ friend_id: friendId, mode: "schedule" });
   }
-  return {
-    pathname: "/event/new",
-    params: { friend_id: friendId, mode: "checkin" },
-  };
+  return ROUTES.event.new({ friend_id: friendId, mode: "checkin" });
 };
 
 interface FriendActionButtonProps {

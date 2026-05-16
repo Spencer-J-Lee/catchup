@@ -7,11 +7,15 @@ import ReanimatedSwipeable, {
   type SwipeableMethods,
 } from "react-native-gesture-handler/ReanimatedSwipeable";
 
+import { useDeleteFriend, type FriendWithStatus } from "@/hooks/use-friends";
 import { colors } from "@/lib/colors";
 import { fullName } from "@/lib/format";
-import { useDeleteFriend, type FriendWithStatus } from "@/hooks/use-friends";
+import { ROUTES } from "@/lib/routes";
 
-import { FriendActionButton, type FriendItemAction } from "./FriendActionButton";
+import {
+  FriendActionButton,
+  type FriendItemAction,
+} from "./FriendActionButton";
 import { FriendAvatar } from "./FriendAvatar";
 import { getFriendSubLabel } from "./friendSubLabel";
 
@@ -87,7 +91,7 @@ export const FriendListItem = ({
       friction={2}
       overshootRight={false}
     >
-      <Link href={`/friend/${friend.id}`} asChild>
+      <Link href={ROUTES.friend.detail(friend.id)} asChild>
         <Pressable className="flex-row items-center gap-3 py-2 px-4 bg-surface active:opacity-70">
           <FriendAvatar friend={friend} />
           <View className="flex-1 gap-0.5">

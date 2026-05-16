@@ -6,6 +6,7 @@ import { Alert, Text, View } from "react-native";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Screen } from "@/components/ui/Screen";
+import { ROUTES } from "@/lib/routes";
 import { supabase } from "@/lib/supabase";
 
 const SignupScreen = () => {
@@ -66,7 +67,7 @@ const SignupScreen = () => {
         >
           Sign up
         </Button>
-        <Link href="/(auth)/login" className="text-center text-brand-300 mt-2">
+        <Link href={ROUTES.auth.login} className="text-center text-brand-300 mt-2">
           <Text>Already have an account? Sign in</Text>
         </Link>
       </View>

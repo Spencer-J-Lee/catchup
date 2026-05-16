@@ -11,6 +11,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useAuth } from "@/hooks/use-auth";
 import { colors } from "@/lib/colors";
 import { queryClient } from "@/lib/query-client";
+import { ROUTES } from "@/lib/routes";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -22,9 +23,9 @@ const useProtectedRoute = (loading: boolean, isAuthed: boolean) => {
     if (loading) return;
     const inAuthGroup = segments[0] === "(auth)";
     if (!isAuthed && !inAuthGroup) {
-      router.replace("/(auth)/login");
+      router.replace(ROUTES.auth.login);
     } else if (isAuthed && inAuthGroup) {
-      router.replace("/");
+      router.replace(ROUTES.home);
     }
   }, [loading, isAuthed, segments, router]);
 };

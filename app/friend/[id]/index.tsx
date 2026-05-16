@@ -33,6 +33,7 @@ import {
   formatRelative,
   fullName,
 } from "@/lib/format";
+import { ROUTES } from "@/lib/routes";
 import type { CatchUpEvent, EventStatus } from "@/types/database";
 
 const FriendDetailScreen = () => {
@@ -127,7 +128,7 @@ const FriendDetailScreen = () => {
         options={{
           title: fullName(friend),
           headerRight: () => (
-            <Link href={`/friend/${id}/edit`} asChild>
+            <Link href={ROUTES.friend.edit(id)} asChild>
               <Pressable className="px-2">
                 <Text className="text-brand-300 font-medium">Edit</Text>
               </Pressable>
@@ -204,10 +205,7 @@ const FriendDetailScreen = () => {
 
         <View className="flex-row gap-2">
           <Link
-            href={{
-              pathname: "/event/new",
-              params: { friend_id: id, mode: "schedule" },
-            }}
+            href={ROUTES.event.new({ friend_id: id, mode: "schedule" })}
             asChild
           >
             <Pressable className="flex-1 bg-brand-300 active:bg-brand-400 rounded-full px-4 py-3 items-center justify-center flex-row gap-2">
@@ -216,10 +214,7 @@ const FriendDetailScreen = () => {
             </Pressable>
           </Link>
           <Link
-            href={{
-              pathname: "/event/new",
-              params: { friend_id: id, mode: "checkin" },
-            }}
+            href={ROUTES.event.new({ friend_id: id, mode: "checkin" })}
             asChild
           >
             <Pressable className="flex-1 bg-surface-elevated active:bg-surface-high rounded-full px-4 py-3 items-center justify-center flex-row gap-2">
@@ -343,7 +338,7 @@ const HistoryItem = ({ event }: HistoryItemProps) => {
     : "—";
 
   return (
-    <Link href={`/event/${event.id}`} asChild>
+    <Link href={ROUTES.event.detail(event.id)} asChild>
       <Pressable className="bg-surface-elevated rounded-xl p-3 gap-2">
         <View className="flex-row items-center gap-3">
           {when ? (

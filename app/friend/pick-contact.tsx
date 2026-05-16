@@ -23,6 +23,7 @@ import {
   type ContactListItem,
 } from "@/lib/contacts";
 import { initialsOf } from "@/lib/format";
+import { ROUTES } from "@/lib/routes";
 
 type PermissionState = "loading" | "granted" | "denied";
 
@@ -81,20 +82,19 @@ const PickContactScreen = () => {
 
   const goToNewFriend = (contact?: ContactListItem) => {
     if (!contact) {
-      router.push("/friend/new");
+      router.push(ROUTES.friend.new());
       return;
     }
     const [firstFallback, ...restFallback] = contact.display_name.split(" ");
-    router.push({
-      pathname: "/friend/new",
-      params: {
+    router.push(
+      ROUTES.friend.new({
         contact_id: contact.id,
         first_name: contact.first_name ?? firstFallback ?? "",
         last_name: contact.last_name ?? restFallback.join(" "),
         avatar_url: contact.image_uri ?? "",
         contact_snapshot: JSON.stringify(contact.snapshot),
-      },
-    });
+      }),
+    );
   };
 
   if (permission === "loading") {
