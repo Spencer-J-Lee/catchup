@@ -16,9 +16,7 @@ export const Chip = ({ selected, label, onPress }: ChipProps) => {
         selected ? "bg-brand-300" : "bg-surface-elevated",
       )}
     >
-      <Text className={selected ? "text-surface font-medium" : "text-fg"}>
-        {label}
-      </Text>
+      <Text className={selected ? "text-surface" : "text-fg"}>{label}</Text>
     </Pressable>
   );
 };
