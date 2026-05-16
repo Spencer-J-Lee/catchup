@@ -1,11 +1,9 @@
-import classNames from "classnames";
 import { View } from "react-native";
 
 import { Chip } from "@/components/ui/Chip";
+import { Field } from "@/components/ui/Field";
 import { Input } from "@/components/ui/Input";
 import type { CadenceUnit } from "@/types/database";
-
-import { Label } from "@/components/ui/Label";
 
 import { DEFAULT_CADENCE_UNIT, type CadenceValue } from "./types";
 
@@ -48,9 +46,7 @@ export const CadenceCustomInput = ({
   };
 
   return (
-    <View className={classNames("gap-2", className)}>
-      <Label>Every</Label>
-
+    <Field label="Every" className={className}>
       <View className="flex-row items-center gap-2">
         <Input
           value={amountStr}
@@ -78,6 +74,6 @@ export const CadenceCustomInput = ({
           })}
         </View>
       </View>
-    </View>
+    </Field>
   );
 };

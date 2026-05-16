@@ -7,7 +7,6 @@ import { Chip } from "@/components/ui/Chip";
 import { ChipRow } from "@/components/ui/ChipRow";
 import { Field } from "@/components/ui/Field";
 import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
 import { formatDateTime, formatStatus } from "@/lib/format";
 import type { EventStatus, Medium } from "@/types/database";
 
@@ -65,8 +64,7 @@ export const EventForm = ({ mode, value, onChange }: EventFormProps) => {
         </Field>
       ) : null}
 
-      <View className="gap-1">
-        <Label>When</Label>
+      <Field label="When">
         <Pressable
           onPress={() => setShowPicker(true)}
           className="border border-surface-border rounded-xl px-3 py-3 bg-surface-elevated"
@@ -87,7 +85,7 @@ export const EventForm = ({ mode, value, onChange }: EventFormProps) => {
             }}
           />
         ) : null}
-      </View>
+      </Field>
 
       <MediumPicker
         value={value.medium}

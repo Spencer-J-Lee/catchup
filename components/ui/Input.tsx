@@ -14,7 +14,7 @@ interface InputProps extends TextInputProps {
 export const Input = forwardRef<TextInput, InputProps>(
   ({ label, error, className, ...props }, ref) => {
     return (
-      <View className="gap-1">
+      <View className="gap-2">
         {label ? <Label>{label}</Label> : null}
 
         <TextInput
