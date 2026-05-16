@@ -9,6 +9,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { useAuth } from "@/hooks/use-auth";
+import { colors } from "@/lib/colors";
 import { queryClient } from "@/lib/query-client";
 
 SplashScreen.preventAutoHideAsync();
@@ -29,11 +30,11 @@ const useProtectedRoute = (loading: boolean, isAuthed: boolean) => {
 };
 
 const STACK_HEADER_OPTIONS = {
-  headerStyle: { backgroundColor: "#1a1a1a" },
-  headerTintColor: "#ffffff",
-  headerTitleStyle: { color: "#ffffff" },
+  headerStyle: { backgroundColor: colors.surface.DEFAULT },
+  headerTintColor: colors.fg.DEFAULT,
+  headerTitleStyle: { color: colors.fg.DEFAULT },
   headerBackTitle: "Back",
-  contentStyle: { backgroundColor: "#1a1a1a" },
+  contentStyle: { backgroundColor: colors.surface.DEFAULT },
 } as const;
 
 const RootLayout = () => {
@@ -45,7 +46,9 @@ const RootLayout = () => {
   }, [loading]);
 
   return (
-    <GestureHandlerRootView style={{ flex: 1, backgroundColor: "#1a1a1a" }}>
+    <GestureHandlerRootView
+      style={{ flex: 1, backgroundColor: colors.surface.DEFAULT }}
+    >
       <SafeAreaProvider>
         <QueryClientProvider client={queryClient}>
           <Stack

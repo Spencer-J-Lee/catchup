@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/Button";
 import { Row } from "@/components/ui/Row";
 import { Screen } from "@/components/ui/Screen";
 import { useDeleteEvent, useEvent, useUpdateEvent } from "@/hooks/use-events";
+import { colors } from "@/lib/colors";
 import { formatDateTime, formatMedium, formatStatus } from "@/lib/format";
 
 const EventDetailScreen = () => {
@@ -26,7 +27,7 @@ const EventDetailScreen = () => {
     return (
       <Screen>
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator color="#ffffff" />
+          <ActivityIndicator color={colors.fg.DEFAULT} />
         </View>
       </Screen>
     );

@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/Input";
 import { Screen } from "@/components/ui/Screen";
 import { useFriends, type FriendWithStatus } from "@/hooks/use-friends";
 import { useMissedEvents, useScheduledEvents } from "@/hooks/use-events";
+import { colors } from "@/lib/colors";
 import { deriveFriendState } from "@/lib/lifecycle";
 
 type FriendRow = {
@@ -217,7 +218,7 @@ const FriendsScreen = () => {
         <Text className="text-3xl font-bold text-fg">Catchup</Text>
         <Link href="/friend/pick-contact" asChild>
           <Pressable className="h-10 w-10 rounded-full bg-surface-elevated items-center justify-center active:bg-surface-high">
-            <Ionicons name="add" size={22} color="#ffffff" />
+            <Ionicons name="add" size={22} color={colors.fg.DEFAULT} />
           </Pressable>
         </Link>
       </View>
@@ -238,7 +239,7 @@ const FriendsScreen = () => {
 
       {isLoading ? (
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator color="#ffffff" />
+          <ActivityIndicator color={colors.fg.DEFAULT} />
         </View>
       ) : error ? (
         <Text className="text-danger-400">
@@ -247,7 +248,7 @@ const FriendsScreen = () => {
       ) : !hasFriends ? (
         <View className="flex-1 items-center justify-center px-8">
           <View className="h-20 w-20 rounded-full bg-surface-elevated items-center justify-center mb-5">
-            <Ionicons name="people-outline" size={36} color="#f49b7c" />
+            <Ionicons name="people-outline" size={36} color={colors.brand[300]} />
           </View>
           <Text className="text-xl font-semibold text-fg mb-2">
             No friends yet

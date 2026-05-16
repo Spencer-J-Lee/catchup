@@ -19,6 +19,7 @@ import {
   useFriend,
   useLinkFriendContact,
 } from "@/hooks/use-friends";
+import { colors } from "@/lib/colors";
 import {
   openCall,
   openContactCard,
@@ -46,7 +47,7 @@ const FriendDetailScreen = () => {
     return (
       <Screen>
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator color="#ffffff" />
+          <ActivityIndicator color={colors.fg.DEFAULT} />
         </View>
       </Screen>
     );
@@ -188,7 +189,7 @@ const FriendDetailScreen = () => {
             disabled={linkContact.isPending}
             className="bg-surface-elevated rounded-2xl p-4 flex-row items-center gap-3"
           >
-            <Ionicons name="person-add" size={20} color="#f49b7c" />
+            <Ionicons name="person-add" size={20} color={colors.brand[300]} />
             <View className="flex-1">
               <Text className="text-base font-medium text-fg">
                 {linkContact.isPending ? "Linking…" : "Link to phone contact"}
@@ -197,7 +198,7 @@ const FriendDetailScreen = () => {
                 Enables Message, Call, and Contact actions.
               </Text>
             </View>
-            <Ionicons name="chevron-forward" size={18} color="#6e6e73" />
+            <Ionicons name="chevron-forward" size={18} color={colors.fg.subtle} />
           </Pressable>
         )}
 
@@ -210,7 +211,7 @@ const FriendDetailScreen = () => {
             asChild
           >
             <Pressable className="flex-1 bg-brand-300 active:bg-brand-400 rounded-full px-4 py-3 items-center justify-center flex-row gap-2">
-              <Ionicons name="calendar" size={18} color="#1a1a1a" />
+              <Ionicons name="calendar" size={18} color={colors.surface.DEFAULT} />
               <Text className="text-surface font-semibold">Schedule</Text>
             </Pressable>
           </Link>
@@ -222,7 +223,7 @@ const FriendDetailScreen = () => {
             asChild
           >
             <Pressable className="flex-1 bg-surface-elevated active:bg-surface-high rounded-full px-4 py-3 items-center justify-center flex-row gap-2">
-              <Ionicons name="checkmark-circle" size={18} color="#ffffff" />
+              <Ionicons name="checkmark-circle" size={18} color={colors.fg.DEFAULT} />
               <Text className="text-fg font-semibold">Check in</Text>
             </Pressable>
           </Link>
@@ -297,7 +298,7 @@ const ContactActionButton = ({
         disabled ? "opacity-40" : "active:bg-surface-high",
       )}
     >
-      <Ionicons name={icon} size={22} color="#f49b7c" />
+      <Ionicons name={icon} size={22} color={colors.brand[300]} />
       <Text className="text-xs font-medium text-fg">{label}</Text>
     </Pressable>
   );

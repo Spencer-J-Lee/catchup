@@ -24,7 +24,7 @@ export const CadenceCustomInput = ({
   value,
   onChange,
 }: CadenceCustomInputProps) => {
-  const amountText = value.amount != null ? String(value.amount) : "";
+  const amountText = value.amount === null ? "" : String(value.amount);
   const unit: CadenceUnit = value.unit ?? "weeks";
 
   const setAmount = (text: string) => {

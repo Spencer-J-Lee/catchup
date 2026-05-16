@@ -7,6 +7,7 @@ import ReanimatedSwipeable, {
   type SwipeableMethods,
 } from "react-native-gesture-handler/ReanimatedSwipeable";
 
+import { colors } from "@/lib/colors";
 import {
   formatOverdueDays,
   formatRelative,
@@ -81,7 +82,7 @@ export const FriendListItem = ({
         onPress={onDeletePress}
         className="w-20 bg-danger-600 active:bg-danger-700 items-center justify-center"
       >
-        <Ionicons name="trash" size={22} color="#ffffff" />
+        <Ionicons name="trash" size={22} color={colors.fg.DEFAULT} />
       </Pressable>
     );
   };
