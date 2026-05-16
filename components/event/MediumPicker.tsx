@@ -1,7 +1,6 @@
-import { View } from "react-native";
-
 import { Chip } from "@/components/ui/Chip";
-import { Label } from "@/components/ui/Label";
+import { ChipRow } from "@/components/ui/ChipRow";
+import { Field } from "@/components/ui/Field";
 import type { Medium } from "@/types/database";
 
 interface MediumPickerProps {
@@ -18,9 +17,8 @@ const OPTIONS: { value: Medium; label: string }[] = [
 
 export const MediumPicker = ({ value, onChange }: MediumPickerProps) => {
   return (
-    <View className="gap-2">
-      <Label>Medium</Label>
-      <View className="flex-row flex-wrap gap-2">
+    <Field label="Medium">
+      <ChipRow>
         {OPTIONS.map((option) => (
           <Chip
             key={option.value}
@@ -29,7 +27,7 @@ export const MediumPicker = ({ value, onChange }: MediumPickerProps) => {
             onPress={() => onChange(option.value)}
           />
         ))}
-      </View>
-    </View>
+      </ChipRow>
+    </Field>
   );
 };

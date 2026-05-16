@@ -1,6 +1,5 @@
-import { View } from "react-native";
-
 import { Chip } from "@/components/ui/Chip";
+import { ChipRow } from "@/components/ui/ChipRow";
 import { CADENCE_PRESETS } from "@/lib/cadence";
 import type { CadencePreset } from "@/types/database";
 
@@ -22,7 +21,7 @@ const PRESET_KEYS: Exclude<CadencePreset, "custom">[] = [
 
 export const CadencePresets = ({ value, onChange }: CadencePresetsProps) => {
   return (
-    <View className="flex-row flex-wrap gap-2">
+    <ChipRow>
       <Chip
         label="None"
         selected={value.preset === null}
@@ -59,6 +58,6 @@ export const CadencePresets = ({ value, onChange }: CadencePresetsProps) => {
           })
         }
       />
-    </View>
+    </ChipRow>
   );
 };

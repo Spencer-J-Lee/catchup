@@ -4,6 +4,8 @@ import { Platform, Pressable, Text, View } from "react-native";
 
 import { MediumPicker } from "@/components/event/MediumPicker";
 import { Chip } from "@/components/ui/Chip";
+import { ChipRow } from "@/components/ui/ChipRow";
+import { Field } from "@/components/ui/Field";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { formatDateTime, formatStatus } from "@/lib/format";
@@ -49,9 +51,8 @@ export const EventForm = ({ mode, value, onChange }: EventFormProps) => {
   return (
     <View className="gap-4">
       {mode === "edit" ? (
-        <View className="gap-2">
-          <Label>Status</Label>
-          <View className="flex-row flex-wrap gap-2">
+        <Field label="Status">
+          <ChipRow>
             {STATUS_OPTIONS.map((status) => (
               <Chip
                 key={status}
@@ -60,8 +61,8 @@ export const EventForm = ({ mode, value, onChange }: EventFormProps) => {
                 onPress={() => onChange({ ...value, status })}
               />
             ))}
-          </View>
-        </View>
+          </ChipRow>
+        </Field>
       ) : null}
 
       <View className="gap-1">

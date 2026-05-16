@@ -1,6 +1,4 @@
-import { View } from "react-native";
-
-import { Label } from "@/components/ui/Label";
+import { Field } from "@/components/ui/Field";
 
 import { CadenceCustomInput } from "./CadenceCustomInput";
 import { CadencePresets } from "./CadencePresets";
@@ -15,13 +13,12 @@ interface CadencePickerProps {
 
 export const CadencePicker = ({ value, onChange }: CadencePickerProps) => {
   return (
-    <View className="gap-2">
-      <Label>Catch-up cadence</Label>
+    <Field label="Catch-up cadence">
       <CadencePresets value={value} onChange={onChange} />
 
       {value.preset === "custom" ? (
         <CadenceCustomInput value={value} onChange={onChange} className="mt-1" />
       ) : null}
-    </View>
+    </Field>
   );
 };
