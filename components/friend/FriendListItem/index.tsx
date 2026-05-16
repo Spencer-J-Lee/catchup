@@ -12,12 +12,10 @@ import { colors } from "@/lib/colors";
 import { fullName } from "@/lib/format";
 import { ROUTES } from "@/lib/routes";
 
-import {
-  FriendActionButton,
-  type FriendItemAction,
-} from "./FriendActionButton";
+import { FriendActionButton } from "./FriendActionButton";
 import { FriendAvatar } from "./FriendAvatar";
 import { getFriendSubLabelData } from "./friendSubLabel";
+import type { FriendItemAction } from "./types";
 
 export type { FriendItemAction };
 

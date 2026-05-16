@@ -1,15 +1,11 @@
 import classNames from "classnames";
-import { useRouter, type Href } from "expo-router";
+import { useRouter } from "expo-router";
 import { Pressable, Text } from "react-native";
 
 import type { FriendWithStatus } from "@/hooks/use-friends";
-import { ROUTES } from "@/lib/routes";
 
-export type FriendItemAction =
-  | "schedule"
-  | "checkin"
-  | "reschedule"
-  | "followup";
+import { resolveFriendActionHref } from "./friendActionHref";
+import type { FriendItemAction } from "./types";
 
 const ACTION_META: Record<
   FriendItemAction,
@@ -19,26 +15,6 @@ const ACTION_META: Record<
   checkin: { label: "Check in", primary: false },
   reschedule: { label: "Re-schedule", primary: false },
   followup: { label: "Follow up", primary: true },
-};
-
-const resolveHref = (
-  friendId: string,
-  action: FriendItemAction,
-  scheduledEventId: string | null | undefined,
-): Href => {
-  if (action === "followup" && scheduledEventId) {
-    return ROUTES.event.detail(scheduledEventId);
-  }
-
-  if (action === "reschedule" && scheduledEventId) {
-    return ROUTES.event.edit(scheduledEventId);
-  }
-
-  if (action === "schedule") {
-    return ROUTES.event.new({ friend_id: friendId, mode: "schedule" });
-  }
-
-  return ROUTES.event.new({ friend_id: friendId, mode: "checkin" });
 };
 
 interface FriendActionButtonProps {
@@ -56,7 +32,7 @@ export const FriendActionButton = ({
   const meta = ACTION_META[action];
 
   const onPress = () => {
-    router.push(resolveHref(friend.id, action, scheduledEventId));
+    router.push(resolveFriendActionHref(friend.id, action, scheduledEventId));
   };
 
   return (

@@ -1,7 +1,7 @@
 import type { FriendWithStatus } from "@/hooks/use-friends";
 import { formatOverdueDays, formatRelative } from "@/lib/format";
 
-import type { FriendItemAction } from "./FriendActionButton";
+import type { FriendItemAction } from "./types";
 
 interface SubLabelArgs {
   friend: FriendWithStatus;
