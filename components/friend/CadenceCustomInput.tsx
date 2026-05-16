@@ -1,7 +1,7 @@
-import { TextInput, View } from "react-native";
+import { View } from "react-native";
 
 import { Chip } from "@/components/ui/Chip";
-import { colors } from "@/lib/colors";
+import { Input } from "@/components/ui/Input";
 import type { CadenceUnit } from "@/types/database";
 
 import { Label } from "../ui/Label";
@@ -50,13 +50,12 @@ export const CadenceCustomInput = ({
       <Label>Every</Label>
 
       <View className="flex-row items-center gap-2">
-        <TextInput
+        <Input
           value={amountText}
           onChangeText={setAmount}
           keyboardType="number-pad"
           placeholder="1"
-          placeholderTextColor={colors.fg.subtle}
-          className="border border-surface-border rounded-xl px-3 bg-surface-elevated text-fg w-20 text-center py-2"
+          className="w-20 text-center"
         />
 
         <View className="flex-row gap-2">
