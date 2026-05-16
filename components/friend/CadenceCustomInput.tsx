@@ -4,7 +4,7 @@ import { Chip } from "@/components/ui/Chip";
 import { colors } from "@/lib/colors";
 import type { CadenceUnit } from "@/types/database";
 
-import { Label } from "@react-navigation/elements";
+import { Label } from "../ui/Label";
 import type { CadenceValue } from "./CadencePicker";
 
 interface CadenceCustomInputProps {
@@ -48,6 +48,7 @@ export const CadenceCustomInput = ({
   return (
     <View className="gap-2 mt-1">
       <Label>Every</Label>
+
       <View className="flex-row items-center gap-2">
         <TextInput
           value={amountText}
@@ -55,12 +56,14 @@ export const CadenceCustomInput = ({
           keyboardType="number-pad"
           placeholder="1"
           placeholderTextColor={colors.fg.subtle}
-          className="border border-surface-border rounded-xl px-3 py-2 text-base bg-surface-elevated text-fg w-20 text-center"
+          className="border border-surface-border rounded-xl px-3 bg-surface-elevated text-fg w-20 text-center py-2"
         />
+
         <View className="flex-row gap-2">
           {UNITS.map((u) => {
             const isOne = (value.amount ?? 0) === 1;
             const label = isOne ? UNIT_LABEL[u].singular : UNIT_LABEL[u].plural;
+
             return (
               <Chip
                 key={u}
