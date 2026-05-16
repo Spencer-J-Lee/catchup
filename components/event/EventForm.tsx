@@ -40,7 +40,7 @@ const MEDIUM_DETAIL_PLACEHOLDER: Record<
 interface EventFormProps {
   mode: EventMode;
   value: EventFormValue;
-  onChange: (v: EventFormValue) => void;
+  onChange: (value: EventFormValue) => void;
 }
 
 export const EventForm = ({ mode, value, onChange }: EventFormProps) => {
@@ -52,12 +52,12 @@ export const EventForm = ({ mode, value, onChange }: EventFormProps) => {
         <View className="gap-2">
           <Label>Status</Label>
           <View className="flex-row flex-wrap gap-2">
-            {STATUS_OPTIONS.map((s) => (
+            {STATUS_OPTIONS.map((status) => (
               <Chip
-                key={s}
-                selected={value.status === s}
-                label={formatStatus(s)}
-                onPress={() => onChange({ ...value, status: s })}
+                key={status}
+                label={formatStatus(status)}
+                selected={value.status === status}
+                onPress={() => onChange({ ...value, status })}
               />
             ))}
           </View>
@@ -80,9 +80,9 @@ export const EventForm = ({ mode, value, onChange }: EventFormProps) => {
             mode="datetime"
             display={Platform.OS === "ios" ? "spinner" : "default"}
             themeVariant="dark"
-            onChange={(_, d) => {
+            onChange={(_, date) => {
               setShowPicker(Platform.OS === "ios");
-              if (d) onChange({ ...value, date: d });
+              if (date) onChange({ ...value, date });
             }}
           />
         ) : null}
@@ -90,7 +90,7 @@ export const EventForm = ({ mode, value, onChange }: EventFormProps) => {
 
       <MediumPicker
         value={value.medium}
-        onChange={(m) => onChange({ ...value, medium: m })}
+        onChange={(medium) => onChange({ ...value, medium })}
       />
 
       {value.medium === "in_person" ? (
@@ -99,13 +99,15 @@ export const EventForm = ({ mode, value, onChange }: EventFormProps) => {
             label="Location"
             placeholder="e.g. Joe's Pizza"
             value={value.locationText}
-            onChangeText={(t) => onChange({ ...value, locationText: t })}
+            onChangeText={(text) => onChange({ ...value, locationText: text })}
           />
           <Input
             label="Address"
             placeholder="123 Main St, ..."
             value={value.locationAddress}
-            onChangeText={(t) => onChange({ ...value, locationAddress: t })}
+            onChangeText={(text) =>
+              onChange({ ...value, locationAddress: text })
+            }
           />
         </>
       ) : value.medium ? (
@@ -113,7 +115,7 @@ export const EventForm = ({ mode, value, onChange }: EventFormProps) => {
           label="Detail"
           placeholder={MEDIUM_DETAIL_PLACEHOLDER[value.medium]}
           value={value.mediumDetail}
-          onChangeText={(t) => onChange({ ...value, mediumDetail: t })}
+          onChangeText={(text) => onChange({ ...value, mediumDetail: text })}
         />
       ) : null}
 
@@ -125,7 +127,7 @@ export const EventForm = ({ mode, value, onChange }: EventFormProps) => {
             : "What came out of the conversation?"
         }
         value={value.notes}
-        onChangeText={(t) => onChange({ ...value, notes: t })}
+        onChangeText={(text) => onChange({ ...value, notes: text })}
         multiline
         numberOfLines={4}
         textAlignVertical="top"

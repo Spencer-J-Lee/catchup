@@ -28,11 +28,11 @@ export interface ContactListItem {
 
 const snapshotFromContact = (contact: Contacts.Contact): ContactSnapshot => {
   const phones = (contact.phoneNumbers ?? [])
-    .map((p) => ({ label: p.label ?? null, number: p.number ?? "" }))
-    .filter((p) => p.number);
+    .map((phone) => ({ label: phone.label ?? null, number: phone.number ?? "" }))
+    .filter((phone) => phone.number);
   const emails = (contact.emails ?? [])
-    .map((e) => ({ label: e.label ?? null, email: e.email ?? "" }))
-    .filter((e) => e.email);
+    .map((email) => ({ label: email.label ?? null, email: email.email ?? "" }))
+    .filter((email) => email.email);
   const imageUri = contact.image?.uri ?? null;
 
   return {
@@ -80,17 +80,19 @@ export const listContacts = async (): Promise<ContactListItem[]> => {
     sort: Contacts.SortTypes.FirstName,
   });
   const items: ContactListItem[] = [];
-  for (const c of data) {
-    if (!c.id) continue;
+  for (const contact of data) {
+    if (!contact.id) continue;
     const fallbackName =
-      `${c.firstName ?? ""} ${c.lastName ?? ""}`.trim() || c.name?.trim() || "";
+      `${contact.firstName ?? ""} ${contact.lastName ?? ""}`.trim() ||
+      contact.name?.trim() ||
+      "";
     if (!fallbackName) continue;
-    const snapshot = snapshotFromContact(c);
+    const snapshot = snapshotFromContact(contact);
     items.push({
-      id: c.id,
+      id: contact.id,
       display_name: fallbackName,
-      first_name: c.firstName ?? null,
-      last_name: c.lastName ?? null,
+      first_name: contact.firstName ?? null,
+      last_name: contact.lastName ?? null,
       phone: snapshot.phone,
       image_uri: snapshot.image_uri,
       snapshot,
@@ -149,7 +151,7 @@ export const openContactCard = async (contactId: string) => {
     await Contacts.presentFormAsync(contactId, undefined, {
       allowsEditing: false,
     });
-  } catch (e) {
-    Alert.alert("Cannot open contact", (e as Error).message);
+  } catch (error) {
+    Alert.alert("Cannot open contact", (error as Error).message);
   }
 };

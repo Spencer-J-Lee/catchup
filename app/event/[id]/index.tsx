@@ -22,7 +22,7 @@ const EventDetailScreen = () => {
   const router = useRouter();
   const { data: event, isLoading } = useEvent(id);
   const update = useUpdateEvent();
-  const del = useDeleteEvent();
+  const deleteEvent = useDeleteEvent();
 
   if (isLoading || !event) {
     return (
@@ -43,8 +43,8 @@ const EventDetailScreen = () => {
         occurred_at: new Date().toISOString(),
         friend_id: event.friend_id,
       });
-    } catch (e) {
-      Alert.alert("Failed", (e as Error).message);
+    } catch (error) {
+      Alert.alert("Failed", (error as Error).message);
     }
   };
 
@@ -56,8 +56,8 @@ const EventDetailScreen = () => {
         status: "missed",
         friend_id: event.friend_id,
       });
-    } catch (e) {
-      Alert.alert("Failed", (e as Error).message);
+    } catch (error) {
+      Alert.alert("Failed", (error as Error).message);
     }
   };
 
@@ -69,8 +69,8 @@ const EventDetailScreen = () => {
         status: "cancelled",
         friend_id: event.friend_id,
       });
-    } catch (e) {
-      Alert.alert("Failed", (e as Error).message);
+    } catch (error) {
+      Alert.alert("Failed", (error as Error).message);
     }
   };
 
@@ -81,7 +81,7 @@ const EventDetailScreen = () => {
         text: "Delete",
         style: "destructive",
         onPress: async () => {
-          await del.mutateAsync(id!);
+          await deleteEvent.mutateAsync(id!);
           router.back();
         },
       },
@@ -90,10 +90,11 @@ const EventDetailScreen = () => {
 
   const openMaps = () => {
     if (!event?.location_address) return;
-    const q = encodeURIComponent(event.location_address);
-    const url = Platform.OS === "ios" ? `maps://?q=${q}` : `geo:0,0?q=${q}`;
+    const query = encodeURIComponent(event.location_address);
+    const url =
+      Platform.OS === "ios" ? `maps://?q=${query}` : `geo:0,0?q=${query}`;
     Linking.openURL(url).catch(() =>
-      Linking.openURL(`https://maps.google.com/?q=${q}`),
+      Linking.openURL(`https://maps.google.com/?q=${query}`),
     );
   };
 
@@ -173,12 +174,12 @@ const EventDetailScreen = () => {
 
         <Pressable
           onPress={onDelete}
-          disabled={del.isPending}
+          disabled={deleteEvent.isPending}
           className="self-center py-2 px-3 mt-2"
           hitSlop={8}
         >
           <Text className="text-sm text-danger-400 font-medium">
-            {del.isPending ? "Deleting…" : "Delete"}
+            {deleteEvent.isPending ? "Deleting…" : "Delete"}
           </Text>
         </Pressable>
       </View>

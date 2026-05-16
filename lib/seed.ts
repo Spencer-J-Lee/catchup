@@ -514,7 +514,7 @@ export const clearSeedData = async (userId: string): Promise<number> => {
     .eq("user_id", userId)
     .like("last_name", `%${SEED_MARKER}`);
   if (selErr) throw selErr;
-  const ids = (existing ?? []).map((f) => f.id);
+  const ids = (existing ?? []).map((friend) => friend.id);
   if (ids.length === 0) return 0;
   // Events cascade via FK on delete.
   const { error: delErr } = await supabase
@@ -528,21 +528,23 @@ export const clearSeedData = async (userId: string): Promise<number> => {
 export const seedExampleData = async (userId: string): Promise<SeedResult> => {
   const friendsDeleted = await clearSeedData(userId);
 
-  const friendRows = FRIENDS.map((f) => ({
+  const friendRows = FRIENDS.map((friend) => ({
     user_id: userId,
-    first_name: f.first_name,
-    last_name: f.last_name,
-    general_notes: f.general_notes,
-    cadence_preset: f.cadence_preset,
-    cadence_amount: f.cadence_amount,
-    cadence_unit: f.cadence_unit,
-    avatar_url: f.avatar_url,
-    contact_id: f.contact?.id ?? null,
-    contact_snapshot: f.contact
-      ? (f.contact.snapshot as unknown as Record<string, unknown>)
+    first_name: friend.first_name,
+    last_name: friend.last_name,
+    general_notes: friend.general_notes,
+    cadence_preset: friend.cadence_preset,
+    cadence_amount: friend.cadence_amount,
+    cadence_unit: friend.cadence_unit,
+    avatar_url: friend.avatar_url,
+    contact_id: friend.contact?.id ?? null,
+    contact_snapshot: friend.contact
+      ? (friend.contact.snapshot as unknown as Record<string, unknown>)
       : null,
-    contact_synced_at: f.contact ? isoOffsetDays(-f.contact.syncedDaysAgo) : null,
-    created_at: isoOffsetDays(-f.createdDaysAgo),
+    contact_synced_at: friend.contact
+      ? isoOffsetDays(-friend.contact.syncedDaysAgo)
+      : null,
+    created_at: isoOffsetDays(-friend.createdDaysAgo),
   }));
 
   const { data: inserted, error: insErr } = await supabase
@@ -555,30 +557,32 @@ export const seedExampleData = async (userId: string): Promise<SeedResult> => {
     "id" | "first_name" | "last_name"
   >[];
 
-  const keyOf = (f: { first_name: string; last_name: string | null }) =>
-    `${f.first_name} ${f.last_name ?? ""}`;
-  const byName = new Map(insertedFriends.map((f) => [keyOf(f), f.id]));
-  const eventRows = FRIENDS.flatMap((f) => {
-    const fid = byName.get(keyOf(f));
-    if (!fid) return [];
-    return f.events.map((e) => {
-      const ts = isoOffsetDays(e.offsetDays);
-      const isScheduled = e.status === "scheduled";
+  const keyOf = (friend: { first_name: string; last_name: string | null }) =>
+    `${friend.first_name} ${friend.last_name ?? ""}`;
+  const byName = new Map(
+    insertedFriends.map((friend) => [keyOf(friend), friend.id]),
+  );
+  const eventRows = FRIENDS.flatMap((friend) => {
+    const friendId = byName.get(keyOf(friend));
+    if (!friendId) return [];
+    return friend.events.map((event) => {
+      const timestamp = isoOffsetDays(event.offsetDays);
+      const isScheduled = event.status === "scheduled";
       return {
         user_id: userId,
-        friend_id: fid,
+        friend_id: friendId,
         scheduled_at:
-          isScheduled || e.status === "cancelled" || e.status === "missed"
-            ? ts
+          isScheduled || event.status === "cancelled" || event.status === "missed"
+            ? timestamp
             : null,
-        occurred_at: e.status === "completed" ? ts : null,
-        status: e.status,
-        medium: e.medium,
-        medium_detail: e.medium_detail,
-        location_text: e.location_text,
-        location_address: e.location_address,
-        event_notes: e.event_notes,
-        pre_reminder_minutes: e.pre_reminder_minutes ?? null,
+        occurred_at: event.status === "completed" ? timestamp : null,
+        status: event.status,
+        medium: event.medium,
+        medium_detail: event.medium_detail,
+        location_text: event.location_text,
+        location_address: event.location_address,
+        event_notes: event.event_notes,
+        pre_reminder_minutes: event.pre_reminder_minutes ?? null,
       };
     });
   });

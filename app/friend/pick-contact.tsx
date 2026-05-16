@@ -53,8 +53,8 @@ const PickContactScreen = () => {
       const list = await listContacts();
       setContacts(list);
       setPermission("granted");
-    } catch (e) {
-      setError((e as Error).message);
+    } catch (caught) {
+      setError((caught as Error).message);
       setPermission("denied");
     }
   }, []);
@@ -65,18 +65,18 @@ const PickContactScreen = () => {
 
   const linkedContactIds = useMemo(() => {
     const ids = new Set<string>();
-    for (const f of friends ?? []) {
-      if (f.contact_id) ids.add(f.contact_id);
+    for (const friend of friends ?? []) {
+      if (friend.contact_id) ids.add(friend.contact_id);
     }
     return ids;
   }, [friends]);
 
   const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    return contacts.filter((c) => {
-      if (linkedContactIds.has(c.id)) return false;
-      if (!q) return true;
-      return c.display_name.toLowerCase().includes(q);
+    const query = search.trim().toLowerCase();
+    return contacts.filter((contact) => {
+      if (linkedContactIds.has(contact.id)) return false;
+      if (!query) return true;
+      return contact.display_name.toLowerCase().includes(query);
     });
   }, [contacts, search, linkedContactIds]);
 
@@ -154,7 +154,7 @@ const PickContactScreen = () => {
 
         <FlatList
           data={filtered}
-          keyExtractor={(c) => c.id}
+          keyExtractor={(contact) => contact.id}
           keyboardShouldPersistTaps="handled"
           contentContainerClassName="pb-8"
           ItemSeparatorComponent={() => <View className="h-1" />}

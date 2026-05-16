@@ -26,7 +26,7 @@ export const friendInputSchema = z
       .string()
       .trim()
       .max(100)
-      .transform((v) => (v === "" ? null : v))
+      .transform((value) => (value === "" ? null : value))
       .nullable()
       .optional(),
     general_notes: z.string().max(5000).nullable().optional(),
@@ -35,13 +35,13 @@ export const friendInputSchema = z
     cadence_unit: cadenceUnitSchema.nullable().optional(),
   })
   .refine(
-    (v) =>
-      (v.cadence_preset == null &&
-        v.cadence_amount == null &&
-        v.cadence_unit == null) ||
-      (v.cadence_preset != null &&
-        v.cadence_amount != null &&
-        v.cadence_unit != null),
+    (friend) =>
+      (friend.cadence_preset == null &&
+        friend.cadence_amount == null &&
+        friend.cadence_unit == null) ||
+      (friend.cadence_preset != null &&
+        friend.cadence_amount != null &&
+        friend.cadence_unit != null),
     { message: "Cadence preset, amount, and unit must all be set together" },
   );
 
@@ -60,10 +60,10 @@ export const eventInputSchema = z
     pre_reminder_minutes: z.number().int().nonnegative().nullable().optional(),
     event_notes: z.string().max(5000).nullable().optional(),
   })
-  .refine((v) => v.scheduled_at != null || v.occurred_at != null, {
+  .refine((event) => event.scheduled_at != null || event.occurred_at != null, {
     message: "An event must have a scheduled or occurred time",
   })
-  .refine((v) => v.status !== "completed" || v.occurred_at != null, {
+  .refine((event) => event.status !== "completed" || event.occurred_at != null, {
     message: "Completed events must have an occurred_at",
   });
 

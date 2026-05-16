@@ -6,7 +6,7 @@ import type { Medium } from "@/types/database";
 
 interface MediumPickerProps {
   value: Medium | null;
-  onChange: (v: Medium) => void;
+  onChange: (medium: Medium) => void;
 }
 
 const OPTIONS: { value: Medium; label: string }[] = [
@@ -21,12 +21,12 @@ export const MediumPicker = ({ value, onChange }: MediumPickerProps) => {
     <View className="gap-2">
       <Label>Medium</Label>
       <View className="flex-row flex-wrap gap-2">
-        {OPTIONS.map((o) => (
+        {OPTIONS.map((option) => (
           <Chip
-            key={o.value}
-            selected={value === o.value}
-            label={o.label}
-            onPress={() => onChange(o.value)}
+            key={option.value}
+            label={option.label}
+            selected={value === option.value}
+            onPress={() => onChange(option.value)}
           />
         ))}
       </View>

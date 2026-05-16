@@ -105,8 +105,8 @@ export const deriveFriendState = (
   return { state: "idle", reason: "no_activity" };
 };
 
-export const formatLifecycleState = (s: FriendLifecycleState): string => {
-  switch (s) {
+export const formatLifecycleState = (state: FriendLifecycleState): string => {
+  switch (state) {
     case "idle":
       return "Idle";
     case "reaching_out":

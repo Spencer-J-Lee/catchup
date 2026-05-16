@@ -23,14 +23,17 @@ const fetchFriends = async (): Promise<FriendWithStatus[]> => {
   if (friendsRes.error) throw friendsRes.error;
   if (statusRes.error) throw statusRes.error;
   const statusByFriend = new Map<string, FriendCadenceStatus>(
-    (statusRes.data ?? []).map((s) => [s.friend_id, s as FriendCadenceStatus]),
+    (statusRes.data ?? []).map((status) => [
+      status.friend_id,
+      status as FriendCadenceStatus,
+    ]),
   );
-  return (friendsRes.data as Friend[]).map((f) => {
-    const s = statusByFriend.get(f.id);
+  return (friendsRes.data as Friend[]).map((friend) => {
+    const status = statusByFriend.get(friend.id);
     return {
-      ...f,
-      last_caught_up_at: s?.last_caught_up_at ?? null,
-      next_due_at: s?.next_due_at ?? null,
+      ...friend,
+      last_caught_up_at: status?.last_caught_up_at ?? null,
+      next_due_at: status?.next_due_at ?? null,
     };
   });
 };
@@ -64,7 +67,7 @@ type CreateFriendInput = FriendInput & {
 };
 
 export const useCreateFriend = () => {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (input: CreateFriendInput) => {
       const { data, error } = await supabase
@@ -75,12 +78,12 @@ export const useCreateFriend = () => {
       if (error) throw error;
       return data as Friend;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: FRIENDS_KEY }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: FRIENDS_KEY }),
   });
 };
 
 export const useUpdateFriend = () => {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, ...input }: FriendInput & { id: string }) => {
       const { data, error } = await supabase
@@ -92,15 +95,15 @@ export const useUpdateFriend = () => {
       if (error) throw error;
       return data as Friend;
     },
-    onSuccess: (_, vars) => {
-      qc.invalidateQueries({ queryKey: FRIENDS_KEY });
-      qc.invalidateQueries({ queryKey: ["friend", vars.id] });
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: FRIENDS_KEY });
+      queryClient.invalidateQueries({ queryKey: ["friend", variables.id] });
     },
   });
 };
 
 export const useLinkFriendContact = () => {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (args: {
       id: string;
@@ -123,20 +126,20 @@ export const useLinkFriendContact = () => {
       if (error) throw error;
       return data as Friend;
     },
-    onSuccess: (_, vars) => {
-      qc.invalidateQueries({ queryKey: FRIENDS_KEY });
-      qc.invalidateQueries({ queryKey: ["friend", vars.id] });
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: FRIENDS_KEY });
+      queryClient.invalidateQueries({ queryKey: ["friend", variables.id] });
     },
   });
 };
 
 export const useDeleteFriend = () => {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase.from("friends").delete().eq("id", id);
       if (error) throw error;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: FRIENDS_KEY }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: FRIENDS_KEY }),
   });
 };

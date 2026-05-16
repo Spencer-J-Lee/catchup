@@ -77,8 +77,8 @@ const NewFriendScreen = () => {
         contact_synced_at: contactId ? new Date().toISOString() : null,
       });
       router.dismissAll();
-    } catch (e) {
-      Alert.alert("Failed to save", (e as Error).message);
+    } catch (error) {
+      Alert.alert("Failed to save", (error as Error).message);
     }
   };
 

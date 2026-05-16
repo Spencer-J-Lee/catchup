@@ -65,8 +65,8 @@ const EditEventScreen = () => {
         friend_id: event.friend_id,
       });
       router.back();
-    } catch (e) {
-      Alert.alert("Failed to save", (e as Error).message);
+    } catch (error) {
+      Alert.alert("Failed to save", (error as Error).message);
     }
   };
 

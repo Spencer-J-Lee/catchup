@@ -10,7 +10,7 @@ export { DEFAULT_CADENCE_UNIT, type CadenceValue } from "./types";
 
 interface CadencePickerProps {
   value: CadenceValue;
-  onChange: (v: CadenceValue) => void;
+  onChange: (value: CadenceValue) => void;
 }
 
 export const CadencePicker = ({ value, onChange }: CadencePickerProps) => {

@@ -49,41 +49,46 @@ const FriendsScreen = () => {
     type ScheduledRef = { id: string; scheduled_at: string };
     const pastByFriend = new Map<string, ScheduledRef>();
     const upcomingByFriend = new Map<string, ScheduledRef>();
-    for (const ev of scheduledEvents ?? []) {
-      if (!ev.scheduled_at) continue;
-      const ts = new Date(ev.scheduled_at).getTime();
-      const isPast = ts < nowMs;
+    for (const event of scheduledEvents ?? []) {
+      if (!event.scheduled_at) continue;
+      const scheduledMs = new Date(event.scheduled_at).getTime();
+      const isPast = scheduledMs < nowMs;
       const bucket = isPast ? pastByFriend : upcomingByFriend;
-      const existing = bucket.get(ev.friend_id);
+      const existing = bucket.get(event.friend_id);
       // Past: keep the oldest (longest awaiting). Upcoming: keep the soonest.
       const replace =
         !existing ||
-        ts < new Date(existing.scheduled_at).getTime();
+        scheduledMs < new Date(existing.scheduled_at).getTime();
       if (replace) {
-        bucket.set(ev.friend_id, { id: ev.id, scheduled_at: ev.scheduled_at });
-      }
-    }
-
-    const recentMissedByFriend = new Map<string, ScheduledRef>();
-    for (const ev of missedEvents ?? []) {
-      if (!ev.scheduled_at) continue;
-      const existing = recentMissedByFriend.get(ev.friend_id);
-      if (
-        !existing ||
-        new Date(ev.scheduled_at).getTime() >
-          new Date(existing.scheduled_at).getTime()
-      ) {
-        recentMissedByFriend.set(ev.friend_id, {
-          id: ev.id,
-          scheduled_at: ev.scheduled_at,
+        bucket.set(event.friend_id, {
+          id: event.id,
+          scheduled_at: event.scheduled_at,
         });
       }
     }
 
-    const q = search.trim().toLowerCase();
-    const filtered = q
-      ? data.filter((f) =>
-          `${f.first_name} ${f.last_name ?? ""}`.toLowerCase().includes(q),
+    const recentMissedByFriend = new Map<string, ScheduledRef>();
+    for (const event of missedEvents ?? []) {
+      if (!event.scheduled_at) continue;
+      const existing = recentMissedByFriend.get(event.friend_id);
+      if (
+        !existing ||
+        new Date(event.scheduled_at).getTime() >
+          new Date(existing.scheduled_at).getTime()
+      ) {
+        recentMissedByFriend.set(event.friend_id, {
+          id: event.id,
+          scheduled_at: event.scheduled_at,
+        });
+      }
+    }
+
+    const query = search.trim().toLowerCase();
+    const filtered = query
+      ? data.filter((friend) =>
+          `${friend.first_name} ${friend.last_name ?? ""}`
+            .toLowerCase()
+            .includes(query),
         )
       : data;
 
@@ -92,14 +97,14 @@ const FriendsScreen = () => {
     const reachingOut: FriendRow[] = [];
     const idle: FriendRow[] = [];
 
-    for (const f of filtered) {
-      const past = pastByFriend.get(f.id) ?? null;
-      const upcoming = upcomingByFriend.get(f.id) ?? null;
-      const missed = recentMissedByFriend.get(f.id) ?? null;
+    for (const friend of filtered) {
+      const past = pastByFriend.get(friend.id) ?? null;
+      const upcoming = upcomingByFriend.get(friend.id) ?? null;
+      const missed = recentMissedByFriend.get(friend.id) ?? null;
 
       const { state } = deriveFriendState({
-        nextDueAt: f.next_due_at,
-        lastCaughtUpAt: f.last_caught_up_at,
+        nextDueAt: friend.next_due_at,
+        lastCaughtUpAt: friend.last_caught_up_at,
         upcomingScheduled: upcoming,
         pastScheduled: past,
         recentMissed: missed,
@@ -108,7 +113,7 @@ const FriendsScreen = () => {
 
       if (state === "awaiting_followup" && past) {
         awaitingFollowup.push({
-          friend: f,
+          friend,
           action: "followup",
           scheduledAt: past.scheduled_at,
           scheduledEventId: past.id,
@@ -117,7 +122,7 @@ const FriendsScreen = () => {
         });
       } else if (state === "scheduled" && upcoming) {
         scheduled.push({
-          friend: f,
+          friend,
           action: "reschedule",
           scheduledAt: upcoming.scheduled_at,
           scheduledEventId: upcoming.id,
@@ -127,14 +132,14 @@ const FriendsScreen = () => {
       } else if (state === "reaching_out") {
         // Surface a "missed N days ago" hint when the auto-flow kicked in.
         const missedAt = missed
-          ? (!f.last_caught_up_at ||
+          ? (!friend.last_caught_up_at ||
               new Date(missed.scheduled_at).getTime() >
-                new Date(f.last_caught_up_at).getTime())
+                new Date(friend.last_caught_up_at).getTime())
             ? missed.scheduled_at
             : null
           : null;
         reachingOut.push({
-          friend: f,
+          friend,
           action: "schedule",
           scheduledAt: null,
           scheduledEventId: null,
@@ -143,7 +148,7 @@ const FriendsScreen = () => {
         });
       } else {
         idle.push({
-          friend: f,
+          friend,
           action: "checkin",
           scheduledAt: null,
           scheduledEventId: null,
@@ -154,61 +159,69 @@ const FriendsScreen = () => {
     }
 
     awaitingFollowup.sort(
-      (a, b) =>
-        new Date(a.scheduledAt!).getTime() - new Date(b.scheduledAt!).getTime(),
+      (left, right) =>
+        new Date(left.scheduledAt!).getTime() -
+        new Date(right.scheduledAt!).getTime(),
     );
     scheduled.sort(
-      (a, b) =>
-        new Date(a.scheduledAt!).getTime() - new Date(b.scheduledAt!).getTime(),
+      (left, right) =>
+        new Date(left.scheduledAt!).getTime() -
+        new Date(right.scheduledAt!).getTime(),
     );
-    reachingOut.sort((a, b) => {
+    reachingOut.sort((left, right) => {
       // Prefer overdue cadence sort key; fall back to missed_at; finally name.
-      const ak =
-        (a.friend.next_due_at && new Date(a.friend.next_due_at).getTime()) ||
-        (a.missedAt && new Date(a.missedAt).getTime()) ||
+      const leftKey =
+        (left.friend.next_due_at &&
+          new Date(left.friend.next_due_at).getTime()) ||
+        (left.missedAt && new Date(left.missedAt).getTime()) ||
         Infinity;
-      const bk =
-        (b.friend.next_due_at && new Date(b.friend.next_due_at).getTime()) ||
-        (b.missedAt && new Date(b.missedAt).getTime()) ||
+      const rightKey =
+        (right.friend.next_due_at &&
+          new Date(right.friend.next_due_at).getTime()) ||
+        (right.missedAt && new Date(right.missedAt).getTime()) ||
         Infinity;
-      return ak - bk;
+      return leftKey - rightKey;
     });
-    idle.sort((a, b) => {
-      const at = a.friend.last_caught_up_at
-        ? new Date(a.friend.last_caught_up_at).getTime()
+    idle.sort((left, right) => {
+      const leftMs = left.friend.last_caught_up_at
+        ? new Date(left.friend.last_caught_up_at).getTime()
         : 0;
-      const bt = b.friend.last_caught_up_at
-        ? new Date(b.friend.last_caught_up_at).getTime()
+      const rightMs = right.friend.last_caught_up_at
+        ? new Date(right.friend.last_caught_up_at).getTime()
         : 0;
-      return bt - at;
+      return rightMs - leftMs;
     });
 
-    const out: Section[] = [];
+    const sections: Section[] = [];
     if (awaitingFollowup.length > 0) {
-      out.push({
+      sections.push({
         kind: "header",
         title: "Awaiting follow-up",
         count: awaitingFollowup.length,
       });
-      for (const r of awaitingFollowup) out.push({ kind: "friend", row: r });
+      for (const row of awaitingFollowup) sections.push({ kind: "friend", row });
     }
     if (reachingOut.length > 0) {
-      out.push({
+      sections.push({
         kind: "header",
         title: "Reaching out",
         count: reachingOut.length,
       });
-      for (const r of reachingOut) out.push({ kind: "friend", row: r });
+      for (const row of reachingOut) sections.push({ kind: "friend", row });
     }
     if (scheduled.length > 0) {
-      out.push({ kind: "header", title: "Scheduled", count: scheduled.length });
-      for (const r of scheduled) out.push({ kind: "friend", row: r });
+      sections.push({
+        kind: "header",
+        title: "Scheduled",
+        count: scheduled.length,
+      });
+      for (const row of scheduled) sections.push({ kind: "friend", row });
     }
     if (idle.length > 0) {
-      out.push({ kind: "header", title: "Idle", count: idle.length });
-      for (const r of idle) out.push({ kind: "friend", row: r });
+      sections.push({ kind: "header", title: "Idle", count: idle.length });
+      for (const row of idle) sections.push({ kind: "friend", row });
     }
-    return out;
+    return sections;
   }, [data, scheduledEvents, missedEvents, search]);
 
   const hasFriends = !!data && data.length > 0;
@@ -271,8 +284,10 @@ const FriendsScreen = () => {
         <FlatList
           className="-mx-4"
           data={sections}
-          keyExtractor={(s, i) =>
-            s.kind === "header" ? `h-${s.title}-${i}` : `f-${s.row.friend.id}`
+          keyExtractor={(section, index) =>
+            section.kind === "header"
+              ? `h-${section.title}-${index}`
+              : `f-${section.row.friend.id}`
           }
           ItemSeparatorComponent={({
             leadingItem,

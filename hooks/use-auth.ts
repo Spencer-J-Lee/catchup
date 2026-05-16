@@ -23,8 +23,8 @@ export const useAuth = () => {
     });
 
     const { data: subscription } = supabase.auth.onAuthStateChange(
-      (_event, s) => {
-        setSession(s);
+      (_event, nextSession) => {
+        setSession(nextSession);
       },
     );
 

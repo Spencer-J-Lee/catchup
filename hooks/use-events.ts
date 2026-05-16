@@ -87,7 +87,7 @@ export const useEventsInRange = (
 };
 
 export const useCreateEvent = () => {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (input: EventInput & { user_id: string }) => {
       const { data, error } = await supabase
@@ -99,17 +99,17 @@ export const useCreateEvent = () => {
       return data as CatchUpEvent;
     },
     onSuccess: (data) => {
-      qc.invalidateQueries({ queryKey: ["events"] });
-      qc.invalidateQueries({
+      queryClient.invalidateQueries({ queryKey: ["events"] });
+      queryClient.invalidateQueries({
         queryKey: ["events", "by-friend", data.friend_id],
       });
-      qc.invalidateQueries({ queryKey: ["friends"] });
+      queryClient.invalidateQueries({ queryKey: ["friends"] });
     },
   });
 };
 
 export const useUpdateEvent = () => {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({
       id,
@@ -125,18 +125,18 @@ export const useUpdateEvent = () => {
       return data as CatchUpEvent;
     },
     onSuccess: (data) => {
-      qc.invalidateQueries({ queryKey: ["events"] });
-      qc.invalidateQueries({ queryKey: ["event", data.id] });
-      qc.invalidateQueries({
+      queryClient.invalidateQueries({ queryKey: ["events"] });
+      queryClient.invalidateQueries({ queryKey: ["event", data.id] });
+      queryClient.invalidateQueries({
         queryKey: ["events", "by-friend", data.friend_id],
       });
-      qc.invalidateQueries({ queryKey: ["friends"] });
+      queryClient.invalidateQueries({ queryKey: ["friends"] });
     },
   });
 };
 
 export const useDeleteEvent = () => {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase
@@ -146,8 +146,8 @@ export const useDeleteEvent = () => {
       if (error) throw error;
     },
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["events"] });
-      qc.invalidateQueries({ queryKey: ["friends"] });
+      queryClient.invalidateQueries({ queryKey: ["events"] });
+      queryClient.invalidateQueries({ queryKey: ["friends"] });
     },
   });
 };

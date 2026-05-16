@@ -6,20 +6,20 @@ import {
 
 import type { EventStatus, Medium } from "@/types/database";
 
-export const formatDate = (d: Date | string): string => {
-  return format(typeof d === "string" ? new Date(d) : d, "MMM d, yyyy");
+export const formatDate = (date: Date | string): string => {
+  return format(typeof date === "string" ? new Date(date) : date, "MMM d, yyyy");
 };
 
-export const formatDateTime = (d: Date | string): string => {
+export const formatDateTime = (date: Date | string): string => {
   return format(
-    typeof d === "string" ? new Date(d) : d,
+    typeof date === "string" ? new Date(date) : date,
     "MMM d, yyyy 'at' h:mm a",
   );
 };
 
-export const formatRelative = (d: Date | string): string => {
-  const date = typeof d === "string" ? new Date(d) : d;
-  return formatDistanceToNowStrict(date, { addSuffix: true });
+export const formatRelative = (date: Date | string): string => {
+  const parsed = typeof date === "string" ? new Date(date) : date;
+  return formatDistanceToNowStrict(parsed, { addSuffix: true });
 };
 
 export const formatOverdueDays = (dueAt: Date | string): string => {
@@ -52,8 +52,8 @@ export const initialsOf = (
   return "?";
 };
 
-export const formatStatus = (s: EventStatus): string => {
-  switch (s) {
+export const formatStatus = (status: EventStatus): string => {
+  switch (status) {
     case "scheduled":
       return "Scheduled";
     case "completed":
@@ -65,8 +65,8 @@ export const formatStatus = (s: EventStatus): string => {
   }
 };
 
-export const formatMedium = (m: Medium | null | undefined): string => {
-  switch (m) {
+export const formatMedium = (medium: Medium | null | undefined): string => {
+  switch (medium) {
     case "text":
       return "Text";
     case "call":

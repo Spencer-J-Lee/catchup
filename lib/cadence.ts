@@ -29,7 +29,7 @@ export const presetFromAmount = (
       Exclude<CadencePreset, "custom">,
       { amount: number; unit: CadenceUnit },
     ][]
-  ).find(([, v]) => v.amount === amount && v.unit === unit);
+  ).find(([, preset]) => preset.amount === amount && preset.unit === unit);
   return match ? match[0] : "custom";
 };
 

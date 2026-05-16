@@ -41,7 +41,7 @@ const FriendDetailScreen = () => {
   const router = useRouter();
   const { data: friend, isLoading } = useFriend(id);
   const { data: events } = useEventsForFriend(id);
-  const del = useDeleteFriend();
+  const deleteFriend = useDeleteFriend();
   const linkContact = useLinkFriendContact();
 
   if (isLoading || !friend) {
@@ -55,7 +55,7 @@ const FriendDetailScreen = () => {
   }
 
   const lastCompleted = events?.find(
-    (e) => e.status === "completed" && e.occurred_at,
+    (event) => event.status === "completed" && event.occurred_at,
   );
 
   const onDelete = () => {
@@ -68,7 +68,7 @@ const FriendDetailScreen = () => {
           text: "Delete",
           style: "destructive",
           onPress: async () => {
-            await del.mutateAsync(id!);
+            await deleteFriend.mutateAsync(id!);
             router.back();
           },
         },
@@ -90,8 +90,8 @@ const FriendDetailScreen = () => {
         contact_snapshot: picked.snapshot as unknown as Record<string, unknown>,
         avatar_url: picked.avatar_url,
       });
-    } catch (e) {
-      Alert.alert("Couldn't link contact", (e as Error).message);
+    } catch (error) {
+      Alert.alert("Couldn't link contact", (error as Error).message);
     }
   };
 
@@ -247,7 +247,7 @@ const FriendDetailScreen = () => {
             <FlatList
               scrollEnabled={false}
               data={events}
-              keyExtractor={(e) => e.id}
+              keyExtractor={(event) => event.id}
               ItemSeparatorComponent={() => <View className="h-2" />}
               renderItem={({ item }) => <HistoryItem event={item} />}
             />
@@ -256,12 +256,12 @@ const FriendDetailScreen = () => {
 
         <Pressable
           onPress={onDelete}
-          disabled={del.isPending}
+          disabled={deleteFriend.isPending}
           className="self-center py-2 px-3 mt-2"
           hitSlop={8}
         >
           <Text className="text-sm text-danger-400 font-medium">
-            {del.isPending ? "Deleting…" : "Delete friend"}
+            {deleteFriend.isPending ? "Deleting…" : "Delete friend"}
           </Text>
         </Pressable>
       </View>

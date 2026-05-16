@@ -8,7 +8,7 @@ import { DEFAULT_CADENCE_UNIT, type CadenceValue } from "./types";
 
 interface CadencePresetsProps {
   value: CadenceValue;
-  onChange: (v: CadenceValue) => void;
+  onChange: (value: CadenceValue) => void;
 }
 
 const PRESET_KEYS: Exclude<CadencePreset, "custom">[] = [

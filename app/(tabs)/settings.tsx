@@ -9,7 +9,7 @@ import { clearSeedData, seedExampleData } from "@/lib/seed";
 
 const SettingsScreen = () => {
   const { user, signOut } = useAuth();
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const [seeding, setSeeding] = useState(false);
   const [clearing, setClearing] = useState(false);
 
@@ -17,15 +17,15 @@ const SettingsScreen = () => {
     if (!user) return;
     setSeeding(true);
     try {
-      const r = await seedExampleData(user.id);
-      qc.invalidateQueries({ queryKey: ["friends"] });
-      qc.invalidateQueries({ queryKey: ["events"] });
+      const result = await seedExampleData(user.id);
+      queryClient.invalidateQueries({ queryKey: ["friends"] });
+      queryClient.invalidateQueries({ queryKey: ["events"] });
       Alert.alert(
         "Seed data loaded",
-        `Removed ${r.friendsDeleted} previous seed friend${r.friendsDeleted === 1 ? "" : "s"}.\nCreated ${r.friendsCreated} friends and ${r.eventsCreated} events.`,
+        `Removed ${result.friendsDeleted} previous seed friend${result.friendsDeleted === 1 ? "" : "s"}.\nCreated ${result.friendsCreated} friends and ${result.eventsCreated} events.`,
       );
-    } catch (e) {
-      Alert.alert("Failed to seed", (e as Error).message);
+    } catch (error) {
+      Alert.alert("Failed to seed", (error as Error).message);
     } finally {
       setSeeding(false);
     }
@@ -44,15 +44,15 @@ const SettingsScreen = () => {
           onPress: async () => {
             setClearing(true);
             try {
-              const n = await clearSeedData(user.id);
-              qc.invalidateQueries({ queryKey: ["friends"] });
-              qc.invalidateQueries({ queryKey: ["events"] });
+              const removedCount = await clearSeedData(user.id);
+              queryClient.invalidateQueries({ queryKey: ["friends"] });
+              queryClient.invalidateQueries({ queryKey: ["events"] });
               Alert.alert(
                 "Seed data cleared",
-                `Removed ${n} friend${n === 1 ? "" : "s"}.`,
+                `Removed ${removedCount} friend${removedCount === 1 ? "" : "s"}.`,
               );
-            } catch (e) {
-              Alert.alert("Failed to clear", (e as Error).message);
+            } catch (error) {
+              Alert.alert("Failed to clear", (error as Error).message);
             } finally {
               setClearing(false);
             }

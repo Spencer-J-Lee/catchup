@@ -39,7 +39,7 @@ export const FriendListItem = ({
   isDue,
 }: FriendListItemProps) => {
   const swipeableRef = useRef<SwipeableMethods>(null);
-  const del = useDeleteFriend();
+  const deleteFriend = useDeleteFriend();
 
   const onDeletePress = () => {
     Alert.alert(
@@ -55,7 +55,7 @@ export const FriendListItem = ({
           text: "Delete",
           style: "destructive",
           onPress: () => {
-            del.mutate(friend.id);
+            deleteFriend.mutate(friend.id);
           },
         },
       ],

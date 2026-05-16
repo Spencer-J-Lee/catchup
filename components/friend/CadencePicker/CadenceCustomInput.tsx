@@ -11,7 +11,7 @@ import { DEFAULT_CADENCE_UNIT, type CadenceValue } from "./types";
 
 interface CadenceCustomInputProps {
   value: CadenceValue;
-  onChange: (v: CadenceValue) => void;
+  onChange: (value: CadenceValue) => void;
   className?: string;
 }
 
@@ -29,22 +29,22 @@ export const CadenceCustomInput = ({
   className,
 }: CadenceCustomInputProps) => {
   const amountStr = value.amount === null ? "" : String(value.amount);
-  const unit: CadenceUnit = value.unit ?? DEFAULT_CADENCE_UNIT;
+  const selectedUnit: CadenceUnit = value.unit ?? DEFAULT_CADENCE_UNIT;
 
   const setAmount = (text: string) => {
     const digits = text.replace(/[^0-9]/g, "");
     const amount = parseInt(digits, 10);
 
     if (amount < 1 || !Number.isFinite(amount)) {
-      onChange({ preset: "custom", amount: null, unit });
+      onChange({ preset: "custom", amount: null, unit: selectedUnit });
       return;
     }
 
-    onChange({ preset: "custom", amount, unit });
+    onChange({ preset: "custom", amount, unit: selectedUnit });
   };
 
-  const setUnit = (u: CadenceUnit) => {
-    onChange({ preset: "custom", amount: value.amount, unit: u });
+  const setUnit = (unit: CadenceUnit) => {
+    onChange({ preset: "custom", amount: value.amount, unit });
   };
 
   return (
@@ -61,16 +61,18 @@ export const CadenceCustomInput = ({
         />
 
         <View className="flex-row gap-2">
-          {UNITS.map((u) => {
+          {UNITS.map((unit) => {
             const isOne = (value.amount ?? 0) === 1;
-            const label = isOne ? UNIT_LABEL[u].singular : UNIT_LABEL[u].plural;
+            const label = isOne
+              ? UNIT_LABEL[unit].singular
+              : UNIT_LABEL[unit].plural;
 
             return (
               <Chip
-                key={u}
-                selected={unit === u}
+                key={unit}
                 label={label}
-                onPress={() => setUnit(u)}
+                selected={selectedUnit === unit}
+                onPress={() => setUnit(unit)}
               />
             );
           })}
