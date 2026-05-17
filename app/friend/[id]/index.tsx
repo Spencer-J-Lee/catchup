@@ -129,7 +129,7 @@ const FriendDetailScreen = () => {
           title: fullName(friend),
           headerRight: () => (
             <Link href={ROUTES.friend.edit(id)} asChild>
-              <Pressable className="px-2">
+              <Pressable className="p-2" hitSlop={16}>
                 <Text className="text-brand-300 font-medium">Edit</Text>
               </Pressable>
             </Link>

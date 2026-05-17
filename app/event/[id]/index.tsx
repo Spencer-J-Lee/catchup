@@ -105,7 +105,7 @@ const EventDetailScreen = () => {
           title: "Catch-up",
           headerRight: () => (
             <Link href={ROUTES.event.edit(id)} asChild>
-              <Pressable className="px-2">
+              <Pressable className="p-2" hitSlop={16}>
                 <Text className="text-brand-300 font-medium">Edit</Text>
               </Pressable>
             </Link>
@@ -188,4 +188,3 @@ const EventDetailScreen = () => {
 };
 
 export default EventDetailScreen;
-
