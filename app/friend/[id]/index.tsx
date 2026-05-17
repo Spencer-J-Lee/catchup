@@ -29,8 +29,9 @@ import {
 } from "@/lib/contacts";
 import {
   formatCadence,
-  formatDateTime,
+  formatDate,
   formatMedium,
+  formatRelative,
   fullName,
 } from "@/lib/format";
 import { ROUTES } from "@/lib/routes";
@@ -143,7 +144,7 @@ const FriendDetailScreen = () => {
             label="Last caught up"
             value={
               lastCompleted?.occurred_at
-                ? formatDateTime(lastCompleted.occurred_at)
+                ? `${formatRelative(lastCompleted.occurred_at)} (${formatDate(lastCompleted.occurred_at)})`
                 : "No catch-ups yet"
             }
           />
@@ -343,7 +344,7 @@ const HistoryItem = ({ event }: HistoryItemProps) => {
   const when = whenISO ? new Date(whenISO) : null;
   const mediumText = event.medium
     ? `${formatMedium(event.medium)}${event.medium_detail ? ` · ${event.medium_detail}` : ""}`
-    : "—";
+    : "";
 
   return (
     <Link href={ROUTES.event.detail(event.id)} asChild>

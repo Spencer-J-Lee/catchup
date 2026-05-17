@@ -40,7 +40,7 @@ export const getFriendSubLabelData = ({
   if (action === "followup" && scheduledAt) {
     return {
       label: `Was scheduled ${formatRelative(scheduledAt)}`,
-      className: "text-brand-300 font-medium",
+      className: "text-fg-muted font-medium",
     };
   }
 
