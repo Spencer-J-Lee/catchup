@@ -231,14 +231,15 @@ const FriendDetailScreen = () => {
         </View>
 
         <View className="bg-surface-elevated rounded-2xl p-4 gap-2">
-          <Row
-            label="Last caught up"
-            value={
-              lastCompleted?.occurred_at
-                ? `${formatRelative(lastCompleted.occurred_at)} (${formatDate(lastCompleted.occurred_at)})`
-                : "No catch-ups yet"
-            }
-          />
+          {lastCompleted?.occurred_at ? (
+            <PressableRow
+              label="Last caught up"
+              value={`${formatRelative(lastCompleted.occurred_at)} (${formatDate(lastCompleted.occurred_at)})`}
+              onPress={() => router.push(ROUTES.event.detail(lastCompleted.id))}
+            />
+          ) : (
+            <Row label="Last caught up" value="No catch-ups yet" />
+          )}
           <PressableRow
             label="Frequency"
             value={formatFrequency(
