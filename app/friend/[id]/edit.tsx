@@ -52,7 +52,7 @@ const EditFriendScreen = () => {
   };
 
   return (
-    <Screen scroll edges={[]}>
+    <Screen scroll edges={["bottom"]}>
       <View className="gap-4">
         <FrequencyPicker value={frequency} onChange={setFrequency} />
         <Button onPress={onSave} loading={update.isPending}>

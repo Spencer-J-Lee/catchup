@@ -85,8 +85,11 @@ const RootLayout = () => {
             <Stack.Screen
               name="friend/[id]/edit"
               options={{
+                presentation: "formSheet",
+                sheetAllowedDetents: "fitToContents",
+                sheetGrabberVisible: true,
                 headerShown: true,
-                title: "Edit friend",
+                title: "Frequency",
                 ...STACK_HEADER_OPTIONS,
               }}
             />

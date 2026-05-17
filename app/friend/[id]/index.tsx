@@ -11,7 +11,9 @@ import {
   View,
 } from "react-native";
 
+
 import { FriendAvatar } from "@/components/friend/FriendListItem/FriendAvatar";
+import { PressableRow } from "@/components/ui/PressableRow";
 import { Row } from "@/components/ui/Row";
 import { Screen } from "@/components/ui/Screen";
 import { useEventsForFriend } from "@/hooks/use-events";
@@ -139,13 +141,6 @@ const FriendDetailScreen = () => {
       <Stack.Screen
         options={{
           title: fullName(friend),
-          headerRight: () => (
-            <Link href={ROUTES.friend.edit(id)} asChild>
-              <Pressable className="p-2" hitSlop={16}>
-                <Text className="text-brand-300 font-medium">Edit</Text>
-              </Pressable>
-            </Link>
-          ),
         }}
       />
 
@@ -241,12 +236,13 @@ const FriendDetailScreen = () => {
                 : "No catch-ups yet"
             }
           />
-          <Row
+          <PressableRow
             label="Frequency"
             value={formatFrequency(
               friend.frequency_amount,
               friend.frequency_unit,
             )}
+            onPress={() => router.push(ROUTES.friend.edit(id!))}
           />
         </View>
 
