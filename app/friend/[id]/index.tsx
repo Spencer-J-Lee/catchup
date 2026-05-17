@@ -27,12 +27,7 @@ import {
   pickContact,
   snapshotFrom,
 } from "@/lib/contacts";
-import {
-  formatDateTime,
-  formatMedium,
-  formatRelative,
-  fullName,
-} from "@/lib/format";
+import { formatDateTime, formatMedium, fullName } from "@/lib/format";
 import { ROUTES } from "@/lib/routes";
 import type { CatchUpEvent, EventStatus } from "@/types/database";
 
@@ -143,7 +138,7 @@ const FriendDetailScreen = () => {
             label="Last caught up"
             value={
               lastCompleted?.occurred_at
-                ? `${formatRelative(lastCompleted.occurred_at)} (${formatDateTime(lastCompleted.occurred_at)})`
+                ? formatDateTime(lastCompleted.occurred_at)
                 : "No catch-ups yet"
             }
           />
