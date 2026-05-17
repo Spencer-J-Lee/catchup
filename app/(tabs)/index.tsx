@@ -113,7 +113,7 @@ const FriendsScreen = () => {
       if (state === "awaiting_followup" && past) {
         awaitingFollowup.push({
           friend,
-          action: "followup",
+          action: "followUp",
           scheduledAt: past.scheduled_at,
           scheduledEventId: past.id,
           missedAt: null,
@@ -148,7 +148,7 @@ const FriendsScreen = () => {
       } else {
         caughtUp.push({
           friend,
-          action: "checkin",
+          action: "logCatchUp",
           scheduledAt: null,
           scheduledEventId: null,
           missedAt: null,

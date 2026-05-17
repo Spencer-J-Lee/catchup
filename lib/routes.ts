@@ -10,7 +10,7 @@ type FriendNewParams = {
 
 type EventNewParams = {
   friend_id: string;
-  mode: "schedule" | "checkin";
+  mode: "schedule" | "logCatchUp";
 };
 
 const AUTH = "/(auth)";

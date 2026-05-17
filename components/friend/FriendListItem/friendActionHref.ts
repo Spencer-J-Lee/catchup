@@ -9,7 +9,7 @@ export const resolveFriendActionHref = (
   action: FriendItemAction,
   scheduledEventId: string | null | undefined,
 ): Href => {
-  if (action === "followup" && scheduledEventId) {
+  if (action === "followUp" && scheduledEventId) {
     return ROUTES.event.detail(scheduledEventId);
   }
 
@@ -21,5 +21,5 @@ export const resolveFriendActionHref = (
     return ROUTES.event.new({ friend_id: friendId, mode: "schedule" });
   }
 
-  return ROUTES.event.new({ friend_id: friendId, mode: "checkin" });
+  return ROUTES.event.new({ friend_id: friendId, mode: "logCatchUp" });
 };

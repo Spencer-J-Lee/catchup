@@ -11,9 +11,9 @@ const ACTION_META: Record<
   { label: string; primary: boolean }
 > = {
   schedule: { label: "Schedule", primary: true },
-  checkin: { label: "Check in", primary: false },
+  logCatchUp: { label: "Log catch-up", primary: false },
   reschedule: { label: "Re-schedule", primary: false },
-  followup: { label: "Follow up", primary: true },
+  followUp: { label: "Follow up", primary: true },
 };
 
 interface FriendActionButtonProps {

@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/Input";
 import { formatStatus } from "@/lib/format";
 import type { EventStatus, Medium } from "@/types/database";
 
-export type EventMode = "schedule" | "checkin" | "edit";
+export type EventMode = "schedule" | "logCatchUp" | "edit";
 
 export interface EventFormValues {
   date: Date;

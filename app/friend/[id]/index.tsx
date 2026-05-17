@@ -11,7 +11,6 @@ import {
   View,
 } from "react-native";
 
-
 import { FriendAvatar } from "@/components/friend/FriendListItem/FriendAvatar";
 import { PressableRow } from "@/components/ui/PressableRow";
 import { Row } from "@/components/ui/Row";
@@ -216,16 +215,12 @@ const FriendDetailScreen = () => {
             </Pressable>
           </Link>
           <Link
-            href={ROUTES.event.new({ friend_id: id, mode: "checkin" })}
+            href={ROUTES.event.new({ friend_id: id, mode: "logCatchUp" })}
             asChild
           >
             <Pressable className="flex-1 bg-surface-elevated active:bg-surface-high rounded-full px-4 py-3 items-center justify-center flex-row gap-2">
-              <Ionicons
-                name="checkmark-circle"
-                size={18}
-                color={colors.fg.DEFAULT}
-              />
-              <Text className="text-fg font-semibold">Check in</Text>
+              <Ionicons name="create" size={18} color={colors.fg.DEFAULT} />
+              <Text className="text-fg font-semibold">Log catch-up</Text>
             </Pressable>
           </Link>
         </View>

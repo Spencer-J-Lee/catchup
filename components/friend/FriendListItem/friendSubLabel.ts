@@ -37,7 +37,7 @@ export const getFriendSubLabelData = ({
   missedAt,
   isDue,
 }: SubLabelArgs): { label: string; className: string } => {
-  if (action === "followup" && scheduledAt) {
+  if (action === "followUp" && scheduledAt) {
     return {
       label: `Was scheduled ${formatRelative(scheduledAt)}`,
       className: "text-fg-muted font-medium",
@@ -69,7 +69,7 @@ export const getFriendSubLabelData = ({
 
   if (friend.last_caught_up_at) {
     return {
-      label: `Checked in ${formatRelative(friend.last_caught_up_at)}`,
+      label: `Caught up ${formatRelative(friend.last_caught_up_at)}`,
       className: isDue ? "text-brand-300 font-medium" : "text-fg-muted",
     };
   }

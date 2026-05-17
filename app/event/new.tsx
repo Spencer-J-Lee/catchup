@@ -19,8 +19,8 @@ const NewEventScreen = () => {
   const { user } = useAuth();
   const create = useCreateEvent();
 
-  const mode: EventMode = params.mode === "checkin" ? "checkin" : "schedule";
-  const title = mode === "schedule" ? "Schedule catch-up" : "Check-in";
+  const mode: EventMode = params.mode === "logCatchUp" ? "logCatchUp" : "schedule";
+  const title = mode === "schedule" ? "Schedule catch-up" : "Log catch-up";
 
   const initialFormValues = useMemo<EventFormValues>(() => {
     const now = new Date();
@@ -93,7 +93,7 @@ const NewEventScreen = () => {
         />
 
         <Button onPress={onSave} loading={create.isPending}>
-          {mode === "schedule" ? "Schedule" : "Save check-in"}
+          {mode === "schedule" ? "Schedule" : "Log catch-up"}
         </Button>
       </View>
     </Screen>
