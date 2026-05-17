@@ -46,7 +46,7 @@ const contactFor = (args: {
   id: string;
   name: string;
   phone: string;
-  email: string;
+  email: string | null;
   imageUri?: string | null;
   syncedDaysAgo: number;
 }): SeedContact => {
@@ -58,7 +58,7 @@ const contactFor = (args: {
       phone: args.phone,
       email: args.email,
       phones: [{ label: "mobile", number: args.phone }],
-      emails: [{ label: "personal", email: args.email }],
+      emails: args.email ? [{ label: "personal", email: args.email }] : [],
       image_uri: args.imageUri ?? null,
     },
   };
@@ -213,6 +213,7 @@ const FRIENDS: SeedFriend[] = [
     ],
   },
   // scenario: never caught up (no events), recently linked contact with no
+  // email on file — exercises the disabled Email action button.
   {
     first_name: "Eli",
     last_name: mark("Brooks"),
@@ -224,7 +225,7 @@ const FRIENDS: SeedFriend[] = [
       id: "seed-contact-eli-brooks",
       name: "Eli Brooks",
       phone: "+13105550172",
-      email: "eli.brooks@example.com",
+      email: null,
       syncedDaysAgo: 5,
     }),
     createdDaysAgo: 60,

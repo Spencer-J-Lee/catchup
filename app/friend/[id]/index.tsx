@@ -24,6 +24,7 @@ import { colors } from "@/lib/colors";
 import {
   openCall,
   openContactCard,
+  openEmail,
   openMessage,
   pickContact,
   snapshotFrom,
@@ -80,6 +81,7 @@ const FriendDetailScreen = () => {
 
   const snapshot = snapshotFrom(friend.contact_snapshot);
   const phone = snapshot?.phone ?? null;
+  const email = snapshot?.email ?? null;
   const contactId = friend.contact_id;
 
   const onLinkContact = async () => {
@@ -117,6 +119,14 @@ const FriendDetailScreen = () => {
       return;
     }
     openCall(phone);
+  };
+
+  const onEmail = () => {
+    if (!email) {
+      Alert.alert("No email", "This contact has no email on file.");
+      return;
+    }
+    openEmail(email);
   };
 
   const onContact = () => {
@@ -157,6 +167,12 @@ const FriendDetailScreen = () => {
               label="Call"
               disabled={!phone}
               onPress={onCall}
+            />
+            <ContactActionButton
+              icon="mail"
+              label="Email"
+              disabled={!email}
+              onPress={onEmail}
             />
             <ContactActionButton
               icon="person-circle"

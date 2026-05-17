@@ -150,6 +150,12 @@ export const openCall = (phone: string) => {
   );
 };
 
+export const openEmail = (email: string) => {
+  Linking.openURL(`mailto:${email}`).catch(() =>
+    Alert.alert("Cannot open email", "No email app is available."),
+  );
+};
+
 export const openContactCard = async (contactId: string) => {
   try {
     await Contacts.presentFormAsync(contactId, undefined, {
