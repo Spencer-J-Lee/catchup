@@ -194,7 +194,11 @@ const FriendDetailScreen = () => {
                 Enables Message, Call, and Contact actions.
               </Text>
             </View>
-            <Ionicons name="chevron-forward" size={18} color={colors.fg.subtle} />
+            <Ionicons
+              name="chevron-forward"
+              size={18}
+              color={colors.fg.subtle}
+            />
           </Pressable>
         )}
 
@@ -204,7 +208,11 @@ const FriendDetailScreen = () => {
             asChild
           >
             <Pressable className="flex-1 bg-brand-300 active:bg-brand-400 rounded-full px-4 py-3 items-center justify-center flex-row gap-2">
-              <Ionicons name="calendar" size={18} color={colors.surface.DEFAULT} />
+              <Ionicons
+                name="calendar"
+                size={18}
+                color={colors.surface.DEFAULT}
+              />
               <Text className="text-surface font-semibold">Schedule</Text>
             </Pressable>
           </Link>
@@ -213,7 +221,11 @@ const FriendDetailScreen = () => {
             asChild
           >
             <Pressable className="flex-1 bg-surface-elevated active:bg-surface-high rounded-full px-4 py-3 items-center justify-center flex-row gap-2">
-              <Ionicons name="checkmark-circle" size={18} color={colors.fg.DEFAULT} />
+              <Ionicons
+                name="checkmark-circle"
+                size={18}
+                color={colors.fg.DEFAULT}
+              />
               <Text className="text-fg font-semibold">Check in</Text>
             </Pressable>
           </Link>
@@ -363,10 +375,7 @@ const HistoryItem = ({ event }: HistoryItemProps) => {
             {mediumText}
           </Text>
           <View
-            className={classNames(
-              "px-2 py-0.5 rounded-full border",
-              meta.pill,
-            )}
+            className={classNames("px-2 py-0.5 rounded-full border", meta.pill)}
           >
             <Text className={classNames("text-xs font-semibold", meta.text)}>
               {meta.label}

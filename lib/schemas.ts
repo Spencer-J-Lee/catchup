@@ -63,8 +63,11 @@ export const eventInputSchema = z
   .refine((event) => event.scheduled_at != null || event.occurred_at != null, {
     message: "An event must have a scheduled or occurred time",
   })
-  .refine((event) => event.status !== "completed" || event.occurred_at != null, {
-    message: "Completed events must have an occurred_at",
-  });
+  .refine(
+    (event) => event.status !== "completed" || event.occurred_at != null,
+    {
+      message: "Completed events must have an occurred_at",
+    },
+  );
 
 export type EventInput = z.infer<typeof eventInputSchema>;

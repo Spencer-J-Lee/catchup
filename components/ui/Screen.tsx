@@ -9,7 +9,11 @@ interface ScreenProps {
   className?: string;
 }
 
-export const Screen = ({ children, scroll = false, className }: ScreenProps) => {
+export const Screen = ({
+  children,
+  scroll = false,
+  className,
+}: ScreenProps) => {
   const Container = scroll ? ScrollView : View;
 
   return (

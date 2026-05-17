@@ -50,7 +50,10 @@ const LoginScreen = () => {
         >
           Sign in
         </Button>
-        <Link href={ROUTES.auth.signup} className="text-center text-brand-300 mt-2">
+        <Link
+          href={ROUTES.auth.signup}
+          className="text-center text-brand-300 mt-2"
+        >
           <Text>{"Don't have an account? Sign up"}</Text>
         </Link>
       </View>

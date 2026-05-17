@@ -112,7 +112,11 @@ const PickContactScreen = () => {
       <Screen>
         <View className="flex-1 items-center justify-center px-8">
           <View className="h-20 w-20 rounded-full bg-surface-elevated items-center justify-center mb-5">
-            <Ionicons name="people-outline" size={36} color={colors.brand[300]} />
+            <Ionicons
+              name="people-outline"
+              size={36}
+              color={colors.brand[300]}
+            />
           </View>
           <Text className="text-xl font-semibold text-fg mb-2 text-center">
             Contacts access needed
@@ -164,12 +168,20 @@ const PickContactScreen = () => {
               className="bg-surface-elevated rounded-xl p-3 flex-row items-center gap-3 active:bg-surface-high mb-3"
             >
               <View className="h-12 w-12 rounded-full bg-surface items-center justify-center">
-                <Ionicons name="person-add" size={20} color={colors.brand[300]} />
+                <Ionicons
+                  name="person-add"
+                  size={20}
+                  color={colors.brand[300]}
+                />
               </View>
               <Text className="text-base font-medium text-fg flex-1">
                 Add without a contact
               </Text>
-              <Ionicons name="chevron-forward" size={18} color={colors.fg.subtle} />
+              <Ionicons
+                name="chevron-forward"
+                size={18}
+                color={colors.fg.subtle}
+              />
             </Pressable>
           }
           ListEmptyComponent={

@@ -67,7 +67,10 @@ const SignupScreen = () => {
         >
           Sign up
         </Button>
-        <Link href={ROUTES.auth.login} className="text-center text-brand-300 mt-2">
+        <Link
+          href={ROUTES.auth.login}
+          className="text-center text-brand-300 mt-2"
+        >
           <Text>Already have an account? Sign in</Text>
         </Link>
       </View>

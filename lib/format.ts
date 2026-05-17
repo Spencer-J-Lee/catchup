@@ -7,7 +7,10 @@ import {
 import type { EventStatus, Medium } from "@/types/database";
 
 export const formatDate = (date: Date | string): string => {
-  return format(typeof date === "string" ? new Date(date) : date, "MMM d, yyyy");
+  return format(
+    typeof date === "string" ? new Date(date) : date,
+    "MMM d, yyyy",
+  );
 };
 
 export const formatDateTime = (date: Date | string): string => {

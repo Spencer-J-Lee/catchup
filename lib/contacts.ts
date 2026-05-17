@@ -28,7 +28,10 @@ export interface ContactListItem {
 
 const snapshotFromContact = (contact: Contacts.Contact): ContactSnapshot => {
   const phones = (contact.phoneNumbers ?? [])
-    .map((phone) => ({ label: phone.label ?? null, number: phone.number ?? "" }))
+    .map((phone) => ({
+      label: phone.label ?? null,
+      number: phone.number ?? "",
+    }))
     .filter((phone) => phone.number);
   const emails = (contact.emails ?? [])
     .map((email) => ({ label: email.label ?? null, email: email.email ?? "" }))
@@ -62,10 +65,11 @@ const loadContactWithImage = async (
   }
 };
 
-export const requestContactsPermission = async (): Promise<Contacts.PermissionStatus> => {
-  const { status } = await Contacts.requestPermissionsAsync();
-  return status;
-};
+export const requestContactsPermission =
+  async (): Promise<Contacts.PermissionStatus> => {
+    const { status } = await Contacts.requestPermissionsAsync();
+    return status;
+  };
 
 export const listContacts = async (): Promise<ContactListItem[]> => {
   const { data } = await Contacts.getContactsAsync({

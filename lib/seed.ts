@@ -453,7 +453,8 @@ const FRIENDS: SeedFriend[] = [
         medium_detail: null,
         location_text: null,
         location_address: null,
-        event_notes: "Short catch-up — agreed to grab coffee in a couple weeks.",
+        event_notes:
+          "Short catch-up — agreed to grab coffee in a couple weeks.",
       },
       {
         offsetDays: -3,
@@ -572,7 +573,9 @@ export const seedExampleData = async (userId: string): Promise<SeedResult> => {
         user_id: userId,
         friend_id: friendId,
         scheduled_at:
-          isScheduled || event.status === "cancelled" || event.status === "missed"
+          isScheduled ||
+          event.status === "cancelled" ||
+          event.status === "missed"
             ? timestamp
             : null,
         occurred_at: event.status === "completed" ? timestamp : null,

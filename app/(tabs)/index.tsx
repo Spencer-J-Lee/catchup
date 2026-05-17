@@ -16,8 +16,8 @@ import {
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Screen } from "@/components/ui/Screen";
-import { useFriends, type FriendWithStatus } from "@/hooks/use-friends";
 import { useMissedEvents, useScheduledEvents } from "@/hooks/use-events";
+import { useFriends, type FriendWithStatus } from "@/hooks/use-friends";
 import { colors } from "@/lib/colors";
 import { deriveFriendState } from "@/lib/lifecycle";
 import { ROUTES } from "@/lib/routes";
@@ -57,8 +57,7 @@ const FriendsScreen = () => {
       const existing = bucket.get(event.friend_id);
       // Past: keep the oldest (longest awaiting). Upcoming: keep the soonest.
       const replace =
-        !existing ||
-        scheduledMs < new Date(existing.scheduled_at).getTime();
+        !existing || scheduledMs < new Date(existing.scheduled_at).getTime();
       if (replace) {
         bucket.set(event.friend_id, {
           id: event.id,
@@ -132,9 +131,9 @@ const FriendsScreen = () => {
       } else if (state === "reaching_out") {
         // Surface a "missed N days ago" hint when the auto-flow kicked in.
         const missedAt = missed
-          ? (!friend.last_caught_up_at ||
-              new Date(missed.scheduled_at).getTime() >
-                new Date(friend.last_caught_up_at).getTime())
+          ? !friend.last_caught_up_at ||
+            new Date(missed.scheduled_at).getTime() >
+              new Date(friend.last_caught_up_at).getTime()
             ? missed.scheduled_at
             : null
           : null;
@@ -169,16 +168,19 @@ const FriendsScreen = () => {
         new Date(right.scheduledAt!).getTime(),
     );
     reachingOut.sort((left, right) => {
-      // Prefer overdue cadence sort key; fall back to missed_at; finally name.
+      // Missed friends first; within each group, sort by the relevant timestamp.
+      if (!!left.missedAt !== !!right.missedAt) {
+        return left.missedAt ? -1 : 1;
+      }
       const leftKey =
+        (left.missedAt && new Date(left.missedAt).getTime()) ||
         (left.friend.next_due_at &&
           new Date(left.friend.next_due_at).getTime()) ||
-        (left.missedAt && new Date(left.missedAt).getTime()) ||
         Infinity;
       const rightKey =
+        (right.missedAt && new Date(right.missedAt).getTime()) ||
         (right.friend.next_due_at &&
           new Date(right.friend.next_due_at).getTime()) ||
-        (right.missedAt && new Date(right.missedAt).getTime()) ||
         Infinity;
       return leftKey - rightKey;
     });
@@ -199,15 +201,8 @@ const FriendsScreen = () => {
         title: "Awaiting follow-up",
         count: awaitingFollowup.length,
       });
-      for (const row of awaitingFollowup) sections.push({ kind: "friend", row });
-    }
-    if (reachingOut.length > 0) {
-      sections.push({
-        kind: "header",
-        title: "Reaching out",
-        count: reachingOut.length,
-      });
-      for (const row of reachingOut) sections.push({ kind: "friend", row });
+      for (const row of awaitingFollowup)
+        sections.push({ kind: "friend", row });
     }
     if (scheduled.length > 0) {
       sections.push({
@@ -216,6 +211,14 @@ const FriendsScreen = () => {
         count: scheduled.length,
       });
       for (const row of scheduled) sections.push({ kind: "friend", row });
+    }
+    if (reachingOut.length > 0) {
+      sections.push({
+        kind: "header",
+        title: "Reaching out",
+        count: reachingOut.length,
+      });
+      for (const row of reachingOut) sections.push({ kind: "friend", row });
     }
     if (idle.length > 0) {
       sections.push({ kind: "header", title: "Idle", count: idle.length });
@@ -262,7 +265,11 @@ const FriendsScreen = () => {
       ) : !hasFriends ? (
         <View className="flex-1 items-center justify-center px-8">
           <View className="h-20 w-20 rounded-full bg-surface-elevated items-center justify-center mb-5">
-            <Ionicons name="people-outline" size={36} color={colors.brand[300]} />
+            <Ionicons
+              name="people-outline"
+              size={36}
+              color={colors.brand[300]}
+            />
           </View>
           <Text className="text-xl font-semibold text-fg mb-2">
             No friends yet
