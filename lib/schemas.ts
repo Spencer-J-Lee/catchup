@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-export const cadenceUnitSchema = z.enum(["days", "weeks", "months"]);
-export const cadencePresetSchema = z.enum([
+export const frequencyUnitSchema = z.enum(["days", "weeks", "months"]);
+export const frequencyPresetSchema = z.enum([
   "daily",
   "weekly",
   "monthly",
@@ -29,19 +29,19 @@ export const friendInputSchema = z
       .transform((value) => (value === "" ? null : value))
       .nullable()
       .optional(),
-    cadence_preset: cadencePresetSchema.nullable().optional(),
-    cadence_amount: z.number().int().positive().nullable().optional(),
-    cadence_unit: cadenceUnitSchema.nullable().optional(),
+    frequency_preset: frequencyPresetSchema.nullable().optional(),
+    frequency_amount: z.number().int().positive().nullable().optional(),
+    frequency_unit: frequencyUnitSchema.nullable().optional(),
   })
   .refine(
     (friend) =>
-      (friend.cadence_preset == null &&
-        friend.cadence_amount == null &&
-        friend.cadence_unit == null) ||
-      (friend.cadence_preset != null &&
-        friend.cadence_amount != null &&
-        friend.cadence_unit != null),
-    { message: "Cadence preset, amount, and unit must all be set together" },
+      (friend.frequency_preset == null &&
+        friend.frequency_amount == null &&
+        friend.frequency_unit == null) ||
+      (friend.frequency_preset != null &&
+        friend.frequency_amount != null &&
+        friend.frequency_unit != null),
+    { message: "Frequency preset, amount, and unit must all be set together" },
   );
 
 export type FriendInput = z.infer<typeof friendInputSchema>;

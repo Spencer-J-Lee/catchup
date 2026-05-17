@@ -2,7 +2,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import { Alert, Image, Text, View } from "react-native";
 
-import { CadencePicker } from "@/components/friend/CadencePicker";
+import { FrequencyPicker } from "@/components/friend/FrequencyPicker";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Screen } from "@/components/ui/Screen";
@@ -11,7 +11,7 @@ import { useCreateFriend } from "@/hooks/use-friends";
 import type { ContactSnapshot } from "@/lib/contacts";
 import { initialsOf } from "@/lib/format";
 import { friendInputSchema } from "@/lib/schemas";
-import type { CadencePreset, CadenceUnit } from "@/types/database";
+import type { FrequencyPreset, FrequencyUnit } from "@/types/database";
 
 type ContactParams = {
   contact_id?: string;
@@ -38,10 +38,10 @@ const NewFriendScreen = () => {
 
   const [firstName, setFirstName] = useState(params.first_name ?? "");
   const [lastName, setLastName] = useState(params.last_name ?? "");
-  const [cadence, setCadence] = useState<{
-    preset: CadencePreset | null;
+  const [frequency, setFrequency] = useState<{
+    preset: FrequencyPreset | null;
     amount: number | null;
-    unit: CadenceUnit | null;
+    unit: FrequencyUnit | null;
   }>({ preset: null, amount: null, unit: null });
 
   const contactId = params.contact_id || null;
@@ -52,9 +52,9 @@ const NewFriendScreen = () => {
     const parsed = friendInputSchema.safeParse({
       first_name: firstName,
       last_name: lastName || null,
-      cadence_preset: cadence.preset,
-      cadence_amount: cadence.amount,
-      cadence_unit: cadence.unit,
+      frequency_preset: frequency.preset,
+      frequency_amount: frequency.amount,
+      frequency_unit: frequency.unit,
     });
     if (!parsed.success) {
       Alert.alert(
@@ -122,7 +122,7 @@ const NewFriendScreen = () => {
           onChangeText={setFirstName}
         />
         <Input label="Last name" value={lastName} onChangeText={setLastName} />
-        <CadencePicker value={cadence} onChange={setCadence} />
+        <FrequencyPicker value={frequency} onChange={setFrequency} />
         <Button
           onPress={onSave}
           loading={create.isPending}

@@ -93,7 +93,7 @@ export type Database = {
             foreignKeyName: "catch_up_events_friend_id_fkey";
             columns: ["friend_id"];
             isOneToOne: false;
-            referencedRelation: "friend_cadence_status";
+            referencedRelation: "friend_frequency_status";
             referencedColumns: ["friend_id"];
           },
           {
@@ -115,9 +115,9 @@ export type Database = {
       friends: {
         Row: {
           avatar_url: string | null;
-          cadence_amount: number | null;
-          cadence_preset: string | null;
-          cadence_unit: string | null;
+          frequency_amount: number | null;
+          frequency_preset: string | null;
+          frequency_unit: string | null;
           contact_id: string | null;
           contact_snapshot: Json | null;
           contact_synced_at: string | null;
@@ -130,9 +130,9 @@ export type Database = {
         };
         Insert: {
           avatar_url?: string | null;
-          cadence_amount?: number | null;
-          cadence_preset?: string | null;
-          cadence_unit?: string | null;
+          frequency_amount?: number | null;
+          frequency_preset?: string | null;
+          frequency_unit?: string | null;
           contact_id?: string | null;
           contact_snapshot?: Json | null;
           contact_synced_at?: string | null;
@@ -145,9 +145,9 @@ export type Database = {
         };
         Update: {
           avatar_url?: string | null;
-          cadence_amount?: number | null;
-          cadence_preset?: string | null;
-          cadence_unit?: string | null;
+          frequency_amount?: number | null;
+          frequency_preset?: string | null;
+          frequency_unit?: string | null;
           contact_id?: string | null;
           contact_snapshot?: Json | null;
           contact_synced_at?: string | null;
@@ -232,26 +232,26 @@ export type Database = {
       };
     };
     Views: {
-      friend_cadence_status: {
+      friend_frequency_status: {
         Row: {
-          cadence_amount: number | null;
-          cadence_unit: string | null;
+          frequency_amount: number | null;
+          frequency_unit: string | null;
           friend_id: string | null;
           last_caught_up_at: string | null;
           next_due_at: string | null;
           user_id: string | null;
         };
         Insert: {
-          cadence_amount?: number | null;
-          cadence_unit?: string | null;
+          frequency_amount?: number | null;
+          frequency_unit?: string | null;
           friend_id?: string | null;
           last_caught_up_at?: never;
           next_due_at?: never;
           user_id?: string | null;
         };
         Update: {
-          cadence_amount?: number | null;
-          cadence_unit?: string | null;
+          frequency_amount?: number | null;
+          frequency_unit?: string | null;
           friend_id?: string | null;
           last_caught_up_at?: never;
           next_due_at?: never;

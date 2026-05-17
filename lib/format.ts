@@ -4,7 +4,7 @@ import {
   formatDistanceToNowStrict,
 } from "date-fns";
 
-import type { CadenceUnit, EventStatus, Medium } from "@/types/database";
+import type { EventStatus, FrequencyUnit, Medium } from "@/types/database";
 
 export const formatDate = (date: Date | string): string => {
   return format(
@@ -68,9 +68,9 @@ export const formatStatus = (status: EventStatus): string => {
   }
 };
 
-export const formatCadence = (
+export const formatFrequency = (
   amount: number | null | undefined,
-  unit: CadenceUnit | null | undefined,
+  unit: FrequencyUnit | null | undefined,
 ): string => {
   if (!amount || !unit) return "Not set";
 

@@ -77,7 +77,7 @@ const SettingsScreen = () => {
           </Text>
           <Text className="text-sm text-fg-muted">
             Loads a curated set of example friends and catch-up events covering
-            due, not-due, missing-cadence, never-caught-up, scheduled, missed,
+            due, not-due, missing-frequency, never-caught-up, scheduled, missed,
             and cancelled cases. Re-running replaces previous seed data.
           </Text>
           <Button onPress={onSeed} loading={seeding} disabled={clearing}>

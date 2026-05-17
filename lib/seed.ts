@@ -1,10 +1,10 @@
 import { supabase } from "@/lib/supabase";
 import type { ContactSnapshot } from "@/lib/contacts";
 import type {
-  CadencePreset,
-  CadenceUnit,
   EventStatus,
   Friend,
+  FrequencyPreset,
+  FrequencyUnit,
   Medium,
 } from "@/types/database";
 
@@ -27,9 +27,9 @@ interface SeedContact {
 interface SeedFriend {
   first_name: string;
   last_name: string | null;
-  cadence_preset: CadencePreset | null;
-  cadence_amount: number | null;
-  cadence_unit: CadenceUnit | null;
+  frequency_preset: FrequencyPreset | null;
+  frequency_amount: number | null;
+  frequency_unit: FrequencyUnit | null;
   avatar_url: string | null;
   /** When set, populates contact_id / contact_snapshot / contact_synced_at to simulate a linked phone contact. */
   contact: SeedContact | null;
@@ -81,13 +81,13 @@ const isoOffsetDays = (days: number): string => {
 };
 
 const FRIENDS: SeedFriend[] = [
-  // scenario: ~30d overdue (weekly cadence), linked contact
+  // scenario: ~30d overdue (weekly frequency), linked contact
   {
     first_name: "Alex",
     last_name: mark("Chen"),
-    cadence_preset: "weekly",
-    cadence_amount: 1,
-    cadence_unit: "weeks",
+    frequency_preset: "weekly",
+    frequency_amount: 1,
+    frequency_unit: "weeks",
     avatar_url: avatarFor("alex-chen"),
     contact: contactFor({
       id: "seed-contact-alex-chen",
@@ -122,13 +122,13 @@ const FRIENDS: SeedFriend[] = [
   },
   // scenario: due via missed_pending — last completion is much older than
   // the missed event, so the auto-flow surfaces a "Missed Nd ago" hint (also long
-  // overdue by cadence, but the missed event wins state priority). Linked contact w/o avatar.
+  // overdue by frequency, but the missed event wins state priority). Linked contact w/o avatar.
   {
     first_name: "Bailey",
     last_name: mark("Park"),
-    cadence_preset: "weekly",
-    cadence_amount: 1,
-    cadence_unit: "weeks",
+    frequency_preset: "weekly",
+    frequency_amount: 1,
+    frequency_unit: "weeks",
     avatar_url: null,
     contact: contactFor({
       id: "seed-contact-bailey-park",
@@ -160,13 +160,13 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
-  // scenario: 1d overdue (weekly cadence), unlinked
+  // scenario: 1d overdue (weekly frequency), unlinked
   {
     first_name: "Cam",
     last_name: mark("Rivera"),
-    cadence_preset: "weekly",
-    cadence_amount: 1,
-    cadence_unit: "weeks",
+    frequency_preset: "weekly",
+    frequency_amount: 1,
+    frequency_unit: "weeks",
     avatar_url: null,
     contact: null,
     createdDaysAgo: 90,
@@ -183,13 +183,13 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
-  // scenario: 1d overdue (monthly cadence), linked contact
+  // scenario: 1d overdue (monthly frequency), linked contact
   {
     first_name: "Dana",
     last_name: mark("Wu"),
-    cadence_preset: "monthly",
-    cadence_amount: 1,
-    cadence_unit: "months",
+    frequency_preset: "monthly",
+    frequency_amount: 1,
+    frequency_unit: "months",
     avatar_url: avatarFor("dana-wu"),
     contact: contactFor({
       id: "seed-contact-dana-wu",
@@ -217,9 +217,9 @@ const FRIENDS: SeedFriend[] = [
   {
     first_name: "Eli",
     last_name: mark("Brooks"),
-    cadence_preset: "monthly",
-    cadence_amount: 1,
-    cadence_unit: "months",
+    frequency_preset: "monthly",
+    frequency_amount: 1,
+    frequency_unit: "months",
     avatar_url: null,
     contact: contactFor({
       id: "seed-contact-eli-brooks",
@@ -235,9 +235,9 @@ const FRIENDS: SeedFriend[] = [
   {
     first_name: "Faye",
     last_name: mark("Holloway"),
-    cadence_preset: "weekly",
-    cadence_amount: 1,
-    cadence_unit: "weeks",
+    frequency_preset: "weekly",
+    frequency_amount: 1,
+    frequency_unit: "weeks",
     avatar_url: avatarFor("faye-holloway"),
     contact: contactFor({
       id: "seed-contact-faye-holloway",
@@ -275,9 +275,9 @@ const FRIENDS: SeedFriend[] = [
   {
     first_name: "Gabriella",
     last_name: mark("Constantinopoulos-Whitfield"),
-    cadence_preset: "monthly",
-    cadence_amount: 1,
-    cadence_unit: "months",
+    frequency_preset: "monthly",
+    frequency_amount: 1,
+    frequency_unit: "months",
     avatar_url: null,
     contact: null,
     createdDaysAgo: 400,
@@ -322,13 +322,13 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
-  // scenario: caught up 2d ago (6-month cadence, not due), linked contact
+  // scenario: caught up 2d ago (6-month frequency, not due), linked contact
   {
     first_name: "Harper",
     last_name: mark("Singh"),
-    cadence_preset: "6_months",
-    cadence_amount: 6,
-    cadence_unit: "months",
+    frequency_preset: "6_months",
+    frequency_amount: 6,
+    frequency_unit: "months",
     avatar_url: avatarFor("harper-singh"),
     contact: contactFor({
       id: "seed-contact-harper-singh",
@@ -352,13 +352,13 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
-  // scenario: no cadence set, unlinked
+  // scenario: no frequency set, unlinked
   {
     first_name: "Indra",
     last_name: mark("Olamide"),
-    cadence_preset: null,
-    cadence_amount: null,
-    cadence_unit: null,
+    frequency_preset: null,
+    frequency_amount: null,
+    frequency_unit: null,
     avatar_url: null,
     contact: null,
     createdDaysAgo: 90,
@@ -378,9 +378,9 @@ const FRIENDS: SeedFriend[] = [
   {
     first_name: "Kai",
     last_name: mark("Nakamura"),
-    cadence_preset: "monthly",
-    cadence_amount: 1,
-    cadence_unit: "months",
+    frequency_preset: "monthly",
+    frequency_amount: 1,
+    frequency_unit: "months",
     avatar_url: avatarFor("kai-nakamura"),
     contact: contactFor({
       id: "seed-contact-kai-nakamura",
@@ -413,16 +413,16 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
-  // scenario: clean missed_pending — cadence says not yet due, but a recent missed
+  // scenario: clean missed_pending — frequency says not yet due, but a recent missed
   // event after the last completion pulls the friend into "Due" with
   // "Missed Nd ago" as the only signal. Tests the missed→due auto-flow
-  // independent of overdue cadence.
+  // independent of overdue frequency.
   {
     first_name: "Marlowe",
     last_name: mark("Quinn"),
-    cadence_preset: "monthly",
-    cadence_amount: 1,
-    cadence_unit: "months",
+    frequency_preset: "monthly",
+    frequency_amount: 1,
+    frequency_unit: "months",
     avatar_url: avatarFor("marlowe-quinn"),
     contact: contactFor({
       id: "seed-contact-marlowe-quinn",
@@ -459,9 +459,9 @@ const FRIENDS: SeedFriend[] = [
   {
     first_name: "Jules",
     last_name: mark("Marchetti-Andersen"),
-    cadence_preset: "weekly",
-    cadence_amount: 1,
-    cadence_unit: "weeks",
+    frequency_preset: "weekly",
+    frequency_amount: 1,
+    frequency_unit: "weeks",
     avatar_url: avatarFor("jules-marchetti"),
     contact: null,
     createdDaysAgo: 90,
@@ -520,9 +520,9 @@ export const seedExampleData = async (userId: string): Promise<SeedResult> => {
     user_id: userId,
     first_name: friend.first_name,
     last_name: friend.last_name,
-    cadence_preset: friend.cadence_preset,
-    cadence_amount: friend.cadence_amount,
-    cadence_unit: friend.cadence_unit,
+    frequency_preset: friend.frequency_preset,
+    frequency_amount: friend.frequency_amount,
+    frequency_unit: friend.frequency_unit,
     avatar_url: friend.avatar_url,
     contact_id: friend.contact?.id ?? null,
     contact_snapshot: friend.contact

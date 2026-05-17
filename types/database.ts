@@ -3,16 +3,16 @@
 //   supabase gen types typescript --linked > types/database.generated.ts
 //
 // The generated columns use plain `string` for CHECK-constrained text columns
-// (medium, status, cadence_preset, cadence_unit, platform). The narrow unions
-// below match the CHECK values in supabase/migrations/0001_init.sql and stay
-// in sync with lib/schemas.ts.
+// (medium, status, frequency_preset, frequency_unit, platform). The narrow
+// unions below match the CHECK values in supabase/migrations/0001_init.sql and
+// stay in sync with lib/schemas.ts.
 
 import type { Database } from "./database.generated";
 
 export type { Database, Json } from "./database.generated";
 export { Constants } from "./database.generated";
 
-export type CadencePreset =
+export type FrequencyPreset =
   | "daily"
   | "weekly"
   | "monthly"
@@ -21,7 +21,7 @@ export type CadencePreset =
   | "yearly"
   | "custom";
 
-export type CadenceUnit = "days" | "weeks" | "months";
+export type FrequencyUnit = "days" | "weeks" | "months";
 
 export type Medium = "text" | "call" | "video" | "in_person";
 
@@ -33,15 +33,15 @@ type FriendRow = Database["public"]["Tables"]["friends"]["Row"];
 type CatchUpEventRow = Database["public"]["Tables"]["catch_up_events"]["Row"];
 type ProfileRow = Database["public"]["Tables"]["profiles"]["Row"];
 type PushTokenRow = Database["public"]["Tables"]["push_tokens"]["Row"];
-type FriendCadenceStatusRow =
-  Database["public"]["Views"]["friend_cadence_status"]["Row"];
+type FriendFrequencyStatusRow =
+  Database["public"]["Views"]["friend_frequency_status"]["Row"];
 
 export type Friend = Omit<
   FriendRow,
-  "cadence_preset" | "cadence_unit" | "contact_snapshot"
+  "frequency_preset" | "frequency_unit" | "contact_snapshot"
 > & {
-  cadence_preset: CadencePreset | null;
-  cadence_unit: CadenceUnit | null;
+  frequency_preset: FrequencyPreset | null;
+  frequency_unit: FrequencyUnit | null;
   contact_snapshot: Record<string, unknown> | null;
 };
 
@@ -56,9 +56,9 @@ export type PushToken = Omit<PushTokenRow, "platform"> & {
   platform: Platform;
 };
 
-export type FriendCadenceStatus = Omit<
-  FriendCadenceStatusRow,
-  "cadence_unit"
+export type FriendFrequencyStatus = Omit<
+  FriendFrequencyStatusRow,
+  "frequency_unit"
 > & {
-  cadence_unit: CadenceUnit | null;
+  frequency_unit: FrequencyUnit | null;
 };

@@ -11,7 +11,7 @@ This is the **Phase 1 scaffold**. It includes:
 - Friends CRUD: add, edit, delete, list.
 - Catch-up events: schedule a future event, log a catch-up that just happened,
   backfill a past one, mark scheduled events complete or missed, edit, delete.
-- Per-friend cadence presets (daily / weekly / monthly / 3 mo / 6 mo / yearly)
+- Per-friend frequency presets (daily / weekly / monthly / 3 mo / 6 mo / yearly)
   with a "next due" indicator on the friend list.
 - Friend detail view with history, per-event notes, and tap-to-open-in-Maps for
   in-person events.
@@ -74,14 +74,14 @@ app/                          Expo Router screens
   event/[id]/edit.tsx         edit event
 components/                   ui primitives + friend/event widgets
 hooks/                        use-auth, use-friends, use-events
-lib/                          supabase client, cadence math, zod schemas, formatters
+lib/                          supabase client, frequency math, zod schemas, formatters
 types/                        DB row types (regenerate after migration)
 supabase/migrations/          SQL schema
 ```
 
 ## Next steps (Phase 1 polish)
 
-- Wire up a `Custom` cadence input (amount + unit picker) — currently only
+- Wire up a `Custom` frequency input (amount + unit picker) — currently only
   preset chips are wired up.
 - Build the calendar tab (`app/(tabs)/calendar.tsx`) using
   `react-native-calendars` agenda + month view.
@@ -95,7 +95,7 @@ supabase/migrations/          SQL schema
 ## Phase 2 & 3 (not yet scaffolded)
 
 - Phase 2: `expo-notifications` push tokens, three Edge Function cron jobs
-  (cadence-check, pre-event-reminder, morning-after-prompt), `expo-contacts`
+  (frequency-check, pre-event-reminder, morning-after-prompt), `expo-contacts`
   integration, contact-change banner.
 - Phase 3: Google OAuth via `expo-auth-session`, Edge Function
   `gcal-sync`, accessibility pass, error/offline handling.

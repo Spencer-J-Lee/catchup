@@ -1,6 +1,6 @@
 // Catch-up lifecycle — single source of truth.
 //
-// A friend's lifecycle state is derived from their events + cadence; it is not
+// A friend's lifecycle state is derived from their events + frequency; it is not
 // stored. The DB-level `catch_up_events.status` enum (scheduled/completed/
 // missed/cancelled) remains the system of record. This module maps from those
 // per-event facts to a per-friend state used by the home screen.
@@ -39,9 +39,9 @@ export type LifecycleReason =
   | "past_scheduled_needs_resolution";
 
 export interface DeriveFriendStateInput {
-  /** From `friend_cadence_status.next_due_at` — null if no cadence. */
+  /** From `friend_frequency_status.next_due_at` — null if no frequency. */
   nextDueAt: string | null;
-  /** From `friend_cadence_status.last_caught_up_at`. */
+  /** From `friend_frequency_status.last_caught_up_at`. */
   lastCaughtUpAt: string | null;
   /** Latest scheduled event with `scheduled_at` > now. */
   upcomingScheduled: Pick<CatchUpEvent, "id" | "scheduled_at"> | null;
@@ -90,7 +90,7 @@ export const deriveFriendState = (
     }
   }
 
-  // 4. Cadence says overdue → Due.
+  // 4. Frequency says overdue → Due.
   if (args.nextDueAt && new Date(args.nextDueAt).getTime() < nowMs) {
     return { state: "due", reason: "overdue" };
   }

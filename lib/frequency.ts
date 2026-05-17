@@ -1,16 +1,16 @@
 import { addDays, addMonths, addWeeks, differenceInDays } from "date-fns";
 
-import type { CadencePreset, CadenceUnit } from "@/types/database";
+import type { FrequencyPreset, FrequencyUnit } from "@/types/database";
 
-export interface CadenceValue {
-  preset: CadencePreset;
+export interface FrequencyValue {
+  preset: FrequencyPreset;
   amount: number;
-  unit: CadenceUnit;
+  unit: FrequencyUnit;
 }
 
-export const CADENCE_PRESETS: Record<
-  Exclude<CadencePreset, "custom">,
-  { label: string; amount: number; unit: CadenceUnit }
+export const FREQUENCY_PRESETS: Record<
+  Exclude<FrequencyPreset, "custom">,
+  { label: string; amount: number; unit: FrequencyUnit }
 > = {
   daily: { label: "Daily", amount: 1, unit: "days" },
   weekly: { label: "Weekly", amount: 1, unit: "weeks" },
@@ -22,21 +22,21 @@ export const CADENCE_PRESETS: Record<
 
 export const presetFromAmount = (
   amount: number,
-  unit: CadenceUnit,
-): CadencePreset => {
+  unit: FrequencyUnit,
+): FrequencyPreset => {
   const match = (
-    Object.entries(CADENCE_PRESETS) as [
-      Exclude<CadencePreset, "custom">,
-      { amount: number; unit: CadenceUnit },
+    Object.entries(FREQUENCY_PRESETS) as [
+      Exclude<FrequencyPreset, "custom">,
+      { amount: number; unit: FrequencyUnit },
     ][]
   ).find(([, preset]) => preset.amount === amount && preset.unit === unit);
   return match ? match[0] : "custom";
 };
 
-export const addCadence = (
+export const addFrequency = (
   date: Date,
   amount: number,
-  unit: CadenceUnit,
+  unit: FrequencyUnit,
 ): Date => {
   switch (unit) {
     case "days":
@@ -48,22 +48,22 @@ export const addCadence = (
   }
 };
 
-export interface CadenceStatus {
+export interface FrequencyStatus {
   lastCaughtUpAt: Date | null;
   nextDueAt: Date | null;
   daysUntilDue: number | null;
   isOverdue: boolean;
 }
 
-export const computeCadenceStatus = (args: {
+export const computeFrequencyStatus = (args: {
   lastCaughtUpAt: Date | null;
-  cadenceAmount: number | null;
-  cadenceUnit: CadenceUnit | null;
+  frequencyAmount: number | null;
+  frequencyUnit: FrequencyUnit | null;
   fallbackStart: Date; // friend's created_at, used when no completed events exist
   now?: Date;
-}): CadenceStatus => {
+}): FrequencyStatus => {
   const now = args.now ?? new Date();
-  if (args.cadenceAmount == null || args.cadenceUnit == null) {
+  if (args.frequencyAmount == null || args.frequencyUnit == null) {
     return {
       lastCaughtUpAt: args.lastCaughtUpAt,
       nextDueAt: null,
@@ -72,7 +72,7 @@ export const computeCadenceStatus = (args: {
     };
   }
   const base = args.lastCaughtUpAt ?? args.fallbackStart;
-  const due = addCadence(base, args.cadenceAmount, args.cadenceUnit);
+  const due = addFrequency(base, args.frequencyAmount, args.frequencyUnit);
   const daysUntilDue = differenceInDays(due, now);
   return {
     lastCaughtUpAt: args.lastCaughtUpAt,

@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { supabase } from "@/lib/supabase";
 import type { FriendInput } from "@/lib/schemas";
-import type { Friend, FriendCadenceStatus } from "@/types/database";
+import type { Friend, FriendFrequencyStatus } from "@/types/database";
 
 export type FriendWithStatus = Friend & {
   last_caught_up_at: string | null;
@@ -18,14 +18,14 @@ const fetchFriends = async (): Promise<FriendWithStatus[]> => {
       .select("*")
       .order("first_name")
       .order("last_name", { nullsFirst: false }),
-    supabase.from("friend_cadence_status").select("*"),
+    supabase.from("friend_frequency_status").select("*"),
   ]);
   if (friendsRes.error) throw friendsRes.error;
   if (statusRes.error) throw statusRes.error;
-  const statusByFriend = new Map<string, FriendCadenceStatus>(
+  const statusByFriend = new Map<string, FriendFrequencyStatus>(
     (statusRes.data ?? []).map((status) => [
       status.friend_id,
-      status as FriendCadenceStatus,
+      status as FriendFrequencyStatus,
     ]),
   );
   return (friendsRes.data as Friend[]).map((friend) => {

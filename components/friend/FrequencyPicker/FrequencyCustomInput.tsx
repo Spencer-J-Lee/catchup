@@ -3,31 +3,32 @@ import { View } from "react-native";
 import { Chip } from "@/components/ui/Chip";
 import { Field } from "@/components/ui/Field";
 import { Input } from "@/components/ui/Input";
-import type { CadenceUnit } from "@/types/database";
+import type { FrequencyUnit } from "@/types/database";
 
-import { DEFAULT_CADENCE_UNIT, type CadenceValue } from "./types";
+import { DEFAULT_FREQUENCY_UNIT, type FrequencyValue } from "./types";
 
-interface CadenceCustomInputProps {
-  value: CadenceValue;
-  onChange: (value: CadenceValue) => void;
+interface FrequencyCustomInputProps {
+  value: FrequencyValue;
+  onChange: (value: FrequencyValue) => void;
   className?: string;
 }
 
-const UNITS: CadenceUnit[] = ["days", "weeks", "months"];
+const UNITS: FrequencyUnit[] = ["days", "weeks", "months"];
 
-const UNIT_LABEL: Record<CadenceUnit, { singular: string; plural: string }> = {
-  days: { singular: "Day", plural: "Days" },
-  weeks: { singular: "Week", plural: "Weeks" },
-  months: { singular: "Month", plural: "Months" },
-};
+const UNIT_LABEL: Record<FrequencyUnit, { singular: string; plural: string }> =
+  {
+    days: { singular: "Day", plural: "Days" },
+    weeks: { singular: "Week", plural: "Weeks" },
+    months: { singular: "Month", plural: "Months" },
+  };
 
-export const CadenceCustomInput = ({
+export const FrequencyCustomInput = ({
   value,
   onChange,
   className,
-}: CadenceCustomInputProps) => {
+}: FrequencyCustomInputProps) => {
   const amountStr = value.amount === null ? "" : String(value.amount);
-  const selectedUnit: CadenceUnit = value.unit ?? DEFAULT_CADENCE_UNIT;
+  const selectedUnit: FrequencyUnit = value.unit ?? DEFAULT_FREQUENCY_UNIT;
 
   const setAmount = (text: string) => {
     const digits = text.replace(/[^0-9]/g, "");
@@ -41,7 +42,7 @@ export const CadenceCustomInput = ({
     onChange({ preset: "custom", amount, unit: selectedUnit });
   };
 
-  const setUnit = (unit: CadenceUnit) => {
+  const setUnit = (unit: FrequencyUnit) => {
     onChange({ preset: "custom", amount: value.amount, unit });
   };
 

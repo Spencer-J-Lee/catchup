@@ -2,12 +2,12 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Alert, View } from "react-native";
 
-import { CadencePicker } from "@/components/friend/CadencePicker";
+import { FrequencyPicker } from "@/components/friend/FrequencyPicker";
 import { Button } from "@/components/ui/Button";
 import { Screen } from "@/components/ui/Screen";
 import { useFriend, useUpdateFriend } from "@/hooks/use-friends";
 import { friendInputSchema } from "@/lib/schemas";
-import type { CadencePreset, CadenceUnit } from "@/types/database";
+import type { FrequencyPreset, FrequencyUnit } from "@/types/database";
 
 const EditFriendScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -15,18 +15,18 @@ const EditFriendScreen = () => {
   const { data: friend } = useFriend(id);
   const update = useUpdateFriend();
 
-  const [cadence, setCadence] = useState<{
-    preset: CadencePreset | null;
+  const [frequency, setFrequency] = useState<{
+    preset: FrequencyPreset | null;
     amount: number | null;
-    unit: CadenceUnit | null;
+    unit: FrequencyUnit | null;
   }>({ preset: null, amount: null, unit: null });
 
   useEffect(() => {
     if (!friend) return;
-    setCadence({
-      preset: friend.cadence_preset,
-      amount: friend.cadence_amount,
-      unit: friend.cadence_unit,
+    setFrequency({
+      preset: friend.frequency_preset,
+      amount: friend.frequency_amount,
+      unit: friend.frequency_unit,
     });
   }, [friend]);
 
@@ -35,9 +35,9 @@ const EditFriendScreen = () => {
     const parsed = friendInputSchema.safeParse({
       first_name: friend.first_name,
       last_name: friend.last_name,
-      cadence_preset: cadence.preset,
-      cadence_amount: cadence.amount,
-      cadence_unit: cadence.unit,
+      frequency_preset: frequency.preset,
+      frequency_amount: frequency.amount,
+      frequency_unit: frequency.unit,
     });
     if (!parsed.success) {
       Alert.alert("Invalid input", parsed.error.issues[0]?.message ?? "");
@@ -54,7 +54,7 @@ const EditFriendScreen = () => {
   return (
     <Screen scroll edges={[]}>
       <View className="gap-4">
-        <CadencePicker value={cadence} onChange={setCadence} />
+        <FrequencyPicker value={frequency} onChange={setFrequency} />
         <Button onPress={onSave} loading={update.isPending}>
           Save
         </Button>

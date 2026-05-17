@@ -30,8 +30,8 @@ import {
   snapshotFrom,
 } from "@/lib/contacts";
 import {
-  formatCadence,
   formatDate,
+  formatFrequency,
   formatMedium,
   formatRelative,
   fullName,
@@ -242,8 +242,11 @@ const FriendDetailScreen = () => {
             }
           />
           <Row
-            label="Cadence"
-            value={formatCadence(friend.cadence_amount, friend.cadence_unit)}
+            label="Frequency"
+            value={formatFrequency(
+              friend.frequency_amount,
+              friend.frequency_unit,
+            )}
           />
         </View>
 

@@ -1,16 +1,16 @@
 import { Chip } from "@/components/ui/Chip";
 import { ChipRow } from "@/components/ui/ChipRow";
-import { CADENCE_PRESETS } from "@/lib/cadence";
-import type { CadencePreset } from "@/types/database";
+import { FREQUENCY_PRESETS } from "@/lib/frequency";
+import type { FrequencyPreset } from "@/types/database";
 
-import { DEFAULT_CADENCE_UNIT, type CadenceValue } from "./types";
+import { DEFAULT_FREQUENCY_UNIT, type FrequencyValue } from "./types";
 
-interface CadencePresetsProps {
-  value: CadenceValue;
-  onChange: (value: CadenceValue) => void;
+interface FrequencyPresetsProps {
+  value: FrequencyValue;
+  onChange: (value: FrequencyValue) => void;
 }
 
-const PRESET_KEYS: Exclude<CadencePreset, "custom">[] = [
+const PRESET_KEYS: Exclude<FrequencyPreset, "custom">[] = [
   "daily",
   "weekly",
   "monthly",
@@ -19,7 +19,10 @@ const PRESET_KEYS: Exclude<CadencePreset, "custom">[] = [
   "yearly",
 ];
 
-export const CadencePresets = ({ value, onChange }: CadencePresetsProps) => {
+export const FrequencyPresets = ({
+  value,
+  onChange,
+}: FrequencyPresetsProps) => {
   return (
     <ChipRow>
       <Chip
@@ -29,7 +32,7 @@ export const CadencePresets = ({ value, onChange }: CadencePresetsProps) => {
       />
 
       {PRESET_KEYS.map((key) => {
-        const preset = CADENCE_PRESETS[key];
+        const preset = FREQUENCY_PRESETS[key];
 
         return (
           <Chip
@@ -54,7 +57,7 @@ export const CadencePresets = ({ value, onChange }: CadencePresetsProps) => {
           onChange({
             preset: "custom",
             amount: value.amount,
-            unit: value.unit ?? DEFAULT_CADENCE_UNIT,
+            unit: value.unit ?? DEFAULT_FREQUENCY_UNIT,
           })
         }
       />
