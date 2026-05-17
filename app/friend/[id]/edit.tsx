@@ -18,7 +18,6 @@ const EditFriendScreen = () => {
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [generalNotes, setGeneralNotes] = useState("");
   const [cadence, setCadence] = useState<{
     preset: CadencePreset | null;
     amount: number | null;
@@ -29,7 +28,6 @@ const EditFriendScreen = () => {
     if (!friend) return;
     setFirstName(friend.first_name);
     setLastName(friend.last_name ?? "");
-    setGeneralNotes(friend.general_notes ?? "");
     setCadence({
       preset: friend.cadence_preset,
       amount: friend.cadence_amount,
@@ -42,7 +40,6 @@ const EditFriendScreen = () => {
     const parsed = friendInputSchema.safeParse({
       first_name: firstName,
       last_name: lastName || null,
-      general_notes: generalNotes || null,
       cadence_preset: cadence.preset,
       cadence_amount: cadence.amount,
       cadence_unit: cadence.unit,
@@ -68,14 +65,6 @@ const EditFriendScreen = () => {
           onChangeText={setFirstName}
         />
         <Input label="Last name" value={lastName} onChangeText={setLastName} />
-        <Input
-          label="Notes"
-          value={generalNotes}
-          onChangeText={setGeneralNotes}
-          multiline
-          textAlignVertical="top"
-          className="min-h-24 max-h-40"
-        />
         <CadencePicker value={cadence} onChange={setCadence} />
         <Button
           onPress={onSave}

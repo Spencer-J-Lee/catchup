@@ -216,13 +216,6 @@ const FriendDetailScreen = () => {
           </Link>
         </View>
 
-        {friend.general_notes ? (
-          <View className="bg-surface-elevated rounded-2xl p-4">
-            <Text className="text-sm text-fg-muted mb-1">Notes</Text>
-            <Text className="text-base text-fg">{friend.general_notes}</Text>
-          </View>
-        ) : null}
-
         <View className="bg-surface-elevated rounded-2xl p-4 gap-2">
           <Row
             label="Last caught up"

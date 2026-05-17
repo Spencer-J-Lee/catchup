@@ -29,7 +29,6 @@ export const friendInputSchema = z
       .transform((value) => (value === "" ? null : value))
       .nullable()
       .optional(),
-    general_notes: z.string().max(5000).nullable().optional(),
     cadence_preset: cadencePresetSchema.nullable().optional(),
     cadence_amount: z.number().int().positive().nullable().optional(),
     cadence_unit: cadenceUnitSchema.nullable().optional(),

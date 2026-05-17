@@ -123,7 +123,6 @@ export type Database = {
           contact_synced_at: string | null;
           created_at: string;
           first_name: string;
-          general_notes: string | null;
           id: string;
           last_name: string | null;
           updated_at: string;
@@ -139,7 +138,6 @@ export type Database = {
           contact_synced_at?: string | null;
           created_at?: string;
           first_name: string;
-          general_notes?: string | null;
           id?: string;
           last_name?: string | null;
           updated_at?: string;
@@ -155,7 +153,6 @@ export type Database = {
           contact_synced_at?: string | null;
           created_at?: string;
           first_name?: string;
-          general_notes?: string | null;
           id?: string;
           last_name?: string | null;
           updated_at?: string;

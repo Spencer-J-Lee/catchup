@@ -27,7 +27,6 @@ interface SeedContact {
 interface SeedFriend {
   first_name: string;
   last_name: string | null;
-  general_notes: string | null;
   cadence_preset: CadencePreset | null;
   cadence_amount: number | null;
   cadence_unit: CadenceUnit | null;
@@ -86,7 +85,6 @@ const FRIENDS: SeedFriend[] = [
   {
     first_name: "Alex",
     last_name: mark("Chen"),
-    general_notes: "College roommate. Loves climbing.",
     cadence_preset: "weekly",
     cadence_amount: 1,
     cadence_unit: "weeks",
@@ -128,7 +126,6 @@ const FRIENDS: SeedFriend[] = [
   {
     first_name: "Bailey",
     last_name: mark("Park"),
-    general_notes: "From the Boston team. Has two kids; partner's name is Sam.",
     cadence_preset: "weekly",
     cadence_amount: 1,
     cadence_unit: "weeks",
@@ -167,7 +164,6 @@ const FRIENDS: SeedFriend[] = [
   {
     first_name: "Cam",
     last_name: mark("Rivera"),
-    general_notes: null,
     cadence_preset: "weekly",
     cadence_amount: 1,
     cadence_unit: "weeks",
@@ -191,7 +187,6 @@ const FRIENDS: SeedFriend[] = [
   {
     first_name: "Dana",
     last_name: mark("Wu"),
-    general_notes: null,
     cadence_preset: "monthly",
     cadence_amount: 1,
     cadence_unit: "months",
@@ -217,12 +212,10 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
-  // scenario: never caught up (no events), recently linked contact
+  // scenario: never caught up (no events), recently linked contact with no
   {
     first_name: "Eli",
     last_name: mark("Brooks"),
-    general_notes:
-      "Met at conference last month — promised to keep in touch but haven't yet.",
     cadence_preset: "monthly",
     cadence_amount: 1,
     cadence_unit: "months",
@@ -241,7 +234,6 @@ const FRIENDS: SeedFriend[] = [
   {
     first_name: "Faye",
     last_name: mark("Holloway"),
-    general_notes: null,
     cadence_preset: "weekly",
     cadence_amount: 1,
     cadence_unit: "weeks",
@@ -282,7 +274,6 @@ const FRIENDS: SeedFriend[] = [
   {
     first_name: "Gabriella",
     last_name: mark("Constantinopoulos-Whitfield"),
-    general_notes: "Old high school friend. Lives in Athens now.",
     cadence_preset: "monthly",
     cadence_amount: 1,
     cadence_unit: "months",
@@ -334,7 +325,6 @@ const FRIENDS: SeedFriend[] = [
   {
     first_name: "Harper",
     last_name: mark("Singh"),
-    general_notes: null,
     cadence_preset: "6_months",
     cadence_amount: 6,
     cadence_unit: "months",
@@ -365,7 +355,6 @@ const FRIENDS: SeedFriend[] = [
   {
     first_name: "Indra",
     last_name: mark("Olamide"),
-    general_notes: "Loose connection. Catch up whenever.",
     cadence_preset: null,
     cadence_amount: null,
     cadence_unit: null,
@@ -388,7 +377,6 @@ const FRIENDS: SeedFriend[] = [
   {
     first_name: "Kai",
     last_name: mark("Nakamura"),
-    general_notes: "Used to work together. Always great to catch up.",
     cadence_preset: "monthly",
     cadence_amount: 1,
     cadence_unit: "months",
@@ -431,7 +419,6 @@ const FRIENDS: SeedFriend[] = [
   {
     first_name: "Marlowe",
     last_name: mark("Quinn"),
-    general_notes: "Quarterly-ish coffee. Tried to reconnect after a gap.",
     cadence_preset: "monthly",
     cadence_amount: 1,
     cadence_unit: "months",
@@ -471,7 +458,6 @@ const FRIENDS: SeedFriend[] = [
   {
     first_name: "Jules",
     last_name: mark("Marchetti-Andersen"),
-    general_notes: null,
     cadence_preset: "weekly",
     cadence_amount: 1,
     cadence_unit: "weeks",
@@ -533,7 +519,6 @@ export const seedExampleData = async (userId: string): Promise<SeedResult> => {
     user_id: userId,
     first_name: friend.first_name,
     last_name: friend.last_name,
-    general_notes: friend.general_notes,
     cadence_preset: friend.cadence_preset,
     cadence_amount: friend.cadence_amount,
     cadence_unit: friend.cadence_unit,

@@ -38,7 +38,6 @@ const NewFriendScreen = () => {
 
   const [firstName, setFirstName] = useState(params.first_name ?? "");
   const [lastName, setLastName] = useState(params.last_name ?? "");
-  const [generalNotes, setGeneralNotes] = useState("");
   const [cadence, setCadence] = useState<{
     preset: CadencePreset | null;
     amount: number | null;
@@ -53,7 +52,6 @@ const NewFriendScreen = () => {
     const parsed = friendInputSchema.safeParse({
       first_name: firstName,
       last_name: lastName || null,
-      general_notes: generalNotes || null,
       cadence_preset: cadence.preset,
       cadence_amount: cadence.amount,
       cadence_unit: cadence.unit,
@@ -124,14 +122,6 @@ const NewFriendScreen = () => {
           onChangeText={setFirstName}
         />
         <Input label="Last name" value={lastName} onChangeText={setLastName} />
-        <Input
-          label="Notes"
-          value={generalNotes}
-          onChangeText={setGeneralNotes}
-          multiline
-          textAlignVertical="top"
-          className="min-h-24 max-h-40"
-        />
         <CadencePicker value={cadence} onChange={setCadence} />
         <Button
           onPress={onSave}
