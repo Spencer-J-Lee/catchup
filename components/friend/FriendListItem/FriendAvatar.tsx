@@ -1,15 +1,27 @@
 import { Image, Text, View } from "react-native";
 
-import type { FriendWithStatus } from "@/hooks/use-friends";
 import { initialsOf } from "@/lib/format";
+import type { Friend } from "@/types/database";
 import classNames from "classnames";
 
+type AvatarSize = "sm" | "lg";
+
 interface FriendAvatarProps {
-  friend: FriendWithStatus;
+  friend: Pick<Friend, "avatar_url" | "first_name" | "last_name">;
+  size?: AvatarSize;
 }
 
-export const FriendAvatar = ({ friend }: FriendAvatarProps) => {
-  const baseClassName = "h-14 w-14 rounded-full bg-surface-elevated";
+const SIZE_CLASSES: Record<AvatarSize, { container: string; text: string }> = {
+  sm: { container: "h-14 w-14", text: "text-base" },
+  lg: { container: "h-48 w-48", text: "text-7xl mt-2" },
+};
+
+export const FriendAvatar = ({ friend, size = "sm" }: FriendAvatarProps) => {
+  const sizing = SIZE_CLASSES[size];
+  const baseClassName = classNames(
+    sizing.container,
+    "rounded-full bg-surface-elevated",
+  );
 
   if (friend.avatar_url) {
     return (
@@ -23,7 +35,12 @@ export const FriendAvatar = ({ friend }: FriendAvatarProps) => {
 
   return (
     <View className={classNames(baseClassName, "items-center justify-center")}>
-      <Text className="text-fg text-base font-semibold">
+      <Text
+        className={classNames(
+          "text-fg font-semibold leading-none",
+          sizing.text,
+        )}
+      >
         {initialsOf(friend.first_name, friend.last_name)}
       </Text>
     </View>
