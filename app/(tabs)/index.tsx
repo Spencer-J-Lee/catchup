@@ -24,7 +24,7 @@ import { ROUTES } from "@/lib/routes";
 
 type FriendRow = {
   friend: FriendWithStatus;
-  action: FriendItemAction;
+  action: FriendItemAction | null;
   scheduledAt: string | null;
   scheduledEventId: string | null;
   missedAt: string | null;
@@ -148,7 +148,7 @@ const FriendsScreen = () => {
       } else {
         caughtUp.push({
           friend,
-          action: "logCatchUp",
+          action: null,
           scheduledAt: null,
           scheduledEventId: null,
           missedAt: null,

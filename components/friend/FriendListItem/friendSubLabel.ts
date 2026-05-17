@@ -5,7 +5,7 @@ import type { FriendItemAction } from "./types";
 
 interface SubLabelArgs {
   friend: FriendWithStatus;
-  action: FriendItemAction;
+  action?: FriendItemAction | null;
   scheduledAt?: string | null;
   missedAt?: string | null;
   isDue?: boolean;

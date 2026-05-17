@@ -21,7 +21,7 @@ export type { FriendItemAction };
 
 interface FriendListItemProps {
   friend: FriendWithStatus;
-  action: FriendItemAction;
+  action?: FriendItemAction | null;
   scheduledAt?: string | null;
   scheduledEventId?: string | null;
   /** When set and `action === "schedule"`, render a "Missed X ago" hint —
@@ -102,11 +102,13 @@ export const FriendListItem = ({
             </Text>
           </View>
 
-          <FriendActionButton
-            friend={friend}
-            action={action}
-            scheduledEventId={scheduledEventId}
-          />
+          {action ? (
+            <FriendActionButton
+              friend={friend}
+              action={action}
+              scheduledEventId={scheduledEventId}
+            />
+          ) : null}
         </Pressable>
       </Link>
     </ReanimatedSwipeable>
