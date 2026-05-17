@@ -140,13 +140,16 @@ const FriendDetailScreen = () => {
     <Screen scroll edges={[]}>
       <Stack.Screen
         options={{
-          title: fullName(friend),
+          title: "",
         }}
       />
 
       <View className="gap-4">
-        <View className="items-center pt-2">
+        <View className="items-center gap-3 pt-2">
           <FriendAvatar friend={friend} size="lg" />
+          <Text className="text-2xl font-semibold text-fg">
+            {fullName(friend)}
+          </Text>
         </View>
 
         {contactId ? (
