@@ -4,7 +4,6 @@ import { Alert, View } from "react-native";
 
 import { CadencePicker } from "@/components/friend/CadencePicker";
 import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
 import { Screen } from "@/components/ui/Screen";
 import { useFriend, useUpdateFriend } from "@/hooks/use-friends";
 import { friendInputSchema } from "@/lib/schemas";
@@ -16,8 +15,6 @@ const EditFriendScreen = () => {
   const { data: friend } = useFriend(id);
   const update = useUpdateFriend();
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [cadence, setCadence] = useState<{
     preset: CadencePreset | null;
     amount: number | null;
@@ -26,8 +23,6 @@ const EditFriendScreen = () => {
 
   useEffect(() => {
     if (!friend) return;
-    setFirstName(friend.first_name);
-    setLastName(friend.last_name ?? "");
     setCadence({
       preset: friend.cadence_preset,
       amount: friend.cadence_amount,
@@ -36,10 +31,10 @@ const EditFriendScreen = () => {
   }, [friend]);
 
   const onSave = async () => {
-    if (!id) return;
+    if (!id || !friend) return;
     const parsed = friendInputSchema.safeParse({
-      first_name: firstName,
-      last_name: lastName || null,
+      first_name: friend.first_name,
+      last_name: friend.last_name,
       cadence_preset: cadence.preset,
       cadence_amount: cadence.amount,
       cadence_unit: cadence.unit,
@@ -59,18 +54,8 @@ const EditFriendScreen = () => {
   return (
     <Screen scroll edges={[]}>
       <View className="gap-4">
-        <Input
-          label="First name"
-          value={firstName}
-          onChangeText={setFirstName}
-        />
-        <Input label="Last name" value={lastName} onChangeText={setLastName} />
         <CadencePicker value={cadence} onChange={setCadence} />
-        <Button
-          onPress={onSave}
-          loading={update.isPending}
-          disabled={!firstName.trim()}
-        >
+        <Button onPress={onSave} loading={update.isPending}>
           Save
         </Button>
       </View>
