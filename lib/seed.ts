@@ -122,7 +122,7 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
-  // scenario: reaching out via missed_pending — last completion is much older than
+  // scenario: due via missed_pending — last completion is much older than
   // the missed event, so the auto-flow surfaces a "Missed Nd ago" hint (also long
   // overdue by cadence, but the missed event wins state priority). Linked contact w/o avatar.
   {
@@ -425,8 +425,8 @@ const FRIENDS: SeedFriend[] = [
     ],
   },
   // scenario: clean missed_pending — cadence says not yet due, but a recent missed
-  // event after the last completion pulls the friend into "Reaching out" with
-  // "Missed Nd ago" as the only signal. Tests the missed→reaching-out auto-flow
+  // event after the last completion pulls the friend into "Due" with
+  // "Missed Nd ago" as the only signal. Tests the missed→due auto-flow
   // independent of overdue cadence.
   {
     first_name: "Marlowe",

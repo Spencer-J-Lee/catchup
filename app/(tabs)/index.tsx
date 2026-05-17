@@ -93,8 +93,8 @@ const FriendsScreen = () => {
 
     const awaitingFollowup: FriendRow[] = [];
     const scheduled: FriendRow[] = [];
-    const reachingOut: FriendRow[] = [];
-    const idle: FriendRow[] = [];
+    const due: FriendRow[] = [];
+    const caughtUp: FriendRow[] = [];
 
     for (const friend of filtered) {
       const past = pastByFriend.get(friend.id) ?? null;
@@ -128,7 +128,7 @@ const FriendsScreen = () => {
           missedAt: null,
           isDue: false,
         });
-      } else if (state === "reaching_out") {
+      } else if (state === "due") {
         // Surface a "missed N days ago" hint when the auto-flow kicked in.
         const missedAt = missed
           ? !friend.last_caught_up_at ||
@@ -137,7 +137,7 @@ const FriendsScreen = () => {
             ? missed.scheduled_at
             : null
           : null;
-        reachingOut.push({
+        due.push({
           friend,
           action: "schedule",
           scheduledAt: null,
@@ -146,7 +146,7 @@ const FriendsScreen = () => {
           isDue: true,
         });
       } else {
-        idle.push({
+        caughtUp.push({
           friend,
           action: "checkin",
           scheduledAt: null,
@@ -167,7 +167,7 @@ const FriendsScreen = () => {
         new Date(left.scheduledAt!).getTime() -
         new Date(right.scheduledAt!).getTime(),
     );
-    reachingOut.sort((left, right) => {
+    due.sort((left, right) => {
       // Missed friends first; within each group, sort by the relevant timestamp.
       if (!!left.missedAt !== !!right.missedAt) {
         return left.missedAt ? -1 : 1;
@@ -184,7 +184,7 @@ const FriendsScreen = () => {
         Infinity;
       return leftKey - rightKey;
     });
-    idle.sort((left, right) => {
+    caughtUp.sort((left, right) => {
       const leftMs = left.friend.last_caught_up_at
         ? new Date(left.friend.last_caught_up_at).getTime()
         : 0;
@@ -212,17 +212,21 @@ const FriendsScreen = () => {
       });
       for (const row of scheduled) sections.push({ kind: "friend", row });
     }
-    if (reachingOut.length > 0) {
+    if (due.length > 0) {
       sections.push({
         kind: "header",
-        title: "Reaching out",
-        count: reachingOut.length,
+        title: "Due",
+        count: due.length,
       });
-      for (const row of reachingOut) sections.push({ kind: "friend", row });
+      for (const row of due) sections.push({ kind: "friend", row });
     }
-    if (idle.length > 0) {
-      sections.push({ kind: "header", title: "Idle", count: idle.length });
-      for (const row of idle) sections.push({ kind: "friend", row });
+    if (caughtUp.length > 0) {
+      sections.push({
+        kind: "header",
+        title: "Caught up",
+        count: caughtUp.length,
+      });
+      for (const row of caughtUp) sections.push({ kind: "friend", row });
     }
     return sections;
   }, [data, scheduledEvents, missedEvents, search]);

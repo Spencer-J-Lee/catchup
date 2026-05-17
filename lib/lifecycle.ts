@@ -5,16 +5,16 @@
 // missed/cancelled) remains the system of record. This module maps from those
 // per-event facts to a per-friend state used by the home screen.
 //
-//        ┌──────────────────────────────── repeat ────────────────────────────┐
-//        ▼                                                                    │
-//   ┌────────┐  schedule   ┌──────────────┐                                   │
-//   │  Idle  │────────────▶│ Reaching out │                                   │
-//   └────────┘             └──────────────┘                                   │
-//        ▲                       │  ▲                                         │
-//        │ cancel                │  │ miss (auto-flow)                        │
-//        │ (keeps history)       ▼  │                                         │
-//        │                  ┌───────────┐  time passes  ┌───────────────────┐ │
-//        │   ◀──────────────│ Scheduled │──────────────▶│ Awaiting follow-up│─┘
+//        ┌──────────────────────────────── repeat ─────────────────────────────┐
+//        ▼                                                                     │
+//   ┌──────────┐ schedule   ┌──────────────┐                                   │
+//   │ Caught up│───────────▶│     Due      │                                   │
+//   └──────────┘            └──────────────┘                                   │
+//        ▲                       │  ▲                                          │
+//        │ cancel                │  │ miss (auto-flow)                         │
+//        │ (keeps history)       ▼  │                                          │
+//        │                  ┌───────────┐  time passes  ┌───────────────────┐  │
+//        │   ◀──────────────│ Scheduled │──────────────▶│ Awaiting follow-up│──┘
 //        │                  └───────────┘               └───────────────────┘
 //        │                       │  ▲                          │
 //        │                       │  │ reschedule               │ complete
@@ -24,8 +24,8 @@
 import type { CatchUpEvent } from "@/types/database";
 
 export type FriendLifecycleState =
-  | "idle"
-  | "reaching_out"
+  | "caught_up"
+  | "due"
   | "scheduled"
   | "awaiting_followup";
 
@@ -77,7 +77,7 @@ export const deriveFriendState = (
     return { state: "scheduled", reason: "upcoming_scheduled" };
   }
 
-  // 3. Most recent activity was a miss → Reaching out (auto-flow back).
+  // 3. Most recent activity was a miss → Due (auto-flow back).
   //    Compare against last_caught_up_at so a stale miss doesn't outrank a
   //    subsequent completion.
   if (args.recentMissed?.scheduled_at) {
@@ -86,31 +86,31 @@ export const deriveFriendState = (
       ? new Date(args.lastCaughtUpAt).getTime()
       : -Infinity;
     if (missedMs > completedMs) {
-      return { state: "reaching_out", reason: "missed_pending" };
+      return { state: "due", reason: "missed_pending" };
     }
   }
 
-  // 4. Cadence says overdue → Reaching out.
+  // 4. Cadence says overdue → Due.
   if (args.nextDueAt && new Date(args.nextDueAt).getTime() < nowMs) {
-    return { state: "reaching_out", reason: "overdue" };
+    return { state: "due", reason: "overdue" };
   }
 
-  // 5. Idle — either caught up recently, or no activity yet.
+  // 5. Caught up — either caught up recently, or no activity yet.
   if (args.lastCaughtUpAt) {
     return {
-      state: "idle",
+      state: "caught_up",
       reason: args.nextDueAt ? "not_yet_due" : "completed_recent",
     };
   }
-  return { state: "idle", reason: "no_activity" };
+  return { state: "caught_up", reason: "no_activity" };
 };
 
 export const formatLifecycleState = (state: FriendLifecycleState): string => {
   switch (state) {
-    case "idle":
-      return "Idle";
-    case "reaching_out":
-      return "Reaching out";
+    case "caught_up":
+      return "Caught up";
+    case "due":
+      return "Due";
     case "scheduled":
       return "Scheduled";
     case "awaiting_followup":
