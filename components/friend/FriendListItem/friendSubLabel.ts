@@ -11,6 +11,25 @@ interface SubLabelArgs {
   isDue?: boolean;
 }
 
+const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
+const isWithinOneCalendarDay = (scheduledAt: string): boolean => {
+  const scheduled = new Date(scheduledAt);
+  const now = new Date();
+  const scheduledMidnight = new Date(
+    scheduled.getFullYear(),
+    scheduled.getMonth(),
+    scheduled.getDate(),
+  ).getTime();
+  const todayMidnight = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+  ).getTime();
+
+  return scheduledMidnight - todayMidnight <= MS_PER_DAY;
+};
+
 export const getFriendSubLabelData = ({
   friend,
   action,
@@ -26,9 +45,11 @@ export const getFriendSubLabelData = ({
   }
 
   if (action === "reschedule" && scheduledAt) {
+    const isImminent = isWithinOneCalendarDay(scheduledAt);
+
     return {
       label: `Scheduled ${formatRelative(scheduledAt)}`,
-      className: "text-brand-300 font-medium",
+      className: isImminent ? "text-brand-300 font-medium" : "text-fg-muted",
     };
   }
 
