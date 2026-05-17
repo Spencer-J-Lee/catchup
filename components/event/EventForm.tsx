@@ -112,9 +112,8 @@ export const EventForm = ({ mode, formValues, onChange }: EventFormProps) => {
         value={formValues.notes}
         onChangeText={(text) => onChange({ ...formValues, notes: text })}
         multiline
-        numberOfLines={4}
         textAlignVertical="top"
-        className="h-24"
+        className="min-h-24 max-h-40"
       />
     </View>
   );
