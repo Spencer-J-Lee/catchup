@@ -23,7 +23,7 @@ export const DateTimeField = ({
     <Field label={label}>
       <Pressable onPress={() => setShowPicker(true)}>
         <InputSurface>
-          <Text>{formatDateTime(value)}</Text>
+          <Text className="text-fg">{formatDateTime(value)}</Text>
         </InputSurface>
       </Pressable>
       {showPicker ? (
