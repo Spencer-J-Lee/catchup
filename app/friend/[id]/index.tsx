@@ -47,7 +47,7 @@ const FriendDetailScreen = () => {
 
   if (isLoading || !friend) {
     return (
-      <Screen>
+      <Screen edges={[]}>
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator color={colors.fg.DEFAULT} />
         </View>
@@ -124,7 +124,7 @@ const FriendDetailScreen = () => {
   };
 
   return (
-    <Screen scroll>
+    <Screen scroll edges={[]}>
       <Stack.Screen
         options={{
           title: fullName(friend),

@@ -26,7 +26,7 @@ const EventDetailScreen = () => {
 
   if (isLoading || !event) {
     return (
-      <Screen>
+      <Screen edges={[]}>
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator color={colors.fg.DEFAULT} />
         </View>
@@ -99,7 +99,7 @@ const EventDetailScreen = () => {
   };
 
   return (
-    <Screen scroll>
+    <Screen scroll edges={[]}>
       <Stack.Screen
         options={{
           title: "Catch-up",

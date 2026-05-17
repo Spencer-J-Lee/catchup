@@ -83,7 +83,7 @@ const NewFriendScreen = () => {
   };
 
   return (
-    <Screen scroll>
+    <Screen scroll edges={[]}>
       <View className="gap-4">
         {contactId ? (
           <View className="flex-row items-center gap-3 bg-surface-elevated rounded-2xl p-3">

@@ -35,7 +35,7 @@ const EditEventScreen = () => {
 
   if (!event || !formValues) {
     return (
-      <Screen>
+      <Screen edges={[]}>
         <Text className="text-fg-muted">Loading…</Text>
       </Screen>
     );
@@ -73,7 +73,7 @@ const EditEventScreen = () => {
   };
 
   return (
-    <Screen scroll>
+    <Screen scroll edges={[]}>
       <View className="gap-4">
         <EventForm
           mode={mode}

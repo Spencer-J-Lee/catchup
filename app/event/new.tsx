@@ -76,14 +76,14 @@ const NewEventScreen = () => {
 
   if (!params.friend_id) {
     return (
-      <Screen>
+      <Screen edges={[]}>
         <Text className="text-danger-400">Missing friend_id</Text>
       </Screen>
     );
   }
 
   return (
-    <Screen scroll>
+    <Screen scroll edges={[]}>
       <Stack.Screen options={{ title }} />
       <View className="gap-4">
         <EventForm

@@ -99,7 +99,7 @@ const PickContactScreen = () => {
 
   if (permission === "loading") {
     return (
-      <Screen>
+      <Screen edges={[]}>
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator color={colors.fg.DEFAULT} />
         </View>
@@ -109,7 +109,7 @@ const PickContactScreen = () => {
 
   if (permission === "denied") {
     return (
-      <Screen>
+      <Screen edges={[]}>
         <View className="flex-1 items-center justify-center px-8">
           <View className="h-20 w-20 rounded-full bg-surface-elevated items-center justify-center mb-5">
             <Ionicons
@@ -144,7 +144,7 @@ const PickContactScreen = () => {
   }
 
   return (
-    <Screen>
+    <Screen edges={[]}>
       <View className="flex-1 gap-3">
         <Input
           placeholder="Search contacts"

@@ -60,7 +60,7 @@ const EditFriendScreen = () => {
   };
 
   return (
-    <Screen scroll>
+    <Screen scroll edges={[]}>
       <View className="gap-4">
         <Input
           label="First name"
