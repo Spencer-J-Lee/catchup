@@ -27,7 +27,12 @@ import {
   pickContact,
   snapshotFrom,
 } from "@/lib/contacts";
-import { formatDateTime, formatMedium, fullName } from "@/lib/format";
+import {
+  formatCadence,
+  formatDateTime,
+  formatMedium,
+  fullName,
+} from "@/lib/format";
 import { ROUTES } from "@/lib/routes";
 import type { CatchUpEvent, EventStatus } from "@/types/database";
 
@@ -144,11 +149,7 @@ const FriendDetailScreen = () => {
           />
           <Row
             label="Cadence"
-            value={
-              friend.cadence_amount && friend.cadence_unit
-                ? `every ${friend.cadence_amount} ${friend.cadence_unit}`
-                : "Not set"
-            }
+            value={formatCadence(friend.cadence_amount, friend.cadence_unit)}
           />
         </View>
 

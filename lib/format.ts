@@ -4,7 +4,7 @@ import {
   formatDistanceToNowStrict,
 } from "date-fns";
 
-import type { EventStatus, Medium } from "@/types/database";
+import type { CadenceUnit, EventStatus, Medium } from "@/types/database";
 
 export const formatDate = (date: Date | string): string => {
   return format(
@@ -66,6 +66,26 @@ export const formatStatus = (status: EventStatus): string => {
     case "cancelled":
       return "Cancelled";
   }
+};
+
+export const formatCadence = (
+  amount: number | null | undefined,
+  unit: CadenceUnit | null | undefined,
+): string => {
+  if (!amount || !unit) return "Not set";
+
+  if (amount === 1) {
+    switch (unit) {
+      case "days":
+        return "Daily";
+      case "weeks":
+        return "Weekly";
+      case "months":
+        return "Monthly";
+    }
+  }
+
+  return `Every ${amount} ${unit}`;
 };
 
 export const formatMedium = (medium: Medium | null | undefined): string => {
