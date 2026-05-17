@@ -11,6 +11,7 @@ import {
   View,
 } from "react-native";
 
+import { FriendAvatar } from "@/components/friend/FriendListItem/FriendAvatar";
 import { Row } from "@/components/ui/Row";
 import { Screen } from "@/components/ui/Screen";
 import { useEventsForFriend } from "@/hooks/use-events";
@@ -139,27 +140,9 @@ const FriendDetailScreen = () => {
       />
 
       <View className="gap-4">
-        <View className="bg-surface-elevated rounded-2xl p-4 gap-2">
-          <Row
-            label="Last caught up"
-            value={
-              lastCompleted?.occurred_at
-                ? `${formatRelative(lastCompleted.occurred_at)} (${formatDate(lastCompleted.occurred_at)})`
-                : "No catch-ups yet"
-            }
-          />
-          <Row
-            label="Cadence"
-            value={formatCadence(friend.cadence_amount, friend.cadence_unit)}
-          />
+        <View className="items-center pt-2">
+          <FriendAvatar friend={friend} size="lg" />
         </View>
-
-        {friend.general_notes ? (
-          <View className="bg-surface-elevated rounded-2xl p-4">
-            <Text className="text-sm text-fg-muted mb-1">Notes</Text>
-            <Text className="text-base text-fg">{friend.general_notes}</Text>
-          </View>
-        ) : null}
 
         {contactId ? (
           <View className="flex-row gap-2">
@@ -231,6 +214,28 @@ const FriendDetailScreen = () => {
               <Text className="text-fg font-semibold">Check in</Text>
             </Pressable>
           </Link>
+        </View>
+
+        {friend.general_notes ? (
+          <View className="bg-surface-elevated rounded-2xl p-4">
+            <Text className="text-sm text-fg-muted mb-1">Notes</Text>
+            <Text className="text-base text-fg">{friend.general_notes}</Text>
+          </View>
+        ) : null}
+
+        <View className="bg-surface-elevated rounded-2xl p-4 gap-2">
+          <Row
+            label="Last caught up"
+            value={
+              lastCompleted?.occurred_at
+                ? `${formatRelative(lastCompleted.occurred_at)} (${formatDate(lastCompleted.occurred_at)})`
+                : "No catch-ups yet"
+            }
+          />
+          <Row
+            label="Cadence"
+            value={formatCadence(friend.cadence_amount, friend.cadence_unit)}
+          />
         </View>
 
         {contactId ? (
