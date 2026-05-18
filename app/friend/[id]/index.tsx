@@ -12,6 +12,7 @@ import {
 } from "react-native";
 
 import { FriendAvatar } from "@/components/friend/FriendListItem/FriendAvatar";
+import { DividedList } from "@/components/ui/DividedList";
 import { PressableRow } from "@/components/ui/PressableRow";
 import { Row } from "@/components/ui/Row";
 import { Screen } from "@/components/ui/Screen";
@@ -224,24 +225,29 @@ const FriendDetailScreen = () => {
           </Link>
         </View>
 
-        <View className="bg-raised dark:bg-raised-dk rounded-2xl p-4 gap-2">
-          {lastCompleted?.occurred_at ? (
-            <PressableRow
-              label="Last caught up"
-              value={`${formatRelative(lastCompleted.occurred_at)} (${formatDate(lastCompleted.occurred_at)})`}
-              onPress={() => router.push(ROUTES.event.detail(lastCompleted.id))}
-            />
-          ) : (
-            <Row label="Last caught up" value="No catch-ups yet" />
-          )}
-          <PressableRow
-            label="Frequency"
-            value={formatFrequency(
-              friend.frequency_amount,
-              friend.frequency_unit,
+        <View className="bg-raised dark:bg-raised-dk rounded-2xl p-4">
+          <DividedList>
+            {lastCompleted?.occurred_at ? (
+              <PressableRow
+                label="Last caught up"
+                value={`${formatRelative(lastCompleted.occurred_at)} (${formatDate(lastCompleted.occurred_at)})`}
+                onPress={() =>
+                  router.push(ROUTES.event.detail(lastCompleted.id))
+                }
+              />
+            ) : (
+              <Row label="Last caught up" value="No catch-ups yet" />
             )}
-            onPress={() => router.push(ROUTES.friend.edit(id!))}
-          />
+
+            <PressableRow
+              label="Frequency"
+              value={formatFrequency(
+                friend.frequency_amount,
+                friend.frequency_unit,
+              )}
+              onPress={() => router.push(ROUTES.friend.edit(id!))}
+            />
+          </DividedList>
         </View>
 
         {contactId ? (
@@ -337,14 +343,12 @@ const STATUS_META: Record<
   },
   completed: {
     label: "Completed",
-    pill:
-      "bg-success/15 dark:bg-success-dk/25 border-success dark:border-success-dk",
+    pill: "bg-success/15 dark:bg-success-dk/25 border-success dark:border-success-dk",
     text: "text-success dark:text-success-dk",
   },
   missed: {
     label: "Missed",
-    pill:
-      "bg-danger/15 dark:bg-danger-dk/25 border-danger dark:border-danger-dk",
+    pill: "bg-danger/15 dark:bg-danger-dk/25 border-danger dark:border-danger-dk",
     text: "text-danger dark:text-danger-dk",
   },
   cancelled: {

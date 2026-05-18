@@ -14,6 +14,7 @@ import {
   type FriendItemAction,
 } from "@/components/friend/FriendListItem";
 import { Button } from "@/components/ui/Button";
+import { Divider } from "@/components/ui/Divider";
 import { Input } from "@/components/ui/Input";
 import { Screen } from "@/components/ui/Screen";
 import { useMissedEvents, useScheduledEvents } from "@/hooks/use-events";
@@ -306,13 +307,17 @@ const FriendsScreen = () => {
           }) => (
             <View className={leadingItem?.kind === "header" ? "h-0" : "h-1"} />
           )}
-          renderItem={({ item }) =>
+          renderItem={({ item, index }) =>
             item.kind === "header" ? (
-              <View className="mt-4 mb-1 px-4">
-                <Text className="text-base font-normal text-muted dark:text-muted-dk">
-                  {item.title}
-                </Text>
-              </View>
+              <>
+                {index !== 0 ? <Divider className="m-4" /> : null}
+
+                <View className="mt-2 mb-1 px-4">
+                  <Text className="text-base font-medium text-muted dark:text-muted-dk">
+                    {item.title}
+                  </Text>
+                </View>
+              </>
             ) : (
               <FriendListItem
                 friend={item.row.friend}

@@ -10,6 +10,7 @@ import {
 } from "react-native";
 
 import { Button } from "@/components/ui/Button";
+import { DividedList } from "@/components/ui/DividedList";
 import { Row } from "@/components/ui/Row";
 import { Screen } from "@/components/ui/Screen";
 import { useDeleteEvent, useEvent, useUpdateEvent } from "@/hooks/use-events";
@@ -117,37 +118,49 @@ const EventDetailScreen = () => {
       />
 
       <View className="gap-4">
-        <View className="bg-raised dark:bg-raised-dk rounded-2xl p-4 gap-2">
-          <Row label="Status" value={formatStatus(event.status)} />
-          {event.scheduled_at ? (
-            <Row label="Scheduled" value={formatDateTime(event.scheduled_at)} />
-          ) : null}
-          {event.occurred_at ? (
-            <Row label="Occurred" value={formatDateTime(event.occurred_at)} />
-          ) : null}
-          {event.medium ? (
-            <Row
-              label="Medium"
-              value={`${formatMedium(event.medium)}${event.medium_detail ? ` · ${event.medium_detail}` : ""}`}
-            />
-          ) : null}
-          {event.location_text || event.location_address ? (
-            <View>
-              <Text className="text-sm text-muted dark:text-muted-dk">
-                Location
-              </Text>
-              <Text className="text-base text-default dark:text-default-dk">
-                {event.location_text}
-              </Text>
-              {event.location_address ? (
-                <Pressable onPress={openMaps}>
-                  <Text className="text-base text-brand dark:text-brand-dk underline">
-                    {event.location_address}
-                  </Text>
-                </Pressable>
-              ) : null}
-            </View>
-          ) : null}
+        <View className="bg-raised dark:bg-raised-dk rounded-2xl p-4">
+          <DividedList>
+            <Row label="Status" value={formatStatus(event.status)} />
+
+            {event.scheduled_at ? (
+              <Row
+                label="Scheduled"
+                value={formatDateTime(event.scheduled_at)}
+              />
+            ) : null}
+
+            {event.occurred_at ? (
+              <Row
+                label="Occurred"
+                value={formatDateTime(event.occurred_at)}
+              />
+            ) : null}
+
+            {event.medium ? (
+              <Row
+                label="Medium"
+                value={`${formatMedium(event.medium)}${event.medium_detail ? ` · ${event.medium_detail}` : ""}`}
+              />
+            ) : null}
+
+            {event.location_text || event.location_address ? (
+              <View>
+                <Text className="text-sm text-muted dark:text-muted-dk">
+                  Location
+                </Text>
+                <Text className="text-base text-default dark:text-default-dk">
+                  {event.location_text}
+                </Text>
+                {event.location_address ? (
+                  <Pressable onPress={openMaps}>
+                    <Text className="text-base text-brand dark:text-brand-dk underline">
+                      {event.location_address}
+                    </Text>
+                  </Pressable>
+                ) : null}
+              </View>
+            ) : null}
+          </DividedList>
         </View>
 
         {event.event_notes ? (
