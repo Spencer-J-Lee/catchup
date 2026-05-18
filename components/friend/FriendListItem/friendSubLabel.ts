@@ -30,6 +30,9 @@ const isWithinOneCalendarDay = (scheduledAt: string): boolean => {
   return scheduledMidnight - todayMidnight <= MS_PER_DAY;
 };
 
+const MUTED = "text-muted dark:text-muted-dk";
+const BRAND = "text-brand dark:text-brand-dk";
+
 export const getFriendSubLabelData = ({
   friend,
   action,
@@ -40,7 +43,7 @@ export const getFriendSubLabelData = ({
   if (action === "followUp" && scheduledAt) {
     return {
       label: `Catch-up was ${formatRelative(scheduledAt)}`,
-      className: "text-fg-muted font-medium",
+      className: `${MUTED} font-medium`,
     };
   }
 
@@ -49,33 +52,33 @@ export const getFriendSubLabelData = ({
 
     return {
       label: `Coming up ${formatRelative(scheduledAt)}`,
-      className: isImminent ? "text-brand-300 font-medium" : "text-fg-muted",
+      className: isImminent ? `${BRAND} font-medium` : MUTED,
     };
   }
 
   if (action === "schedule" && missedAt) {
     return {
       label: `Missed ${formatRelative(missedAt)}`,
-      className: "text-brand-300 font-medium",
+      className: `${BRAND} font-medium`,
     };
   }
 
   if (action === "schedule" && friend.next_due_at) {
     return {
       label: formatOverdueDays(friend.next_due_at),
-      className: "text-brand-300 font-medium",
+      className: `${BRAND} font-medium`,
     };
   }
 
   if (friend.last_caught_up_at) {
     return {
       label: `Last connected ${formatRelative(friend.last_caught_up_at)}`,
-      className: isDue ? "text-brand-300 font-medium" : "text-fg-muted",
+      className: isDue ? `${BRAND} font-medium` : MUTED,
     };
   }
 
   return {
     label: "No catch-ups yet",
-    className: isDue ? "text-brand-300 font-medium" : "text-fg-muted",
+    className: isDue ? `${BRAND} font-medium` : MUTED,
   };
 };

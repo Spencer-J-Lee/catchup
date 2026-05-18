@@ -21,7 +21,7 @@ import {
   useFriend,
   useLinkFriendContact,
 } from "@/hooks/use-friends";
-import { colors } from "@/lib/colors";
+import { useThemedColors } from "@/hooks/use-themed-colors";
 import {
   openCall,
   openContactCard,
@@ -43,6 +43,7 @@ import type { CatchUpEvent, EventStatus } from "@/types/database";
 const FriendDetailScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
+  const colors = useThemedColors();
   const { data: friend, isLoading } = useFriend(id);
   const { data: events } = useEventsForFriend(id);
   const deleteFriend = useDeleteFriend();
@@ -52,7 +53,7 @@ const FriendDetailScreen = () => {
     return (
       <Screen edges={[]}>
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator color={colors.fg.DEFAULT} />
+          <ActivityIndicator color={colors.fgDefault} />
         </View>
       </Screen>
     );
@@ -146,7 +147,7 @@ const FriendDetailScreen = () => {
       <View className="gap-4">
         <View className="items-center gap-3 pt-2">
           <FriendAvatar friend={friend} size="lg" />
-          <Text className="text-2xl font-semibold text-center text-fg">
+          <Text className="text-2xl font-semibold text-center text-default dark:text-default-dk">
             {fullName(friend)}
           </Text>
         </View>
@@ -181,21 +182,21 @@ const FriendDetailScreen = () => {
           <Pressable
             onPress={onLinkContact}
             disabled={linkContact.isPending}
-            className="bg-surface-elevated rounded-2xl p-4 flex-row items-center gap-3"
+            className="bg-raised dark:bg-raised-dk rounded-2xl p-4 flex-row items-center gap-3"
           >
-            <Ionicons name="person-add" size={20} color={colors.brand[300]} />
+            <Ionicons name="person-add" size={20} color={colors.brand} />
             <View className="flex-1">
-              <Text className="text-base font-medium text-fg">
+              <Text className="text-base font-medium text-default dark:text-default-dk">
                 {linkContact.isPending ? "Linking…" : "Link to phone contact"}
               </Text>
-              <Text className="text-xs text-fg-muted mt-0.5">
+              <Text className="text-xs text-muted dark:text-muted-dk mt-0.5">
                 Enables Message, Call, and Contact actions.
               </Text>
             </View>
             <Ionicons
               name="chevron-forward"
               size={18}
-              color={colors.fg.subtle}
+              color={colors.fgSubtle}
             />
           </Pressable>
         )}
@@ -205,27 +206,25 @@ const FriendDetailScreen = () => {
             href={ROUTES.event.new({ friend_id: id, mode: "schedule" })}
             asChild
           >
-            <Pressable className="flex-1 bg-brand-300 active:bg-brand-400 rounded-full px-4 py-3 items-center justify-center flex-row gap-2">
-              <Ionicons
-                name="calendar"
-                size={18}
-                color={colors.surface.DEFAULT}
-              />
-              <Text className="text-surface font-semibold">Schedule</Text>
+            <Pressable className="flex-1 bg-brand dark:bg-brand-dk active:bg-brand-hov dark:active:bg-brand-hov-dk rounded-full px-4 py-3 items-center justify-center flex-row gap-2">
+              <Ionicons name="calendar" size={18} color={colors.dangerFg} />
+              <Text className="text-danger-fg font-semibold">Schedule</Text>
             </Pressable>
           </Link>
           <Link
             href={ROUTES.event.new({ friend_id: id, mode: "logCatchUp" })}
             asChild
           >
-            <Pressable className="flex-1 bg-surface-elevated active:bg-surface-high rounded-full px-4 py-3 items-center justify-center flex-row gap-2">
-              <Ionicons name="create" size={18} color={colors.fg.DEFAULT} />
-              <Text className="text-fg font-semibold">Log catch-up</Text>
+            <Pressable className="flex-1 bg-raised dark:bg-raised-dk active:bg-high dark:active:bg-high-dk rounded-full px-4 py-3 items-center justify-center flex-row gap-2">
+              <Ionicons name="create" size={18} color={colors.fgDefault} />
+              <Text className="text-default dark:text-default-dk font-semibold">
+                Log catch-up
+              </Text>
             </Pressable>
           </Link>
         </View>
 
-        <View className="bg-surface-elevated rounded-2xl p-4 gap-2">
+        <View className="bg-raised dark:bg-raised-dk rounded-2xl p-4 gap-2">
           {lastCompleted?.occurred_at ? (
             <PressableRow
               label="Last caught up"
@@ -252,7 +251,7 @@ const FriendDetailScreen = () => {
             className="self-center py-1 px-2"
             hitSlop={8}
           >
-            <Text className="text-xs text-fg-muted">
+            <Text className="text-xs text-muted dark:text-muted-dk">
               {linkContact.isPending
                 ? "Updating…"
                 : `Linked${snapshot?.name ? ` to ${snapshot.name}` : ""} · change`}
@@ -261,9 +260,13 @@ const FriendDetailScreen = () => {
         ) : null}
 
         <View>
-          <Text className="text-lg font-semibold text-fg mb-2">History</Text>
+          <Text className="text-lg font-semibold text-default dark:text-default-dk mb-2">
+            History
+          </Text>
           {!events || events.length === 0 ? (
-            <Text className="text-fg-muted">No events yet.</Text>
+            <Text className="text-muted dark:text-muted-dk">
+              No events yet.
+            </Text>
           ) : (
             <FlatList
               scrollEnabled={false}
@@ -281,7 +284,7 @@ const FriendDetailScreen = () => {
           className="self-center py-2 px-3 mt-2"
           hitSlop={8}
         >
-          <Text className="text-sm text-danger-400 font-medium">
+          <Text className="text-sm text-danger dark:text-danger-dk font-medium">
             {deleteFriend.isPending ? "Deleting…" : "Delete friend"}
           </Text>
         </Pressable>
@@ -305,17 +308,20 @@ const ContactActionButton = ({
   onPress,
   disabled,
 }: ContactActionButtonProps) => {
+  const colors = useThemedColors();
   return (
     <Pressable
       onPress={onPress}
       disabled={disabled}
       className={classNames(
-        "flex-1 bg-surface-elevated rounded-xl py-3 items-center justify-center gap-1",
-        disabled ? "opacity-40" : "active:bg-surface-high",
+        "flex-1 bg-raised dark:bg-raised-dk rounded-xl py-3 items-center justify-center gap-1",
+        disabled ? "opacity-40" : "active:bg-high dark:active:bg-high-dk",
       )}
     >
-      <Ionicons name={icon} size={22} color={colors.brand[300]} />
-      <Text className="text-xs font-medium text-fg">{label}</Text>
+      <Ionicons name={icon} size={22} color={colors.brand} />
+      <Text className="text-xs font-medium text-default dark:text-default-dk">
+        {label}
+      </Text>
     </Pressable>
   );
 };
@@ -326,23 +332,25 @@ const STATUS_META: Record<
 > = {
   scheduled: {
     label: "Scheduled",
-    pill: "bg-brand-700/30 border-brand-700",
-    text: "text-brand-300",
+    pill: "bg-brand/15 dark:bg-brand-dk/25 border-brand dark:border-brand-dk",
+    text: "text-brand dark:text-brand-dk",
   },
   completed: {
     label: "Completed",
-    pill: "bg-success-900/40 border-success-700",
-    text: "text-success-300",
+    pill:
+      "bg-success/15 dark:bg-success-dk/25 border-success dark:border-success-dk",
+    text: "text-success dark:text-success-dk",
   },
   missed: {
     label: "Missed",
-    pill: "bg-danger-900/40 border-danger-700",
-    text: "text-danger-300",
+    pill:
+      "bg-danger/15 dark:bg-danger-dk/25 border-danger dark:border-danger-dk",
+    text: "text-danger dark:text-danger-dk",
   },
   cancelled: {
     label: "Cancelled",
-    pill: "bg-surface-high border-surface-border",
-    text: "text-fg-muted",
+    pill: "bg-high dark:bg-high-dk border-border dark:border-border-dk",
+    text: "text-muted dark:text-muted-dk",
   },
 };
 
@@ -360,30 +368,30 @@ const HistoryItem = ({ event }: HistoryItemProps) => {
 
   return (
     <Link href={ROUTES.event.detail(event.id)} asChild>
-      <Pressable className="bg-surface-elevated rounded-xl p-3 gap-2">
+      <Pressable className="bg-raised dark:bg-raised-dk rounded-xl p-3 gap-2">
         <View className="flex-row items-center gap-3">
           {when ? (
-            <View className="h-12 w-12 rounded-lg bg-surface-high items-center justify-center">
-              <Text className="text-[10px] font-semibold uppercase text-fg-subtle tracking-wider">
+            <View className="h-12 w-12 rounded-lg bg-high dark:bg-high-dk items-center justify-center">
+              <Text className="text-[10px] font-semibold uppercase text-subtle dark:text-subtle-dk tracking-wider">
                 {format(when, "MMM")}
               </Text>
               <Text
                 className={classNames(
-                  "font-bold text-fg leading-tight",
+                  "font-bold text-default dark:text-default-dk leading-tight",
                   isThisYear(when) ? "text-xl" : "text-base",
                 )}
               >
                 {format(when, "d")}
               </Text>
               {!isThisYear(when) ? (
-                <Text className="text-[9px] text-fg-subtle leading-tight">
+                <Text className="text-[9px] text-subtle dark:text-subtle-dk leading-tight">
                   {format(when, "yyyy")}
                 </Text>
               ) : null}
             </View>
           ) : null}
           <Text
-            className="flex-1 text-base font-medium text-fg"
+            className="flex-1 text-base font-medium text-default dark:text-default-dk"
             numberOfLines={1}
           >
             {mediumText}
@@ -398,7 +406,10 @@ const HistoryItem = ({ event }: HistoryItemProps) => {
         </View>
 
         {event.event_notes ? (
-          <Text className="text-sm text-fg-muted" numberOfLines={3}>
+          <Text
+            className="text-sm text-muted dark:text-muted-dk"
+            numberOfLines={3}
+          >
             {event.event_notes}
           </Text>
         ) : null}

@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Screen } from "@/components/ui/Screen";
 import { useFriends } from "@/hooks/use-friends";
-import { colors } from "@/lib/colors";
+import { useThemedColors } from "@/hooks/use-themed-colors";
 import {
   listContacts,
   requestContactsPermission,
@@ -29,6 +29,7 @@ type PermissionState = "loading" | "granted" | "denied";
 
 const PickContactScreen = () => {
   const router = useRouter();
+  const colors = useThemedColors();
   const { data: friends } = useFriends();
   const [permission, setPermission] = useState<PermissionState>("loading");
   const [contacts, setContacts] = useState<ContactListItem[]>([]);
@@ -101,7 +102,7 @@ const PickContactScreen = () => {
     return (
       <Screen edges={[]}>
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator color={colors.fg.DEFAULT} />
+          <ActivityIndicator color={colors.fgDefault} />
         </View>
       </Screen>
     );
@@ -111,22 +112,20 @@ const PickContactScreen = () => {
     return (
       <Screen edges={[]}>
         <View className="flex-1 items-center justify-center px-8">
-          <View className="h-20 w-20 rounded-full bg-surface-elevated items-center justify-center mb-5">
-            <Ionicons
-              name="people-outline"
-              size={36}
-              color={colors.brand[300]}
-            />
+          <View className="h-20 w-20 rounded-full bg-raised dark:bg-raised-dk items-center justify-center mb-5">
+            <Ionicons name="people-outline" size={36} color={colors.brand} />
           </View>
-          <Text className="text-xl font-semibold text-fg mb-2 text-center">
+          <Text className="text-xl font-semibold text-default dark:text-default-dk mb-2 text-center">
             Contacts access needed
           </Text>
-          <Text className="text-fg-muted text-center mb-6">
+          <Text className="text-muted dark:text-muted-dk text-center mb-6">
             Allow CatchUp to read your contacts to pick from them, or add a
             friend manually.
           </Text>
           {error ? (
-            <Text className="text-danger-400 text-sm mb-4">{error}</Text>
+            <Text className="text-danger dark:text-danger-dk text-sm mb-4">
+              {error}
+            </Text>
           ) : null}
           <Button onPress={() => Linking.openSettings()} className="px-6">
             Open Settings
@@ -136,7 +135,9 @@ const PickContactScreen = () => {
             className="mt-4 py-2 px-3"
             hitSlop={8}
           >
-            <Text className="text-brand-300 font-medium">Add manually</Text>
+            <Text className="text-brand dark:text-brand-dk font-medium">
+              Add manually
+            </Text>
           </Pressable>
         </View>
       </Screen>
@@ -165,28 +166,24 @@ const PickContactScreen = () => {
           ListHeaderComponent={
             <Pressable
               onPress={() => goToNewFriend()}
-              className="bg-surface-elevated rounded-xl p-3 flex-row items-center gap-3 active:bg-surface-high mb-3"
+              className="bg-raised dark:bg-raised-dk rounded-xl p-3 flex-row items-center gap-3 active:bg-high dark:active:bg-high-dk mb-3"
             >
-              <View className="h-12 w-12 rounded-full bg-surface items-center justify-center">
-                <Ionicons
-                  name="person-add"
-                  size={20}
-                  color={colors.brand[300]}
-                />
+              <View className="h-12 w-12 rounded-full bg-app dark:bg-app-dk items-center justify-center">
+                <Ionicons name="person-add" size={20} color={colors.brand} />
               </View>
-              <Text className="text-base font-medium text-fg flex-1">
+              <Text className="text-base font-medium text-default dark:text-default-dk flex-1">
                 Add without a contact
               </Text>
               <Ionicons
                 name="chevron-forward"
                 size={18}
-                color={colors.fg.subtle}
+                color={colors.fgSubtle}
               />
             </Pressable>
           }
           ListEmptyComponent={
             <View className="py-12 items-center">
-              <Text className="text-fg-muted text-center">
+              <Text className="text-muted dark:text-muted-dk text-center">
                 {search.trim()
                   ? `No contacts match "${search.trim()}"`
                   : contacts.length === 0
@@ -203,12 +200,12 @@ const PickContactScreen = () => {
               {item.image_uri ? (
                 <Image
                   source={{ uri: item.image_uri }}
-                  className="h-12 w-12 rounded-full bg-surface-elevated"
+                  className="h-12 w-12 rounded-full bg-raised dark:bg-raised-dk"
                   resizeMode="cover"
                 />
               ) : (
-                <View className="h-12 w-12 rounded-full bg-surface-elevated items-center justify-center">
-                  <Text className="text-fg text-base font-semibold">
+                <View className="h-12 w-12 rounded-full bg-raised dark:bg-raised-dk items-center justify-center">
+                  <Text className="text-default dark:text-default-dk text-base font-semibold">
                     {initialsOf(
                       item.first_name ?? item.display_name,
                       item.last_name,
@@ -218,13 +215,16 @@ const PickContactScreen = () => {
               )}
               <View className="flex-1">
                 <Text
-                  className="text-base font-semibold text-fg"
+                  className="text-base font-semibold text-default dark:text-default-dk"
                   numberOfLines={1}
                 >
                   {item.display_name}
                 </Text>
                 {item.phone ? (
-                  <Text className="text-sm text-fg-muted" numberOfLines={1}>
+                  <Text
+                    className="text-sm text-muted dark:text-muted-dk"
+                    numberOfLines={1}
+                  >
                     {item.phone}
                   </Text>
                 ) : null}

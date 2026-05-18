@@ -77,7 +77,9 @@ const NewEventScreen = () => {
   if (!params.friend_id) {
     return (
       <Screen edges={[]}>
-        <Text className="text-danger-400">Missing friend_id</Text>
+        <Text className="text-danger dark:text-danger-dk">
+          Missing friend_id
+        </Text>
       </Screen>
     );
   }

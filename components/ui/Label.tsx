@@ -9,7 +9,10 @@ interface LabelProps extends TextProps {
 export const Label = ({ children, className, ...props }: LabelProps) => {
   return (
     <Text
-      className={classNames("text-sm font-medium text-fg-muted", className)}
+      className={classNames(
+        "text-sm font-medium text-muted dark:text-muted-dk",
+        className,
+      )}
       {...props}
     >
       {children}

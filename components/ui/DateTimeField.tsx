@@ -1,4 +1,5 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { useColorScheme } from "nativewind";
 import { useState } from "react";
 import { Platform, Pressable, Text } from "react-native";
 
@@ -18,12 +19,15 @@ export const DateTimeField = ({
   onChange,
 }: DateTimeFieldProps) => {
   const [showPicker, setShowPicker] = useState(false);
+  const { colorScheme } = useColorScheme();
 
   return (
     <Field label={label}>
       <Pressable onPress={() => setShowPicker(true)}>
         <InputSurface>
-          <Text className="text-fg">{formatDateTime(value)}</Text>
+          <Text className="text-default dark:text-default-dk">
+            {formatDateTime(value)}
+          </Text>
         </InputSurface>
       </Pressable>
       {showPicker ? (
@@ -31,7 +35,7 @@ export const DateTimeField = ({
           value={value}
           mode="datetime"
           display={Platform.OS === "ios" ? "spinner" : "default"}
-          themeVariant="dark"
+          themeVariant={colorScheme === "dark" ? "dark" : "light"}
           onChange={(_, date) => {
             setShowPicker(Platform.OS === "ios");
             if (date) onChange(date);

@@ -1,15 +1,17 @@
 import "react-native-reanimated";
 import "../global.css";
+import "@/lib/theme-store";
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import { SplashScreen, Stack, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { useColorScheme } from "nativewind";
 import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { useAuth } from "@/hooks/use-auth";
-import { colors } from "@/lib/colors";
+import { useThemedColors } from "@/hooks/use-themed-colors";
 import { queryClient } from "@/lib/query-client";
 import { ROUTES } from "@/lib/routes";
 
@@ -30,31 +32,29 @@ const useProtectedRoute = (loading: boolean, isAuthed: boolean) => {
   }, [loading, isAuthed, segments, router]);
 };
 
-const STACK_HEADER_OPTIONS = {
-  headerStyle: { backgroundColor: colors.surface.DEFAULT },
-  headerTintColor: colors.fg.DEFAULT,
-  headerTitleStyle: { color: colors.fg.DEFAULT },
-  headerBackTitle: "Back",
-  contentStyle: { backgroundColor: colors.surface.DEFAULT },
-} as const;
-
 const RootLayout = () => {
   const { session, loading } = useAuth();
+  const { colorScheme } = useColorScheme();
+  const colors = useThemedColors();
   useProtectedRoute(loading, !!session);
 
   useEffect(() => {
     if (!loading) SplashScreen.hideAsync();
   }, [loading]);
 
+  const stackHeaderOptions = {
+    headerStyle: { backgroundColor: colors.app },
+    headerTintColor: colors.fgDefault,
+    headerTitleStyle: { color: colors.fgDefault },
+    headerBackTitle: "Back",
+    contentStyle: { backgroundColor: colors.app },
+  } as const;
+
   return (
-    <GestureHandlerRootView
-      style={{ flex: 1, backgroundColor: colors.surface.DEFAULT }}
-    >
+    <GestureHandlerRootView style={{ flex: 1, backgroundColor: colors.app }}>
       <SafeAreaProvider>
         <QueryClientProvider client={queryClient}>
-          <Stack
-            screenOptions={{ headerShown: false, ...STACK_HEADER_OPTIONS }}
-          >
+          <Stack screenOptions={{ headerShown: false, ...stackHeaderOptions }}>
             <Stack.Screen name="(auth)" />
             <Stack.Screen name="(tabs)" />
             <Stack.Screen
@@ -63,7 +63,7 @@ const RootLayout = () => {
                 presentation: "modal",
                 headerShown: true,
                 title: "Add friend",
-                ...STACK_HEADER_OPTIONS,
+                ...stackHeaderOptions,
               }}
             />
             <Stack.Screen
@@ -71,7 +71,7 @@ const RootLayout = () => {
               options={{
                 headerShown: true,
                 title: "Add friend",
-                ...STACK_HEADER_OPTIONS,
+                ...stackHeaderOptions,
               }}
             />
             <Stack.Screen
@@ -79,7 +79,7 @@ const RootLayout = () => {
               options={{
                 headerShown: true,
                 title: "",
-                ...STACK_HEADER_OPTIONS,
+                ...stackHeaderOptions,
               }}
             />
             <Stack.Screen
@@ -90,7 +90,7 @@ const RootLayout = () => {
                 sheetGrabberVisible: true,
                 headerShown: true,
                 title: "Frequency",
-                ...STACK_HEADER_OPTIONS,
+                ...stackHeaderOptions,
               }}
             />
             <Stack.Screen
@@ -99,7 +99,7 @@ const RootLayout = () => {
                 presentation: "modal",
                 headerShown: true,
                 title: "New catch-up",
-                ...STACK_HEADER_OPTIONS,
+                ...stackHeaderOptions,
               }}
             />
             <Stack.Screen
@@ -107,7 +107,7 @@ const RootLayout = () => {
               options={{
                 headerShown: true,
                 title: "Catch-up",
-                ...STACK_HEADER_OPTIONS,
+                ...stackHeaderOptions,
               }}
             />
             <Stack.Screen
@@ -115,11 +115,11 @@ const RootLayout = () => {
               options={{
                 headerShown: true,
                 title: "Edit catch-up",
-                ...STACK_HEADER_OPTIONS,
+                ...stackHeaderOptions,
               }}
             />
           </Stack>
-          <StatusBar style="light" />
+          <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
         </QueryClientProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>

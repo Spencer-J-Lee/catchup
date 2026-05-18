@@ -11,13 +11,15 @@ interface PillProps {
 }
 
 const VARIANT_CLASSES: Record<PillVariant, string> = {
-  primary: "bg-brand-300 active:bg-brand-400",
-  secondary: "bg-surface-elevated active:bg-surface-high",
+  primary:
+    "bg-brand dark:bg-brand-dk active:bg-brand-hov dark:active:bg-brand-hov-dk",
+  secondary:
+    "bg-raised dark:bg-raised-dk active:bg-high dark:active:bg-high-dk",
 };
 
 const TEXT_CLASSES: Record<PillVariant, string> = {
-  primary: "text-surface",
-  secondary: "text-fg",
+  primary: "text-danger-fg",
+  secondary: "text-default dark:text-default-dk",
 };
 
 export const Pill = ({ variant, label, onPress, hitSlop }: PillProps) => {

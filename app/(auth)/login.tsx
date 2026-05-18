@@ -26,8 +26,12 @@ const LoginScreen = () => {
   return (
     <Screen>
       <View className="flex-1 justify-center gap-4">
-        <Text className="text-3xl font-bold text-fg">Welcome back</Text>
-        <Text className="text-fg-muted">Sign in to keep up with friends.</Text>
+        <Text className="text-3xl font-bold text-default dark:text-default-dk">
+          Welcome back
+        </Text>
+        <Text className="text-muted dark:text-muted-dk">
+          Sign in to keep up with friends.
+        </Text>
         <Input
           label="Email"
           autoCapitalize="none"
@@ -52,7 +56,7 @@ const LoginScreen = () => {
         </Button>
         <Link
           href={ROUTES.auth.signup}
-          className="text-center text-brand-300 mt-2"
+          className="text-center text-brand dark:text-brand-dk mt-2"
         >
           <Text>{"Don't have an account? Sign up"}</Text>
         </Link>

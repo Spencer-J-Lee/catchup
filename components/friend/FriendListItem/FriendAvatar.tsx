@@ -20,7 +20,7 @@ export const FriendAvatar = ({ friend, size = "sm" }: FriendAvatarProps) => {
   const sizing = SIZE_CLASSES[size];
   const baseClassName = classNames(
     sizing.container,
-    "rounded-full bg-surface-elevated",
+    "rounded-full bg-raised dark:bg-raised-dk",
   );
 
   if (friend.avatar_url) {
@@ -37,7 +37,7 @@ export const FriendAvatar = ({ friend, size = "sm" }: FriendAvatarProps) => {
     <View className={classNames(baseClassName, "items-center justify-center")}>
       <Text
         className={classNames(
-          "text-fg font-semibold leading-none",
+          "text-default dark:text-default-dk font-semibold leading-none",
           sizing.text,
         )}
       >

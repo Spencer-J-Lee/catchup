@@ -2,6 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Alert, Text, View } from "react-native";
 
+import { ThemeSection } from "@/components/settings/ThemeSection";
 import { Button } from "@/components/ui/Button";
 import { Screen } from "@/components/ui/Screen";
 import { useAuth } from "@/hooks/use-auth";
@@ -64,18 +65,26 @@ const SettingsScreen = () => {
 
   return (
     <Screen scroll>
-      <View className="gap-4">
-        <Text className="text-2xl font-bold text-fg">Settings</Text>
+      <View className="gap-6">
+        <Text className="text-2xl font-bold text-default dark:text-default-dk">
+          Settings
+        </Text>
         <View className="gap-1">
-          <Text className="text-sm text-fg-muted">Signed in as</Text>
-          <Text className="text-base text-fg">{user?.email ?? "—"}</Text>
+          <Text className="text-sm text-muted dark:text-muted-dk">
+            Signed in as
+          </Text>
+          <Text className="text-base text-default dark:text-default-dk">
+            {user?.email ?? "—"}
+          </Text>
         </View>
 
+        <ThemeSection />
+
         <View className="gap-2 mt-4">
-          <Text className="text-xs uppercase tracking-wide font-semibold text-fg-muted">
+          <Text className="text-xs uppercase tracking-wide font-semibold text-muted dark:text-muted-dk">
             Developer
           </Text>
-          <Text className="text-sm text-fg-muted">
+          <Text className="text-sm text-muted dark:text-muted-dk">
             Loads a curated set of example friends and catch-up events covering
             due, not-due, missing-frequency, never-caught-up, scheduled, missed,
             and cancelled cases. Re-running replaces previous seed data.

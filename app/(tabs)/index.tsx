@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/Input";
 import { Screen } from "@/components/ui/Screen";
 import { useMissedEvents, useScheduledEvents } from "@/hooks/use-events";
 import { useFriends, type FriendWithStatus } from "@/hooks/use-friends";
-import { colors } from "@/lib/colors";
+import { useThemedColors } from "@/hooks/use-themed-colors";
 import { deriveFriendState, formatLifecycleState } from "@/lib/lifecycle";
 import { ROUTES } from "@/lib/routes";
 
@@ -36,6 +36,7 @@ type Section =
   | { kind: "friend"; row: FriendRow };
 
 const FriendsScreen = () => {
+  const colors = useThemedColors();
   const { data, isLoading, error, refetch, isRefetching } = useFriends();
   const { data: scheduledEvents } = useScheduledEvents();
   const { data: missedEvents } = useMissedEvents();
@@ -236,10 +237,12 @@ const FriendsScreen = () => {
   return (
     <Screen>
       <View className="flex-row items-center justify-between mb-4">
-        <Text className="text-3xl font-bold text-fg">Catchup</Text>
+        <Text className="text-3xl font-bold text-default dark:text-default-dk">
+          Catchup
+        </Text>
         <Link href={ROUTES.friend.pickContact} asChild>
-          <Pressable className="h-10 w-10 rounded-full bg-surface-elevated items-center justify-center active:bg-surface-high">
-            <Ionicons name="add" size={22} color={colors.fg.DEFAULT} />
+          <Pressable className="h-10 w-10 rounded-full bg-raised dark:bg-raised-dk items-center justify-center active:bg-high dark:active:bg-high-dk">
+            <Ionicons name="add" size={22} color={colors.fgDefault} />
           </Pressable>
         </Link>
       </View>
@@ -260,25 +263,21 @@ const FriendsScreen = () => {
 
       {isLoading ? (
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator color={colors.fg.DEFAULT} />
+          <ActivityIndicator color={colors.fgDefault} />
         </View>
       ) : error ? (
-        <Text className="text-danger-400">
+        <Text className="text-danger dark:text-danger-dk">
           Failed to load friends: {(error as Error).message}
         </Text>
       ) : !hasFriends ? (
         <View className="flex-1 items-center justify-center px-8">
-          <View className="h-20 w-20 rounded-full bg-surface-elevated items-center justify-center mb-5">
-            <Ionicons
-              name="people-outline"
-              size={36}
-              color={colors.brand[300]}
-            />
+          <View className="h-20 w-20 rounded-full bg-raised dark:bg-raised-dk items-center justify-center mb-5">
+            <Ionicons name="people-outline" size={36} color={colors.brand} />
           </View>
-          <Text className="text-xl font-semibold text-fg mb-2">
+          <Text className="text-xl font-semibold text-default dark:text-default-dk mb-2">
             No friends yet
           </Text>
-          <Text className="text-fg-muted text-center mb-6">
+          <Text className="text-muted dark:text-muted-dk text-center mb-6">
             Add a friend to start tracking your catch-ups.
           </Text>
           <Link href={ROUTES.friend.pickContact} asChild>
@@ -287,7 +286,7 @@ const FriendsScreen = () => {
         </View>
       ) : sections.length === 0 ? (
         <View className="flex-1 items-center justify-center">
-          <Text className="text-fg-muted">
+          <Text className="text-muted dark:text-muted-dk">
             {`No friends match “${search.trim()}”`}
           </Text>
         </View>
@@ -310,7 +309,7 @@ const FriendsScreen = () => {
           renderItem={({ item }) =>
             item.kind === "header" ? (
               <View className="mt-4 mb-1 px-4">
-                <Text className="text-base font-normal text-fg-muted">
+                <Text className="text-base font-normal text-muted dark:text-muted-dk">
                   {item.title}
                 </Text>
               </View>

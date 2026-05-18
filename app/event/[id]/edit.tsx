@@ -36,7 +36,7 @@ const EditEventScreen = () => {
   if (!event || !formValues) {
     return (
       <Screen edges={[]}>
-        <Text className="text-fg-muted">Loading…</Text>
+        <Text className="text-muted dark:text-muted-dk">Loading…</Text>
       </Screen>
     );
   }

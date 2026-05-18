@@ -8,7 +8,7 @@ import ReanimatedSwipeable, {
 } from "react-native-gesture-handler/ReanimatedSwipeable";
 
 import { useDeleteFriend, type FriendWithStatus } from "@/hooks/use-friends";
-import { colors } from "@/lib/colors";
+import { useThemedColors } from "@/hooks/use-themed-colors";
 import { fullName } from "@/lib/format";
 import { ROUTES } from "@/lib/routes";
 
@@ -40,6 +40,7 @@ export const FriendListItem = ({
 }: FriendListItemProps) => {
   const swipeableRef = useRef<SwipeableMethods>(null);
   const deleteFriend = useDeleteFriend();
+  const colors = useThemedColors();
 
   const onDeletePress = () => {
     Alert.alert(
@@ -66,9 +67,9 @@ export const FriendListItem = ({
     return (
       <Pressable
         onPress={onDeletePress}
-        className="w-20 bg-danger-600 active:bg-danger-700 items-center justify-center"
+        className="w-20 bg-danger dark:bg-danger-dk active:bg-danger-hov dark:active:bg-danger-hov-dk items-center justify-center"
       >
-        <Ionicons name="trash" size={22} color={colors.fg.DEFAULT} />
+        <Ionicons name="trash" size={22} color={colors.dangerFg} />
       </Pressable>
     );
   };
@@ -90,11 +91,11 @@ export const FriendListItem = ({
       overshootRight={false}
     >
       <Link href={ROUTES.friend.detail(friend.id)} asChild>
-        <Pressable className="flex-row items-center gap-3 py-2 px-4 bg-surface active:opacity-70">
+        <Pressable className="flex-row items-center gap-3 py-2 px-4 bg-app dark:bg-app-dk active:opacity-70">
           <FriendAvatar friend={friend} />
 
           <View className="flex-1 gap-0.5">
-            <Text className="text-lg font-semibold text-fg">
+            <Text className="text-lg font-semibold text-default dark:text-default-dk">
               {fullName(friend)}
             </Text>
             <Text className={classNames("text-sm", subLabelData.className)}>

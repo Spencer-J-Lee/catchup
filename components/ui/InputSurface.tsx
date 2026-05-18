@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { View, ViewProps } from "react-native";
 
 export const INPUT_SURFACE_CLASS =
-  "border border-surface-border rounded-xl px-3 py-3 bg-surface-elevated text-fg";
+  "border border-border dark:border-border-dk rounded-xl px-3 py-3 bg-raised dark:bg-raised-dk text-default dark:text-default-dk";
 
 interface InputSurfaceProps extends ViewProps {
   className?: string;

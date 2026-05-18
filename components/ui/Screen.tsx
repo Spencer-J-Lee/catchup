@@ -19,7 +19,7 @@ export const Screen = ({
   const Container = scroll ? ScrollView : View;
 
   return (
-    <SafeAreaView className="flex-1 bg-surface" edges={edges}>
+    <SafeAreaView className="flex-1 bg-app dark:bg-app-dk" edges={edges}>
       <Container
         className={classNames("flex-1 px-4", className)}
         contentContainerClassName={scroll ? "py-4" : undefined}

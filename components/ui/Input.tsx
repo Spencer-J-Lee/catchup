@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { forwardRef } from "react";
 import { Text, TextInput, TextInputProps, View } from "react-native";
 
-import { colors } from "@/lib/colors";
+import { useThemedColors } from "@/hooks/use-themed-colors";
 
 import { INPUT_SURFACE_CLASS } from "./InputSurface";
 import { Label } from "./Label";
@@ -14,6 +14,7 @@ interface InputProps extends TextInputProps {
 
 export const Input = forwardRef<TextInput, InputProps>(
   ({ label, error, className, ...props }, ref) => {
+    const colors = useThemedColors();
     return (
       <View className="gap-2">
         {label ? <Label>{label}</Label> : null}
@@ -22,15 +23,17 @@ export const Input = forwardRef<TextInput, InputProps>(
           ref={ref}
           className={classNames(
             INPUT_SURFACE_CLASS,
-            { "border-danger-500": !!error },
+            { "border-danger dark:border-danger-dk": !!error },
             className,
           )}
-          placeholderTextColor={colors.fg.subtle}
+          placeholderTextColor={colors.fgSubtle}
           {...props}
         />
 
         {error ? (
-          <Text className="text-xs text-danger-400">{error}</Text>
+          <Text className="text-xs text-danger dark:text-danger-dk">
+            {error}
+          </Text>
         ) : null}
       </View>
     );

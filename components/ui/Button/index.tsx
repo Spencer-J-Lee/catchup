@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { ActivityIndicator, Pressable, Text } from "react-native";
 
-import { colors } from "@/lib/colors";
+import { useThemedColors } from "@/hooks/use-themed-colors";
 
 import { ButtonVariant, TEXT_CLASSES, VARIANT_CLASSES } from "./styles";
 
@@ -22,7 +22,12 @@ export const Button = ({
   loading,
   className,
 }: ButtonProps) => {
+  const colors = useThemedColors();
   const isDisabled = disabled || loading;
+  const indicatorColor =
+    variant === "primary" || variant === "destructive"
+      ? colors.dangerFg
+      : colors.fgDefault;
   return (
     <Pressable
       onPress={onPress}
@@ -35,11 +40,7 @@ export const Button = ({
       )}
     >
       {loading ? (
-        <ActivityIndicator
-          color={
-            variant === "primary" ? colors.surface.DEFAULT : colors.fg.DEFAULT
-          }
-        />
+        <ActivityIndicator color={indicatorColor} />
       ) : (
         <Text
           className={classNames(

@@ -39,7 +39,9 @@ const SignupScreen = () => {
   return (
     <Screen>
       <View className="flex-1 justify-center gap-4">
-        <Text className="text-3xl font-bold text-fg">Create account</Text>
+        <Text className="text-3xl font-bold text-default dark:text-default-dk">
+          Create account
+        </Text>
         <Input
           label="Display name"
           value={displayName}
@@ -69,7 +71,7 @@ const SignupScreen = () => {
         </Button>
         <Link
           href={ROUTES.auth.login}
-          className="text-center text-brand-300 mt-2"
+          className="text-center text-brand dark:text-brand-dk mt-2"
         >
           <Text>Already have an account? Sign in</Text>
         </Link>

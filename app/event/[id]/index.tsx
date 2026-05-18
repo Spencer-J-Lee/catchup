@@ -13,13 +13,14 @@ import { Button } from "@/components/ui/Button";
 import { Row } from "@/components/ui/Row";
 import { Screen } from "@/components/ui/Screen";
 import { useDeleteEvent, useEvent, useUpdateEvent } from "@/hooks/use-events";
-import { colors } from "@/lib/colors";
+import { useThemedColors } from "@/hooks/use-themed-colors";
 import { formatDateTime, formatMedium, formatStatus } from "@/lib/format";
 import { ROUTES } from "@/lib/routes";
 
 const EventDetailScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
+  const colors = useThemedColors();
   const { data: event, isLoading } = useEvent(id);
   const update = useUpdateEvent();
   const deleteEvent = useDeleteEvent();
@@ -28,7 +29,7 @@ const EventDetailScreen = () => {
     return (
       <Screen edges={[]}>
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator color={colors.fg.DEFAULT} />
+          <ActivityIndicator color={colors.fgDefault} />
         </View>
       </Screen>
     );
@@ -106,7 +107,9 @@ const EventDetailScreen = () => {
           headerRight: () => (
             <Link href={ROUTES.event.edit(id)} asChild>
               <Pressable className="p-2" hitSlop={16}>
-                <Text className="text-brand-300 font-medium">Edit</Text>
+                <Text className="text-brand dark:text-brand-dk font-medium">
+                  Edit
+                </Text>
               </Pressable>
             </Link>
           ),
@@ -114,7 +117,7 @@ const EventDetailScreen = () => {
       />
 
       <View className="gap-4">
-        <View className="bg-surface-elevated rounded-2xl p-4 gap-2">
+        <View className="bg-raised dark:bg-raised-dk rounded-2xl p-4 gap-2">
           <Row label="Status" value={formatStatus(event.status)} />
           {event.scheduled_at ? (
             <Row label="Scheduled" value={formatDateTime(event.scheduled_at)} />
@@ -130,11 +133,15 @@ const EventDetailScreen = () => {
           ) : null}
           {event.location_text || event.location_address ? (
             <View>
-              <Text className="text-sm text-fg-muted">Location</Text>
-              <Text className="text-base text-fg">{event.location_text}</Text>
+              <Text className="text-sm text-muted dark:text-muted-dk">
+                Location
+              </Text>
+              <Text className="text-base text-default dark:text-default-dk">
+                {event.location_text}
+              </Text>
               {event.location_address ? (
                 <Pressable onPress={openMaps}>
-                  <Text className="text-base text-brand-300 underline">
+                  <Text className="text-base text-brand dark:text-brand-dk underline">
                     {event.location_address}
                   </Text>
                 </Pressable>
@@ -144,9 +151,13 @@ const EventDetailScreen = () => {
         </View>
 
         {event.event_notes ? (
-          <View className="bg-surface-elevated rounded-2xl p-4">
-            <Text className="text-sm text-fg-muted mb-1">Notes</Text>
-            <Text className="text-base text-fg">{event.event_notes}</Text>
+          <View className="bg-raised dark:bg-raised-dk rounded-2xl p-4">
+            <Text className="text-sm text-muted dark:text-muted-dk mb-1">
+              Notes
+            </Text>
+            <Text className="text-base text-default dark:text-default-dk">
+              {event.event_notes}
+            </Text>
           </View>
         ) : null}
 
@@ -178,7 +189,7 @@ const EventDetailScreen = () => {
           className="self-center py-2 px-3 mt-2"
           hitSlop={8}
         >
-          <Text className="text-sm text-danger-400 font-medium">
+          <Text className="text-sm text-danger dark:text-danger-dk font-medium">
             {deleteEvent.isPending ? "Deleting…" : "Delete"}
           </Text>
         </Pressable>

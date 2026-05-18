@@ -84,31 +84,37 @@ const NewFriendScreen = () => {
     <Screen scroll edges={[]}>
       <View className="gap-4">
         {contactId ? (
-          <View className="flex-row items-center gap-3 bg-surface-elevated rounded-2xl p-3">
+          <View className="flex-row items-center gap-3 bg-raised dark:bg-raised-dk rounded-2xl p-3">
             {avatarUrl ? (
               <Image
                 source={{ uri: avatarUrl }}
-                className="h-14 w-14 rounded-full bg-surface"
+                className="h-14 w-14 rounded-full bg-app dark:bg-app-dk"
                 resizeMode="cover"
               />
             ) : (
-              <View className="h-14 w-14 rounded-full bg-surface items-center justify-center">
-                <Text className="text-fg text-base font-semibold">
+              <View className="h-14 w-14 rounded-full bg-app dark:bg-app-dk items-center justify-center">
+                <Text className="text-default dark:text-default-dk text-base font-semibold">
                   {initialsOf(firstName || "?", lastName)}
                 </Text>
               </View>
             )}
             <View className="flex-1">
-              <Text className="text-xs uppercase tracking-wider text-fg-subtle">
+              <Text className="text-xs uppercase tracking-wider text-subtle dark:text-subtle-dk">
                 Linked contact
               </Text>
-              <Text className="text-base font-medium text-fg" numberOfLines={1}>
+              <Text
+                className="text-base font-medium text-default dark:text-default-dk"
+                numberOfLines={1}
+              >
                 {contactSnapshot?.name ??
                   `${firstName} ${lastName}`.trim() ??
                   "Contact"}
               </Text>
               {contactSnapshot?.phone ? (
-                <Text className="text-sm text-fg-muted" numberOfLines={1}>
+                <Text
+                  className="text-sm text-muted dark:text-muted-dk"
+                  numberOfLines={1}
+                >
                   {contactSnapshot.phone}
                 </Text>
               ) : null}
