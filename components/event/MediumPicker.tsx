@@ -5,7 +5,7 @@ import type { Medium } from "@/types/database";
 
 interface MediumPickerProps {
   value: Medium | null;
-  onChange: (medium: Medium) => void;
+  onChange: (medium: Medium | null) => void;
 }
 
 const OPTIONS: { value: Medium; label: string }[] = [
@@ -20,6 +20,11 @@ export const MediumPicker = ({ value, onChange }: MediumPickerProps) => {
   return (
     <Field label="Medium">
       <ChipRow>
+        <Chip
+          label="None"
+          selected={value === null}
+          onPress={() => onChange(null)}
+        />
         {OPTIONS.map((option) => (
           <Chip
             key={option.value}
