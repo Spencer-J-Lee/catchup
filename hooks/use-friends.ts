@@ -1,7 +1,9 @@
+// TODO: Review
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { supabase } from "@/lib/supabase";
 import type { FriendInput } from "@/lib/schemas";
+import { supabase } from "@/lib/supabase";
 import type { Friend, FriendFrequencyStatus } from "@/types/database";
 
 export type FriendWithStatus = Friend & {

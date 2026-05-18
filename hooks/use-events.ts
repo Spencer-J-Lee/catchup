@@ -1,7 +1,9 @@
+// TODO: Review
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { supabase } from "@/lib/supabase";
 import type { EventInput } from "@/lib/schemas";
+import { supabase } from "@/lib/supabase";
 import type { CatchUpEvent } from "@/types/database";
 
 export const useScheduledEvents = () => {

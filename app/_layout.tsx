@@ -1,6 +1,8 @@
+// TODO: Review
+
+import "@/lib/theme-store";
 import "react-native-reanimated";
 import "../global.css";
-import "@/lib/theme-store";
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import { SplashScreen, Stack, useRouter, useSegments } from "expo-router";

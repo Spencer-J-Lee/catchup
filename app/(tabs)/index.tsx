@@ -1,3 +1,5 @@
+// TODO: Review
+
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import { useMemo, useState } from "react";

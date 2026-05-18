@@ -1,3 +1,4 @@
+// TODO: Review
 import "expo-sqlite/localStorage/install";
 
 export type ThemePref = "light" | "dark" | "system";

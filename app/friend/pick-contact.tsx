@@ -1,3 +1,5 @@
+// TODO: Review
+
 import { Ionicons } from "@expo/vector-icons";
 import * as Contacts from "expo-contacts";
 import { useRouter } from "expo-router";

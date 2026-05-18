@@ -1,3 +1,5 @@
+// TODO: Review
+
 import type { Session } from "@supabase/supabase-js";
 import * as Linking from "expo-linking";
 import { useEffect, useState } from "react";

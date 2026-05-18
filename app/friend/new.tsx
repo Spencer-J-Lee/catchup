@@ -1,3 +1,5 @@
+// TODO: Review
+
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import { Alert, Image, Text, View } from "react-native";

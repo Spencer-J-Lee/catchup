@@ -1,3 +1,4 @@
+// TODO: Review
 import * as Contacts from "expo-contacts";
 import { Alert, Linking, Platform } from "react-native";
 

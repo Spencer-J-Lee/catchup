@@ -1,3 +1,5 @@
+// TODO: Review
+
 import { Ionicons } from "@expo/vector-icons";
 import classNames from "classnames";
 import { format, isThisYear } from "date-fns";

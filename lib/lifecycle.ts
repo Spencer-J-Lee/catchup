@@ -1,3 +1,4 @@
+// TODO: Review
 // Catch-up lifecycle — single source of truth.
 //
 // A friend's lifecycle state is derived from their events + frequency; it is not

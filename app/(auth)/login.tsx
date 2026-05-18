@@ -1,3 +1,5 @@
+// TODO: Improve
+
 import { Link } from "expo-router";
 import { useState } from "react";
 import { Alert, Text, View } from "react-native";
