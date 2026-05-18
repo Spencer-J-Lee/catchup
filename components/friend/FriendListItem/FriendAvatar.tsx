@@ -20,7 +20,7 @@ export const FriendAvatar = ({ friend, size = "sm" }: FriendAvatarProps) => {
   const sizing = SIZE_CLASSES[size];
   const baseClassName = classNames(
     sizing.container,
-    "rounded-full bg-raised dark:bg-raised-dk",
+    "rounded-full bg-accent/20 dark:bg-accent-dk/25",
   );
 
   if (friend.avatar_url) {

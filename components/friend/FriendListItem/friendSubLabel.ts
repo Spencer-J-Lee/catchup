@@ -32,6 +32,7 @@ const isWithinOneCalendarDay = (scheduledAt: string): boolean => {
 
 const MUTED = "text-muted dark:text-muted-dk";
 const BRAND = "text-brand dark:text-brand-dk";
+const URGENT = "text-accent dark:text-accent-dk";
 
 export const getFriendSubLabelData = ({
   friend,
@@ -59,26 +60,26 @@ export const getFriendSubLabelData = ({
   if (action === "schedule" && missedAt) {
     return {
       label: `Missed ${formatRelative(missedAt)}`,
-      className: `${BRAND} font-medium`,
+      className: `${URGENT} font-medium`,
     };
   }
 
   if (action === "schedule" && friend.next_due_at) {
     return {
       label: formatOverdueDays(friend.next_due_at),
-      className: `${BRAND} font-medium`,
+      className: `${URGENT} font-medium`,
     };
   }
 
   if (friend.last_caught_up_at) {
     return {
       label: `Last connected ${formatRelative(friend.last_caught_up_at)}`,
-      className: isDue ? `${BRAND} font-medium` : MUTED,
+      className: isDue ? `${URGENT} font-medium` : MUTED,
     };
   }
 
   return {
     label: "No catch-ups yet",
-    className: isDue ? `${BRAND} font-medium` : MUTED,
+    className: isDue ? `${URGENT} font-medium` : MUTED,
   };
 };
