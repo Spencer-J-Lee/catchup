@@ -4,6 +4,7 @@ import { Alert, Text, View } from "react-native";
 
 import { ThemeSection } from "@/components/settings/ThemeSection";
 import { Button } from "@/components/ui/Button";
+import { DeveloperCard } from "@/components/ui/DeveloperCard";
 import { Screen } from "@/components/ui/Screen";
 import { useAuth } from "@/hooks/use-auth";
 import { clearSeedData, seedExampleData } from "@/lib/seed";
@@ -80,26 +81,23 @@ const SettingsScreen = () => {
 
         <ThemeSection />
 
-        <View className="gap-2 mt-4">
-          <Text className="text-xs uppercase tracking-wide font-semibold text-muted dark:text-muted-dk">
-            Developer
-          </Text>
-          <Text className="text-sm text-muted dark:text-muted-dk">
-            Loads a curated set of example friends and catch-up events covering
-            due, not-due, missing-frequency, never-caught-up, scheduled, missed,
-            and cancelled cases. Re-running replaces previous seed data.
-          </Text>
-          <Button onPress={onSeed} loading={seeding} disabled={clearing}>
-            Load example data
-          </Button>
-          <Button
-            variant="secondary"
-            onPress={onClear}
-            loading={clearing}
-            disabled={seeding}
+        <View className="mt-4">
+          <DeveloperCard
+            title="Seed data"
+            description="Loads a curated set of example friends and catch-up events covering due, not-due, missing-frequency, never-caught-up, scheduled, missed, and cancelled cases. Re-running replaces previous seed data."
           >
-            Clear seed data
-          </Button>
+            <Button onPress={onSeed} loading={seeding} disabled={clearing}>
+              Load example data
+            </Button>
+            <Button
+              variant="destructive"
+              onPress={onClear}
+              loading={clearing}
+              disabled={seeding}
+            >
+              Clear seed data
+            </Button>
+          </DeveloperCard>
         </View>
 
         <Button variant="destructive" onPress={() => signOut()}>
