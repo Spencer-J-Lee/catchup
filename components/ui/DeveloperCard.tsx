@@ -15,7 +15,7 @@ export const DeveloperCard = ({
   children,
 }: DeveloperCardProps) => {
   const colors = useThemedColors();
-  const heading = "DEVELOPERS ONLY" + (title ? `· ${title}` : "");
+  const heading = "DEVTOOLS" + (title ? `: ${title}` : "");
 
   return (
     <View className="gap-3 p-4 rounded-2xl border-2 border-dashed border-accent dark:border-accent-dk bg-accent/5 dark:bg-accent-dk/10">
