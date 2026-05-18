@@ -28,6 +28,7 @@ export const Button = ({
     variant === "primary" || variant === "destructive"
       ? colors.dangerFg
       : colors.fgDefault;
+
   return (
     <Pressable
       onPress={onPress}
