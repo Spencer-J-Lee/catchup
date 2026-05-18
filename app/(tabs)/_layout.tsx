@@ -15,7 +15,11 @@ const TabsLayout = () => {
           borderTopColor: colors.border,
           paddingTop: 8,
         },
-        tabBarLabelStyle: { display: "none" },
+        tabBarLabelStyle: {
+          fontSize: 11,
+          fontWeight: "500",
+          marginTop: 2,
+        },
         headerShown: false,
       }}
     >
