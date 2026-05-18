@@ -146,7 +146,7 @@ const FriendDetailScreen = () => {
       <View className="gap-4">
         <View className="items-center gap-3 pt-2">
           <FriendAvatar friend={friend} size="lg" />
-          <Text className="text-2xl font-semibold text-fg">
+          <Text className="text-2xl font-semibold text-center text-fg">
             {fullName(friend)}
           </Text>
         </View>

@@ -5,21 +5,21 @@
 // missed/cancelled) remains the system of record. This module maps from those
 // per-event facts to a per-friend state used by the home screen.
 //
-//        ┌──────────────────────────────── repeat ─────────────────────────────┐
-//        ▼                                                                     │
-//   ┌──────────┐ schedule   ┌──────────────┐                                   │
-//   │ Caught up│───────────▶│     Due      │                                   │
-//   └──────────┘            └──────────────┘                                   │
-//        ▲                       │  ▲                                          │
-//        │ cancel                │  │ miss (auto-flow)                         │
-//        │ (keeps history)       ▼  │                                          │
-//        │                  ┌───────────┐  time passes  ┌───────────────────┐  │
-//        │   ◀──────────────│ Scheduled │──────────────▶│ Awaiting follow-up│──┘
-//        │                  └───────────┘               └───────────────────┘
-//        │                       │  ▲                          │
-//        │                       │  │ reschedule               │ complete
-//        │                       └──┘                          │
-//        └─────────────────── complete ─────────────────────── ▼
+//        ┌───────────────────────────────── repeat ───────────────────────────────┐
+//        ▼                                                                        │
+//   ┌──────────┐ schedule  ┌───────────────────┐                                  │
+//   │ On track │──────────▶│ Time to reconnect │                                  │
+//   └──────────┘           └───────────────────┘                                  │
+//        ▲                          │  ▲                                          │
+//        │ cancel                   │  │ miss (auto-flow)                         │
+//        │ (keeps history)          ▼  │                                          │
+//        │                  ┌────────────┐  time passes  ┌──────────────┐         │
+//        │   ◀──────────────│ On its way │──────────────▶│ How'd it go? │─────────┘
+//        │                  └────────────┘               └──────────────┘
+//        │                        │  ▲                          │
+//        │                        │  │ reschedule               │ complete
+//        │                        └──┘                          │
+//        └──────────────────── complete ─────────────────────── ▼
 
 import type { CatchUpEvent } from "@/types/database";
 
@@ -108,12 +108,12 @@ export const deriveFriendState = (
 export const formatLifecycleState = (state: FriendLifecycleState): string => {
   switch (state) {
     case "caught_up":
-      return "Caught up";
+      return "On track";
     case "due":
-      return "Due";
+      return "Time to reconnect";
     case "scheduled":
-      return "Scheduled";
+      return "On its way";
     case "awaiting_followup":
-      return "Awaiting follow-up";
+      return "How'd it go?";
   }
 };

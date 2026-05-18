@@ -39,7 +39,7 @@ export const getFriendSubLabelData = ({
 }: SubLabelArgs): { label: string; className: string } => {
   if (action === "followUp" && scheduledAt) {
     return {
-      label: `Was scheduled ${formatRelative(scheduledAt)}`,
+      label: `Catch-up was ${formatRelative(scheduledAt)}`,
       className: "text-fg-muted font-medium",
     };
   }
@@ -48,7 +48,7 @@ export const getFriendSubLabelData = ({
     const isImminent = isWithinOneCalendarDay(scheduledAt);
 
     return {
-      label: `Scheduled ${formatRelative(scheduledAt)}`,
+      label: `Coming up ${formatRelative(scheduledAt)}`,
       className: isImminent ? "text-brand-300 font-medium" : "text-fg-muted",
     };
   }
@@ -69,7 +69,7 @@ export const getFriendSubLabelData = ({
 
   if (friend.last_caught_up_at) {
     return {
-      label: `Caught up ${formatRelative(friend.last_caught_up_at)}`,
+      label: `Last connected ${formatRelative(friend.last_caught_up_at)}`,
       className: isDue ? "text-brand-300 font-medium" : "text-fg-muted",
     };
   }

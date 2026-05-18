@@ -28,8 +28,8 @@ export const formatRelative = (date: Date | string): string => {
 export const formatOverdueDays = (dueAt: Date | string): string => {
   const date = typeof dueAt === "string" ? new Date(dueAt) : dueAt;
   const days = differenceInCalendarDays(new Date(), date);
-  if (days <= 0) return "Due today";
-  return days === 1 ? "1 day overdue" : `${days} days overdue`;
+  if (days <= 0) return "Reconnect today";
+  return days === 1 ? "1 day past due" : `${days} days past due`;
 };
 
 export const fullName = (parts: {

@@ -19,7 +19,7 @@ import { Screen } from "@/components/ui/Screen";
 import { useMissedEvents, useScheduledEvents } from "@/hooks/use-events";
 import { useFriends, type FriendWithStatus } from "@/hooks/use-friends";
 import { colors } from "@/lib/colors";
-import { deriveFriendState } from "@/lib/lifecycle";
+import { deriveFriendState, formatLifecycleState } from "@/lib/lifecycle";
 import { ROUTES } from "@/lib/routes";
 
 type FriendRow = {
@@ -198,7 +198,7 @@ const FriendsScreen = () => {
     if (awaitingFollowup.length > 0) {
       sections.push({
         kind: "header",
-        title: "Awaiting follow-up",
+        title: formatLifecycleState("awaiting_followup"),
         count: awaitingFollowup.length,
       });
       for (const row of awaitingFollowup)
@@ -207,7 +207,7 @@ const FriendsScreen = () => {
     if (scheduled.length > 0) {
       sections.push({
         kind: "header",
-        title: "Scheduled",
+        title: formatLifecycleState("scheduled"),
         count: scheduled.length,
       });
       for (const row of scheduled) sections.push({ kind: "friend", row });
@@ -215,7 +215,7 @@ const FriendsScreen = () => {
     if (due.length > 0) {
       sections.push({
         kind: "header",
-        title: "Due",
+        title: formatLifecycleState("due"),
         count: due.length,
       });
       for (const row of due) sections.push({ kind: "friend", row });
@@ -223,7 +223,7 @@ const FriendsScreen = () => {
     if (caughtUp.length > 0) {
       sections.push({
         kind: "header",
-        title: "Caught up",
+        title: formatLifecycleState("caught_up"),
         count: caughtUp.length,
       });
       for (const row of caughtUp) sections.push({ kind: "friend", row });
