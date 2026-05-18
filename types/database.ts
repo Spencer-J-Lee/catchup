@@ -23,7 +23,7 @@ export type FrequencyPreset =
 
 export type FrequencyUnit = "days" | "weeks" | "months";
 
-export type Medium = "text" | "call" | "video" | "in_person";
+export type Medium = "text" | "call" | "video" | "in_person" | "email";
 
 export type EventStatus = "scheduled" | "completed" | "missed" | "cancelled";
 

@@ -11,7 +11,13 @@ export const frequencyPresetSchema = z.enum([
   "custom",
 ]);
 
-export const mediumSchema = z.enum(["text", "call", "video", "in_person"]);
+export const mediumSchema = z.enum([
+  "text",
+  "call",
+  "video",
+  "in_person",
+  "email",
+]);
 export const eventStatusSchema = z.enum([
   "scheduled",
   "completed",

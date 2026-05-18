@@ -98,6 +98,8 @@ export const formatMedium = (medium: Medium | null | undefined): string => {
       return "Video";
     case "in_person":
       return "In person";
+    case "email":
+      return "Email";
     default:
       return "";
   }

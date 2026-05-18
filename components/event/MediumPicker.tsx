@@ -12,6 +12,7 @@ const OPTIONS: { value: Medium; label: string }[] = [
   { value: "text", label: "Text" },
   { value: "call", label: "Call" },
   { value: "video", label: "Video" },
+  { value: "email", label: "Email" },
   { value: "in_person", label: "In person" },
 ];
 

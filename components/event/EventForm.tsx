@@ -35,6 +35,7 @@ const MEDIUM_DETAIL_PLACEHOLDER: Record<
   text: "e.g. iMessage, WhatsApp",
   call: "e.g. Phone, Discord",
   video: "e.g. Zoom, FaceTime",
+  email: "e.g. Gmail, Outlook",
 };
 
 interface EventFormProps {
