@@ -118,6 +118,17 @@ const RootLayout = () => {
                 ...stackHeaderOptions,
               }}
             />
+            <Stack.Screen
+              name="event/[id]/follow-up"
+              options={{
+                presentation: "formSheet",
+                sheetAllowedDetents: "fitToContents",
+                sheetGrabberVisible: true,
+                headerShown: true,
+                title: "Follow up",
+                ...stackHeaderOptions,
+              }}
+            />
           </Stack>
           <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
         </QueryClientProvider>

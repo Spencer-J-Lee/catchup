@@ -10,7 +10,7 @@ export const resolveFriendActionHref = (
   scheduledEventId: string | null | undefined,
 ): Href => {
   if (action === "followUp" && scheduledEventId) {
-    return ROUTES.event.detail(scheduledEventId);
+    return ROUTES.event.followUp(scheduledEventId);
   }
 
   if (action === "reschedule" && scheduledEventId) {

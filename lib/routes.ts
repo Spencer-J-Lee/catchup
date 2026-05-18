@@ -51,6 +51,10 @@ export const ROUTES = {
       pathname: `${EVENT}/[id]/edit`,
       params: { id },
     }),
+    followUp: (id: string) => ({
+      pathname: `${EVENT}/[id]/follow-up`,
+      params: { id },
+    }),
   },
 } satisfies {
   home: Href;
@@ -65,5 +69,6 @@ export const ROUTES = {
     new: (params?: EventNewParams) => Href;
     detail: (id: string) => Href;
     edit: (id: string) => Href;
+    followUp: (id: string) => Href;
   };
 };
