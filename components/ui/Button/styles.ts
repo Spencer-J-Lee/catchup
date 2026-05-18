@@ -5,8 +5,7 @@ export const VARIANT_CLASSES: Record<ButtonVariant, string> = {
     "bg-brand dark:bg-brand-dk active:bg-brand-hov dark:active:bg-brand-hov-dk",
   secondary:
     "bg-raised dark:bg-raised-dk active:bg-high dark:active:bg-high-dk",
-  ghost:
-    "bg-transparent active:bg-raised dark:active:bg-raised-dk",
+  ghost: "bg-transparent active:bg-raised dark:active:bg-raised-dk",
   destructive:
     "bg-danger dark:bg-danger-dk active:bg-danger-hov dark:active:bg-danger-hov-dk",
 };

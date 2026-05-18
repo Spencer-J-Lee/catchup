@@ -7,6 +7,8 @@ interface DividerProps {
 
 export const Divider = ({ className }: DividerProps) => {
   return (
-    <View className={classNames("h-px bg-border dark:bg-border-dk", className)} />
+    <View
+      className={classNames("h-px bg-border dark:bg-border-dk", className)}
+    />
   );
 };

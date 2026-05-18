@@ -19,7 +19,8 @@ const NewEventScreen = () => {
   const { user } = useAuth();
   const create = useCreateEvent();
 
-  const mode: EventMode = params.mode === "logCatchUp" ? "logCatchUp" : "schedule";
+  const mode: EventMode =
+    params.mode === "logCatchUp" ? "logCatchUp" : "schedule";
   const title = mode === "schedule" ? "Schedule catch-up" : "Log catch-up";
 
   const initialFormValues = useMemo<EventFormValues>(() => {

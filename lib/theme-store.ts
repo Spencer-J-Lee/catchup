@@ -1,11 +1,7 @@
 import { colorScheme } from "nativewind";
 import { create } from "zustand";
 
-import {
-  readThemePref,
-  writeThemePref,
-  type ThemePref,
-} from "./theme-storage";
+import { readThemePref, writeThemePref, type ThemePref } from "./theme-storage";
 
 interface ThemeState {
   pref: ThemePref;

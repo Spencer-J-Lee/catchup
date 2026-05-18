@@ -130,10 +130,7 @@ const EventDetailScreen = () => {
             ) : null}
 
             {event.occurred_at ? (
-              <Row
-                label="Occurred"
-                value={formatDateTime(event.occurred_at)}
-              />
+              <Row label="Occurred" value={formatDateTime(event.occurred_at)} />
             ) : null}
 
             {event.medium ? (
