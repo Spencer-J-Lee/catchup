@@ -111,7 +111,7 @@ const FollowUpScreen = () => {
       <Screen edges={["bottom"]}>
         <Animated.View
           entering={FadeIn.duration(FADE_MS)}
-          className="gap-4"
+          className="gap-4 pt-6 pb-4"
           key="step-status"
         >
           <View className="gap-1">
@@ -172,7 +172,7 @@ const FollowUpScreen = () => {
     <Screen edges={["bottom"]}>
       <Animated.View
         entering={FadeIn.duration(FADE_MS)}
-        className="gap-4"
+        className="gap-4 pt-6"
         key="step-notes"
       >
         <View className="gap-2">
