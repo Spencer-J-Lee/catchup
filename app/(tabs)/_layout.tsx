@@ -1,19 +1,33 @@
 // TODO: Review
 
 import { Ionicons } from "@expo/vector-icons";
+import { BlurView } from "expo-blur";
 import { Tabs } from "expo-router";
+import { useColorScheme } from "nativewind";
+import { StyleSheet } from "react-native";
 
 import { useThemedColors } from "@/hooks/use-themed-colors";
 
 const TabsLayout = () => {
   const colors = useThemedColors();
+  const { colorScheme } = useColorScheme();
+
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: colors.brand,
         tabBarInactiveTintColor: colors.fgMuted,
+        tabBarBackground: () => (
+          <BlurView
+            tint={colorScheme === "dark" ? "dark" : "light"}
+            intensity={70}
+            experimentalBlurMethod="dimezisBlurView"
+            style={StyleSheet.absoluteFill}
+          />
+        ),
         tabBarStyle: {
-          backgroundColor: colors.app,
+          position: "absolute",
+          backgroundColor: "transparent",
           borderTopColor: colors.border,
           paddingTop: 8,
         },

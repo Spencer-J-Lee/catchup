@@ -1,5 +1,6 @@
 // TODO: Implement
 
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Alert, Text, View } from "react-native";
@@ -14,6 +15,7 @@ import { clearSeedData, seedExampleData } from "@/lib/seed";
 const SettingsScreen = () => {
   const { user, signOut } = useAuth();
   const queryClient = useQueryClient();
+  const tabBarHeight = useBottomTabBarHeight();
   const [seeding, setSeeding] = useState(false);
   const [clearing, setClearing] = useState(false);
 
@@ -68,7 +70,7 @@ const SettingsScreen = () => {
 
   return (
     <Screen scroll>
-      <View className="gap-6">
+      <View className="gap-6" style={{ paddingBottom: tabBarHeight }}>
         <Text className="text-2xl font-bold text-default dark:text-default-dk">
           Settings
         </Text>

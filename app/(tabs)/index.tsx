@@ -1,7 +1,10 @@
 // TODO: Review
 
 import { Ionicons } from "@expo/vector-icons";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { BlurView } from "expo-blur";
 import { Link } from "expo-router";
+import { useColorScheme } from "nativewind";
 import { useMemo, useState } from "react";
 import {
   ActivityIndicator,
@@ -10,6 +13,7 @@ import {
   Text,
   View,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import {
   FriendListItem,
@@ -18,7 +22,6 @@ import {
 import { Button } from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
 import { Input } from "@/components/ui/Input";
-import { Screen } from "@/components/ui/Screen";
 import { useMissedEvents, useScheduledEvents } from "@/hooks/use-events";
 import { useFriends, type FriendWithStatus } from "@/hooks/use-friends";
 import { useThemedColors } from "@/hooks/use-themed-colors";
@@ -40,6 +43,10 @@ type Section =
 
 const FriendsScreen = () => {
   const colors = useThemedColors();
+  const { colorScheme } = useColorScheme();
+  const insets = useSafeAreaInsets();
+  const tabBarHeight = useBottomTabBarHeight();
+  const [topBarHeight, setTopBarHeight] = useState(0);
   const { data, isLoading, error, refetch, isRefetching } = useFriends();
   const { data: scheduledEvents } = useScheduledEvents();
   const { data: missedEvents } = useMissedEvents();
@@ -237,43 +244,25 @@ const FriendsScreen = () => {
 
   const hasFriends = !!data && data.length > 0;
 
+  const overlayPad = { paddingTop: topBarHeight, paddingBottom: tabBarHeight };
+
   return (
-    <Screen>
-      <View className="flex-row items-center justify-between mb-4">
-        <Text className="text-3xl font-bold text-default dark:text-default-dk">
-          Catchup
-        </Text>
-        <Link href={ROUTES.friend.pickContact} asChild>
-          <Pressable className="h-10 w-10 rounded-full bg-raised dark:bg-raised-dk items-center justify-center active:bg-high dark:active:bg-high-dk">
-            <Ionicons name="add" size={22} color={colors.fgDefault} />
-          </Pressable>
-        </Link>
-      </View>
-
-      {hasFriends ? (
-        <View className="mb-3">
-          <Input
-            placeholder="Search friends"
-            value={search}
-            onChangeText={setSearch}
-            autoCorrect={false}
-            autoCapitalize="none"
-            returnKeyType="search"
-            clearButtonMode="while-editing"
-          />
-        </View>
-      ) : null}
-
+    <View className="flex-1 bg-app dark:bg-app-dk">
       {isLoading ? (
-        <View className="flex-1 items-center justify-center">
+        <View className="flex-1 items-center justify-center" style={overlayPad}>
           <ActivityIndicator color={colors.fgDefault} />
         </View>
       ) : error ? (
-        <Text className="text-danger dark:text-danger-dk">
-          Failed to load friends: {(error as Error).message}
-        </Text>
+        <View className="px-4" style={overlayPad}>
+          <Text className="text-danger dark:text-danger-dk">
+            Failed to load friends: {(error as Error).message}
+          </Text>
+        </View>
       ) : !hasFriends ? (
-        <View className="flex-1 items-center justify-center px-8">
+        <View
+          className="flex-1 items-center justify-center px-8"
+          style={overlayPad}
+        >
           <View className="h-20 w-20 rounded-full bg-raised dark:bg-raised-dk items-center justify-center mb-5">
             <Ionicons name="people-outline" size={36} color={colors.brand} />
           </View>
@@ -288,14 +277,13 @@ const FriendsScreen = () => {
           </Link>
         </View>
       ) : sections.length === 0 ? (
-        <View className="flex-1 items-center justify-center">
+        <View className="flex-1 items-center justify-center" style={overlayPad}>
           <Text className="text-muted dark:text-muted-dk">
             {`No friends match “${search.trim()}”`}
           </Text>
         </View>
       ) : (
         <FlatList
-          className="-mx-4"
           data={sections}
           keyExtractor={(section, index) =>
             section.kind === "header"
@@ -333,11 +321,56 @@ const FriendsScreen = () => {
           }
           refreshing={isRefetching}
           onRefresh={refetch}
-          contentContainerClassName="pb-8"
+          contentContainerStyle={{
+            paddingTop: topBarHeight,
+            paddingBottom: tabBarHeight + 32,
+          }}
+          scrollIndicatorInsets={{ top: topBarHeight, bottom: tabBarHeight }}
           keyboardShouldPersistTaps="handled"
         />
       )}
-    </Screen>
+
+      <BlurView
+        tint={colorScheme === "dark" ? "dark" : "light"}
+        intensity={70}
+        experimentalBlurMethod="dimezisBlurView"
+        onLayout={(event) => setTopBarHeight(event.nativeEvent.layout.height)}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          paddingTop: insets.top,
+        }}
+      >
+        <View className="px-4 pt-2">
+          <View className="flex-row items-center justify-between mb-4">
+            <Text className="text-3xl font-bold text-default dark:text-default-dk">
+              Catchup
+            </Text>
+            <Link href={ROUTES.friend.pickContact} asChild>
+              <Pressable className="h-10 w-10 rounded-full bg-raised dark:bg-raised-dk items-center justify-center active:bg-high dark:active:bg-high-dk">
+                <Ionicons name="add" size={22} color={colors.fgDefault} />
+              </Pressable>
+            </Link>
+          </View>
+
+          {hasFriends ? (
+            <View className="mb-3">
+              <Input
+                placeholder="Search friends"
+                value={search}
+                onChangeText={setSearch}
+                autoCorrect={false}
+                autoCapitalize="none"
+                returnKeyType="search"
+                clearButtonMode="while-editing"
+              />
+            </View>
+          ) : null}
+        </View>
+      </BlurView>
+    </View>
   );
 };
 
