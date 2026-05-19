@@ -54,12 +54,17 @@ const EditFriendScreen = () => {
   };
 
   return (
-    <Screen scroll edges={["bottom"]}>
-      <View className="gap-4">
-        <FrequencyPicker value={frequency} onChange={setFrequency} />
+    <Screen
+      scroll
+      edges={["bottom"]}
+      footer={
         <Button onPress={onSave} loading={update.isPending}>
           Save
         </Button>
+      }
+    >
+      <View className="gap-4">
+        <FrequencyPicker value={frequency} onChange={setFrequency} />
       </View>
     </Screen>
   );

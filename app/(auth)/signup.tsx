@@ -39,7 +39,25 @@ const SignupScreen = () => {
   };
 
   return (
-    <Screen>
+    <Screen
+      footer={
+        <View className="gap-3">
+          <Button
+            onPress={onSignUp}
+            loading={submitting}
+            disabled={!email || !password || password.length < 6}
+          >
+            Sign up
+          </Button>
+          <Link
+            href={ROUTES.auth.login}
+            className="text-center text-brand dark:text-brand-dk"
+          >
+            <Text>Already have an account? Sign in</Text>
+          </Link>
+        </View>
+      }
+    >
       <View className="flex-1 justify-center gap-4">
         <Text className="text-3xl font-bold text-default dark:text-default-dk">
           Create account
@@ -64,19 +82,6 @@ const SignupScreen = () => {
           value={password}
           onChangeText={setPassword}
         />
-        <Button
-          onPress={onSignUp}
-          loading={submitting}
-          disabled={!email || !password || password.length < 6}
-        >
-          Sign up
-        </Button>
-        <Link
-          href={ROUTES.auth.login}
-          className="text-center text-brand dark:text-brand-dk mt-2"
-        >
-          <Text>Already have an account? Sign in</Text>
-        </Link>
       </View>
     </Screen>
   );

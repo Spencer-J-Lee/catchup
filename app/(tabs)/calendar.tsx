@@ -80,7 +80,7 @@ const CalendarDay = ({ date, state, marking, onPress }: CalendarDayProps) => {
         isSelected
           ? "bg-raised dark:bg-raised-dk border-raised dark:border-raised-dk active:bg-high dark:active:bg-high-dk active:border-high dark:active:border-high-dk"
           : isDayToday
-            ? "border-dashed border-high dark:border-high-dk"
+            ? "border-dotted border-high dark:border-high-dk"
             : "border-transparent",
       )}
     >

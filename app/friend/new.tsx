@@ -84,7 +84,19 @@ const NewFriendScreen = () => {
   };
 
   return (
-    <Screen scroll edges={[]}>
+    <Screen
+      scroll
+      edges={[]}
+      footer={
+        <Button
+          onPress={onSave}
+          loading={create.isPending}
+          disabled={!firstName.trim()}
+        >
+          Save
+        </Button>
+      }
+    >
       <View className="gap-4">
         {contactId ? (
           <Surface className="flex-row items-center gap-3">
@@ -132,13 +144,6 @@ const NewFriendScreen = () => {
         />
         <Input label="Last name" value={lastName} onChangeText={setLastName} />
         <FrequencyPicker value={frequency} onChange={setFrequency} />
-        <Button
-          onPress={onSave}
-          loading={create.isPending}
-          disabled={!firstName.trim()}
-        >
-          Save
-        </Button>
       </View>
     </Screen>
   );

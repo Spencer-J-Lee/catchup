@@ -26,7 +26,25 @@ const LoginScreen = () => {
   };
 
   return (
-    <Screen>
+    <Screen
+      footer={
+        <View className="gap-3">
+          <Button
+            onPress={onSignIn}
+            loading={submitting}
+            disabled={!email || !password}
+          >
+            Sign in
+          </Button>
+          <Link
+            href={ROUTES.auth.signup}
+            className="text-center text-brand dark:text-brand-dk"
+          >
+            <Text>{"Don't have an account? Sign up"}</Text>
+          </Link>
+        </View>
+      }
+    >
       <View className="flex-1 justify-center gap-4">
         <Text className="text-3xl font-bold text-default dark:text-default-dk">
           Welcome back
@@ -49,19 +67,6 @@ const LoginScreen = () => {
           value={password}
           onChangeText={setPassword}
         />
-        <Button
-          onPress={onSignIn}
-          loading={submitting}
-          disabled={!email || !password}
-        >
-          Sign in
-        </Button>
-        <Link
-          href={ROUTES.auth.signup}
-          className="text-center text-brand dark:text-brand-dk mt-2"
-        >
-          <Text>{"Don't have an account? Sign up"}</Text>
-        </Link>
       </View>
     </Screen>
   );

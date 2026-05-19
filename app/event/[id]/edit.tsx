@@ -2,7 +2,7 @@
 
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Alert, Text, View } from "react-native";
+import { Alert, Text } from "react-native";
 
 import {
   EventForm,
@@ -75,17 +75,20 @@ const EditEventScreen = () => {
   };
 
   return (
-    <Screen scroll edges={[]}>
-      <View className="gap-4">
-        <EventForm
-          mode={mode}
-          formValues={formValues}
-          onChange={setFormValues}
-        />
+    <Screen
+      scroll
+      edges={[]}
+      footer={
         <Button onPress={onSave} loading={update.isPending}>
           Save
         </Button>
-      </View>
+      }
+    >
+      <EventForm
+        mode={mode}
+        formValues={formValues}
+        onChange={setFormValues}
+      />
     </Screen>
   );
 };

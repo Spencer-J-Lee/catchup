@@ -2,7 +2,7 @@
 
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo, useState } from "react";
-import { Alert, Text, View } from "react-native";
+import { Alert, Text } from "react-native";
 
 import {
   EventForm,
@@ -88,19 +88,21 @@ const NewEventScreen = () => {
   }
 
   return (
-    <Screen scroll edges={[]}>
-      <Stack.Screen options={{ title }} />
-      <View className="gap-4">
-        <EventForm
-          mode={mode}
-          formValues={formValues}
-          onChange={setFormValues}
-        />
-
+    <Screen
+      scroll
+      edges={[]}
+      footer={
         <Button onPress={onSave} loading={create.isPending}>
           {mode === "schedule" ? "Schedule" : "Log catch-up"}
         </Button>
-      </View>
+      }
+    >
+      <Stack.Screen options={{ title }} />
+      <EventForm
+        mode={mode}
+        formValues={formValues}
+        onChange={setFormValues}
+      />
     </Screen>
   );
 };

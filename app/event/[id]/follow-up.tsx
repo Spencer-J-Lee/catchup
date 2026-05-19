@@ -154,7 +154,37 @@ const FollowUpScreen = () => {
   )!;
 
   return (
-    <Screen edges={["bottom"]}>
+    <Screen
+      edges={["bottom"]}
+      footer={
+        <Animated.View
+          entering={FadeIn.duration(FADE_MS)}
+          className="gap-2"
+          key="step-notes-footer"
+        >
+          <Button onPress={() => submit(notes)} loading={update.isPending}>
+            Save
+          </Button>
+          <Button
+            variant="secondary"
+            onPress={() => submit(undefined)}
+            disabled={update.isPending}
+          >
+            Skip
+          </Button>
+          <Pressable
+            onPress={() => setSelectedStatus(null)}
+            disabled={update.isPending}
+            className="self-center py-2 px-3 mt-1"
+            hitSlop={8}
+          >
+            <Text className="text-sm text-muted dark:text-muted-dk font-medium">
+              Change status
+            </Text>
+          </Pressable>
+        </Animated.View>
+      }
+    >
       <Animated.View
         entering={FadeIn.duration(FADE_MS)}
         className="gap-4 pt-6"
@@ -198,29 +228,6 @@ const FollowUpScreen = () => {
           textAlignVertical="top"
           className="h-32"
         />
-
-        <View className="gap-2">
-          <Button onPress={() => submit(notes)} loading={update.isPending}>
-            Save
-          </Button>
-          <Button
-            variant="secondary"
-            onPress={() => submit(undefined)}
-            disabled={update.isPending}
-          >
-            Skip
-          </Button>
-          <Pressable
-            onPress={() => setSelectedStatus(null)}
-            disabled={update.isPending}
-            className="self-center py-2 px-3 mt-1"
-            hitSlop={8}
-          >
-            <Text className="text-sm text-muted dark:text-muted-dk font-medium">
-              Change status
-            </Text>
-          </Pressable>
-        </View>
       </Animated.View>
     </Screen>
   );
