@@ -9,6 +9,7 @@ import Animated, { FadeIn } from "react-native-reanimated";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Screen } from "@/components/ui/Screen";
+import { PressableSurface } from "@/components/ui/Surface";
 import { useEvent, useUpdateEvent } from "@/hooks/use-events";
 import { useThemedColors } from "@/hooks/use-themed-colors";
 import type { EventStatus } from "@/types/database";
@@ -125,10 +126,10 @@ const FollowUpScreen = () => {
 
           <View className="gap-2">
             {STATUS_OPTIONS.map((option) => (
-              <Pressable
+              <PressableSurface
                 key={option.status}
                 onPress={() => setSelectedStatus(option.status)}
-                className="flex-row items-center gap-4 bg-raised dark:bg-raised-dk active:bg-high dark:active:bg-high-dk rounded-2xl p-4"
+                className="flex-row items-center gap-4"
               >
                 <View
                   className={`h-12 w-12 rounded-full items-center justify-center ${option.iconBgClass}`}
@@ -156,7 +157,7 @@ const FollowUpScreen = () => {
                   size={20}
                   color={colors.fgSubtle}
                 />
-              </Pressable>
+              </PressableSurface>
             ))}
           </View>
         </Animated.View>

@@ -8,6 +8,7 @@ import { FrequencyPicker } from "@/components/friend/FrequencyPicker";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Screen } from "@/components/ui/Screen";
+import { Surface } from "@/components/ui/Surface";
 import { useAuth } from "@/hooks/use-auth";
 import { useCreateFriend } from "@/hooks/use-friends";
 import type { ContactSnapshot } from "@/lib/contacts";
@@ -86,7 +87,7 @@ const NewFriendScreen = () => {
     <Screen scroll edges={[]}>
       <View className="gap-4">
         {contactId ? (
-          <View className="flex-row items-center gap-3 bg-raised dark:bg-raised-dk rounded-2xl p-3">
+          <Surface className="flex-row items-center gap-3">
             {avatarUrl ? (
               <Image
                 source={{ uri: avatarUrl }}
@@ -121,7 +122,7 @@ const NewFriendScreen = () => {
                 </Text>
               ) : null}
             </View>
-          </View>
+          </Surface>
         ) : null}
 
         <Input

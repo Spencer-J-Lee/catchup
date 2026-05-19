@@ -17,6 +17,7 @@ import {
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Screen } from "@/components/ui/Screen";
+import { PressableSurface } from "@/components/ui/Surface";
 import { useFriends } from "@/hooks/use-friends";
 import { useThemedColors } from "@/hooks/use-themed-colors";
 import {
@@ -166,9 +167,10 @@ const PickContactScreen = () => {
           contentContainerClassName="pb-8"
           ItemSeparatorComponent={() => <View className="h-1" />}
           ListHeaderComponent={
-            <Pressable
+            <PressableSurface
               onPress={() => goToNewFriend()}
-              className="bg-raised dark:bg-raised-dk rounded-xl p-3 flex-row items-center gap-3 active:bg-high dark:active:bg-high-dk mb-3"
+              size="sm"
+              className="flex-row items-center gap-3 mb-3"
             >
               <View className="h-12 w-12 rounded-full bg-app dark:bg-app-dk items-center justify-center">
                 <Ionicons name="person-add" size={20} color={colors.brand} />
@@ -181,7 +183,7 @@ const PickContactScreen = () => {
                 size={18}
                 color={colors.fgSubtle}
               />
-            </Pressable>
+            </PressableSurface>
           }
           ListEmptyComponent={
             <View className="py-12 items-center">

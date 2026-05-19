@@ -16,6 +16,7 @@ import { DividedList } from "@/components/ui/DividedList";
 import { PressableRow } from "@/components/ui/PressableRow";
 import { Row } from "@/components/ui/Row";
 import { Screen } from "@/components/ui/Screen";
+import { Surface } from "@/components/ui/Surface";
 import { useDeleteEvent, useEvent, useUpdateEvent } from "@/hooks/use-events";
 import { useThemedColors } from "@/hooks/use-themed-colors";
 import { formatDateTime, formatMedium, formatStatus } from "@/lib/format";
@@ -121,7 +122,7 @@ const EventDetailScreen = () => {
       />
 
       <View className="gap-4">
-        <View className="bg-raised dark:bg-raised-dk rounded-2xl p-4">
+        <Surface>
           <DividedList>
             <Row label="Status" value={formatStatus(event.status)} />
 
@@ -154,17 +155,17 @@ const EventDetailScreen = () => {
               <Row label="Location" value={event.location_text} />
             ) : null}
           </DividedList>
-        </View>
+        </Surface>
 
         {event.event_notes ? (
-          <View className="bg-raised dark:bg-raised-dk rounded-2xl p-4">
+          <Surface>
             <Text className="text-sm text-muted dark:text-muted-dk mb-1">
               Notes
             </Text>
             <Text className="text-base text-default dark:text-default-dk">
               {event.event_notes}
             </Text>
-          </View>
+          </Surface>
         ) : null}
 
         {event.status === "scheduled" ? (

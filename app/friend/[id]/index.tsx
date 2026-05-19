@@ -18,6 +18,7 @@ import { DividedList } from "@/components/ui/DividedList";
 import { PressableRow } from "@/components/ui/PressableRow";
 import { Row } from "@/components/ui/Row";
 import { Screen } from "@/components/ui/Screen";
+import { PressableSurface, Surface } from "@/components/ui/Surface";
 import { useEventsForFriend } from "@/hooks/use-events";
 import {
   useDeleteFriend,
@@ -182,10 +183,10 @@ const FriendDetailScreen = () => {
             />
           </View>
         ) : (
-          <Pressable
+          <PressableSurface
             onPress={onLinkContact}
             disabled={linkContact.isPending}
-            className="bg-raised dark:bg-raised-dk rounded-2xl p-4 flex-row items-center gap-3"
+            className="flex-row items-center gap-3"
           >
             <Ionicons name="person-add" size={20} color={colors.brand} />
             <View className="flex-1">
@@ -201,7 +202,7 @@ const FriendDetailScreen = () => {
               size={18}
               color={colors.fgSubtle}
             />
-          </Pressable>
+          </PressableSurface>
         )}
 
         <View className="flex-row gap-2">
@@ -227,7 +228,7 @@ const FriendDetailScreen = () => {
           </Link>
         </View>
 
-        <View className="bg-raised dark:bg-raised-dk rounded-2xl p-4">
+        <Surface>
           <DividedList>
             {lastCompleted?.occurred_at ? (
               <PressableRow
@@ -250,7 +251,7 @@ const FriendDetailScreen = () => {
               onPress={() => router.push(ROUTES.friend.edit(id!))}
             />
           </DividedList>
-        </View>
+        </Surface>
 
         {contactId ? (
           <Pressable
@@ -318,19 +319,17 @@ const ContactActionButton = ({
 }: ContactActionButtonProps) => {
   const colors = useThemedColors();
   return (
-    <Pressable
+    <PressableSurface
       onPress={onPress}
       disabled={disabled}
-      className={classNames(
-        "flex-1 bg-raised dark:bg-raised-dk rounded-xl py-3 items-center justify-center gap-1",
-        disabled ? "opacity-40" : "active:bg-high dark:active:bg-high-dk",
-      )}
+      size="sm"
+      className="flex-1 items-center justify-center gap-1"
     >
       <Ionicons name={icon} size={22} color={colors.brand} />
       <Text className="text-xs font-medium text-default dark:text-default-dk">
         {label}
       </Text>
-    </Pressable>
+    </PressableSurface>
   );
 };
 
@@ -374,7 +373,7 @@ const HistoryItem = ({ event }: HistoryItemProps) => {
 
   return (
     <Link href={ROUTES.event.detail(event.id)} asChild>
-      <Pressable className="bg-raised dark:bg-raised-dk rounded-xl p-3 gap-2">
+      <PressableSurface size="sm" className="gap-2">
         <View className="flex-row items-center gap-3">
           {when ? (
             <View className="h-12 w-12 rounded-lg bg-high dark:bg-high-dk items-center justify-center">
@@ -419,7 +418,7 @@ const HistoryItem = ({ event }: HistoryItemProps) => {
             {event.event_notes}
           </Text>
         ) : null}
-      </Pressable>
+      </PressableSurface>
     </Link>
   );
 };
