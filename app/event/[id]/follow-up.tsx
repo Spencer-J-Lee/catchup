@@ -217,7 +217,6 @@ const FollowUpScreen = () => {
           multiline
           textAlignVertical="top"
           className="h-32"
-          autoFocus
         />
 
         <View className="gap-2">
