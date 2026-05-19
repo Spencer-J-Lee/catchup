@@ -11,24 +11,25 @@ import { formatMedium, fullName } from "@/lib/format";
 import { ROUTES } from "@/lib/routes";
 import type { CatchUpEvent, EventStatus } from "@/types/database";
 
-const STATUS_META: Record<EventStatus, { label: string; dotClass: string }> = {
-  scheduled: {
-    label: "Scheduled",
-    dotClass: "bg-brand dark:bg-brand-dk",
-  },
-  completed: {
-    label: "Completed",
-    dotClass: "bg-success dark:bg-success-dk",
-  },
-  missed: {
-    label: "Missed",
-    dotClass: "bg-danger dark:bg-danger-dk",
-  },
-  cancelled: {
-    label: "Cancelled",
-    dotClass: "bg-muted dark:bg-muted-dk",
-  },
-};
+const STATUS_META: Record<EventStatus, { label: string; stripClass: string }> =
+  {
+    scheduled: {
+      label: "Scheduled",
+      stripClass: "bg-brand dark:bg-brand-dk",
+    },
+    completed: {
+      label: "Completed",
+      stripClass: "bg-success dark:bg-success-dk",
+    },
+    missed: {
+      label: "Missed",
+      stripClass: "bg-danger dark:bg-danger-dk",
+    },
+    cancelled: {
+      label: "Cancelled",
+      stripClass: "bg-muted dark:bg-muted-dk",
+    },
+  };
 
 export type CalendarAgendaFriend = {
   first_name: string;
@@ -63,22 +64,23 @@ export const CalendarAgendaItem = ({
     <Link href={ROUTES.event.detail(event.id)} asChild>
       <PressableSurface
         size="sm"
-        className="flex-row items-center gap-3"
+        className="flex-row items-center gap-3 overflow-hidden"
         accessibilityLabel={`${meta.label} · ${friendLabel}${timeDigits ? ` at ${timeDigits} ${timeMeridiem}` : ""}${subline ? ` · ${subline}` : ""}`}
       >
-        <View className="w-14 items-end gap-1">
-          <View
-            className={classNames("w-2 h-2 rounded-full", meta.dotClass)}
-            accessibilityLabel={meta.label}
-          />
-          <View className="items-end">
-            <Text className="text-lg font-semibold text-default dark:text-default-dk">
-              {timeDigits}
-            </Text>
-            <Text className="text-xs font-semibold uppercase tracking-wide -mt-1 text-muted dark:text-muted-dk">
-              {timeMeridiem}
-            </Text>
-          </View>
+        <View
+          className={classNames(
+            "absolute left-0 top-0 bottom-0 w-2",
+            meta.stripClass,
+          )}
+          accessibilityLabel={meta.label}
+        />
+        <View className="w-14 items-end">
+          <Text className="text-lg font-semibold text-default dark:text-default-dk">
+            {timeDigits}
+          </Text>
+          <Text className="text-xs font-semibold uppercase tracking-wide -mt-1 text-muted dark:text-muted-dk">
+            {timeMeridiem}
+          </Text>
         </View>
 
         {friend ? <FriendAvatar friend={friend} /> : null}

@@ -22,7 +22,6 @@ type FollowUpStatus = Extract<
 interface StatusOption {
   status: FollowUpStatus;
   label: string;
-  description: string;
   icon: keyof typeof Ionicons.glyphMap;
   iconBgClass: string;
   badgeClass: string;
@@ -33,7 +32,6 @@ const STATUS_OPTIONS: StatusOption[] = [
   {
     status: "completed",
     label: "Completed",
-    description: "We caught up",
     icon: "checkmark",
     iconBgClass: "bg-success dark:bg-success-dk",
     badgeClass: "bg-success/15 dark:bg-success-dk/20",
@@ -42,7 +40,6 @@ const STATUS_OPTIONS: StatusOption[] = [
   {
     status: "missed",
     label: "Missed",
-    description: "It didn't happen",
     icon: "close",
     iconBgClass: "bg-danger dark:bg-danger-dk",
     badgeClass: "bg-danger/15 dark:bg-danger-dk/20",
@@ -51,7 +48,6 @@ const STATUS_OPTIONS: StatusOption[] = [
   {
     status: "cancelled",
     label: "Cancelled",
-    description: "We agreed not to",
     icon: "remove",
     iconBgClass: "bg-high dark:bg-high-dk",
     badgeClass: "bg-high dark:bg-high-dk",
@@ -115,15 +111,6 @@ const FollowUpScreen = () => {
           className="gap-4 pt-6 pb-4"
           key="step-status"
         >
-          <View className="gap-1">
-            <Text className="text-2xl font-bold text-default dark:text-default-dk">
-              How&apos;d it go?
-            </Text>
-            <Text className="text-sm text-muted dark:text-muted-dk">
-              Pick what happened with this catch-up.
-            </Text>
-          </View>
-
           <View className="gap-2">
             {STATUS_OPTIONS.map((option) => (
               <PressableSurface
@@ -147,9 +134,6 @@ const FollowUpScreen = () => {
                 <View className="flex-1">
                   <Text className="text-lg font-semibold text-default dark:text-default-dk">
                     {option.label}
-                  </Text>
-                  <Text className="text-sm text-muted dark:text-muted-dk">
-                    {option.description}
                   </Text>
                 </View>
                 <Ionicons
@@ -176,7 +160,10 @@ const FollowUpScreen = () => {
         className="gap-4 pt-6"
         key="step-notes"
       >
-        <View className="gap-2">
+        <View className="flex-row justify-between gap-2">
+          <Text className="text-2xl font-bold text-default dark:text-default-dk">
+            Any notes?
+          </Text>
           <View className="flex-row items-center gap-2">
             <View
               className={`h-8 w-8 rounded-full items-center justify-center ${selectedOption.iconBgClass}`}
@@ -201,13 +188,6 @@ const FollowUpScreen = () => {
               </Text>
             </View>
           </View>
-
-          <Text className="text-2xl font-bold text-default dark:text-default-dk">
-            Any notes?
-          </Text>
-          <Text className="text-sm text-muted dark:text-muted-dk">
-            Jot down anything you want to remember.
-          </Text>
         </View>
 
         <Input
