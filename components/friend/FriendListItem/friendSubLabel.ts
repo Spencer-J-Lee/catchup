@@ -48,7 +48,7 @@ export const getFriendSubLabelData = ({
     };
   }
 
-  if (action === "reschedule" && scheduledAt) {
+  if (action === "edit" && scheduledAt) {
     const isImminent = isWithinOneCalendarDay(scheduledAt);
 
     return {

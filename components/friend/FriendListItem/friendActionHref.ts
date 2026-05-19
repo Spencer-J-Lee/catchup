@@ -13,7 +13,7 @@ export const resolveFriendActionHref = (
     return ROUTES.event.followUp(scheduledEventId);
   }
 
-  if (action === "reschedule" && scheduledEventId) {
+  if (action === "edit" && scheduledEventId) {
     return ROUTES.event.edit(scheduledEventId);
   }
 

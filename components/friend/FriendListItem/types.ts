@@ -1,5 +1,5 @@
 export type FriendItemAction =
   | "schedule"
   | "logCatchUp"
-  | "reschedule"
+  | "edit"
   | "followUp";

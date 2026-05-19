@@ -12,7 +12,7 @@ const ACTION_META: Record<
 > = {
   schedule: { label: "Schedule", primary: true },
   logCatchUp: { label: "Log catch-up", primary: false },
-  reschedule: { label: "Re-schedule", primary: false },
+  edit: { label: "Edit catch-up", primary: false },
   followUp: { label: "Follow up", primary: true },
 };
 

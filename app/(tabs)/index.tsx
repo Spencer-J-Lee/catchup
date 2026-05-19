@@ -128,7 +128,7 @@ const FriendsScreen = () => {
       } else if (state === "scheduled" && upcoming) {
         scheduled.push({
           friend,
-          action: "reschedule",
+          action: "edit",
           scheduledAt: upcoming.scheduled_at,
           scheduledEventId: upcoming.id,
           missedAt: null,
