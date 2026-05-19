@@ -6,6 +6,7 @@ import { useThemedColors } from "@/hooks/use-themed-colors";
 import {
   ButtonSize,
   ButtonVariant,
+  getIndicatorColors,
   SIZE_CONTAINER_CLASSES,
   SIZE_TEXT_CLASSES,
   TEXT_CLASSES,
@@ -34,11 +35,8 @@ export const Button = ({
   className,
 }: ButtonProps) => {
   const colors = useThemedColors();
+  const indicatorColors = getIndicatorColors(colors);
   const isDisabled = disabled || loading;
-  const indicatorColor =
-    variant === "primary" || variant === "destructive"
-      ? colors.dangerFg
-      : colors.fgDefault;
 
   return (
     <Pressable
@@ -54,7 +52,7 @@ export const Button = ({
       )}
     >
       {loading ? (
-        <ActivityIndicator color={indicatorColor} />
+        <ActivityIndicator color={indicatorColors[variant]} />
       ) : (
         <Text
           className={classNames(SIZE_TEXT_CLASSES[size], TEXT_CLASSES[variant])}

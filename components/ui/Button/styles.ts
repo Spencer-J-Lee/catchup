@@ -1,5 +1,9 @@
+import type { lightColors } from "@/lib/colors";
+
 export type ButtonVariant = "primary" | "secondary" | "ghost" | "destructive";
 export type ButtonSize = "xs" | "md" | "lg";
+
+type ThemedColors = typeof lightColors;
 
 export const VARIANT_CLASSES: Record<ButtonVariant, string> = {
   primary:
@@ -12,7 +16,7 @@ export const VARIANT_CLASSES: Record<ButtonVariant, string> = {
 };
 
 export const TEXT_CLASSES: Record<ButtonVariant, string> = {
-  primary: "text-danger-fg",
+  primary: "text-brand-fg dark:text-brand-fg-dk",
   secondary: "text-default dark:text-default-dk",
   ghost: "text-default dark:text-default-dk",
   destructive: "text-danger-fg",
@@ -29,3 +33,12 @@ export const SIZE_TEXT_CLASSES: Record<ButtonSize, string> = {
   md: "text-sm font-semibold",
   lg: "text-base font-semibold",
 };
+
+export const getIndicatorColors = (
+  colors: ThemedColors,
+): Record<ButtonVariant, string> => ({
+  primary: colors.brandFg,
+  secondary: colors.fgDefault,
+  ghost: colors.fgDefault,
+  destructive: colors.dangerFg,
+});
