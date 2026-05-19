@@ -2,9 +2,7 @@
 
 import { Ionicons } from "@expo/vector-icons";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-import { BlurView } from "expo-blur";
 import { Link } from "expo-router";
-import { useColorScheme } from "nativewind";
 import { useMemo, useState } from "react";
 import {
   ActivityIndicator,
@@ -13,15 +11,15 @@ import {
   Text,
   View,
 } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import {
   FriendListItem,
   type FriendItemAction,
 } from "@/components/friend/FriendListItem";
 import { Button } from "@/components/ui/Button";
-import { Divider } from "@/components/ui/Divider";
+import { DashedDivider } from "@/components/ui/DashedDivider";
 import { Input } from "@/components/ui/Input";
+import { Screen } from "@/components/ui/Screen";
 import { useMissedEvents, useScheduledEvents } from "@/hooks/use-events";
 import { useFriends, type FriendWithStatus } from "@/hooks/use-friends";
 import { useThemedColors } from "@/hooks/use-themed-colors";
@@ -43,10 +41,7 @@ type Section =
 
 const FriendsScreen = () => {
   const colors = useThemedColors();
-  const { colorScheme } = useColorScheme();
-  const insets = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
-  const [topBarHeight, setTopBarHeight] = useState(0);
   const { data, isLoading, error, refetch, isRefetching } = useFriends();
   const { data: scheduledEvents } = useScheduledEvents();
   const { data: missedEvents } = useMissedEvents();
@@ -242,27 +237,54 @@ const FriendsScreen = () => {
     return sections;
   }, [data, scheduledEvents, missedEvents, search]);
 
+  const stickyHeaderIndices = useMemo(
+    () =>
+      sections.reduce<number[]>((indices, section, index) => {
+        if (section.kind === "header") indices.push(index);
+        return indices;
+      }, []),
+    [sections],
+  );
+
   const hasFriends = !!data && data.length > 0;
 
-  const overlayPad = { paddingTop: topBarHeight, paddingBottom: tabBarHeight };
-
   return (
-    <View className="flex-1 bg-app dark:bg-app-dk">
+    <Screen>
+      <View className="flex-row items-center justify-between mb-4">
+        <Text className="text-3xl font-bold text-default dark:text-default-dk">
+          Catchup
+        </Text>
+        <Link href={ROUTES.friend.pickContact} asChild>
+          <Pressable className="h-10 w-10 rounded-full bg-raised dark:bg-raised-dk items-center justify-center active:bg-high dark:active:bg-high-dk">
+            <Ionicons name="add" size={22} color={colors.fgDefault} />
+          </Pressable>
+        </Link>
+      </View>
+
+      {hasFriends ? (
+        <View className="mb-4">
+          <Input
+            placeholder="Search friends"
+            value={search}
+            onChangeText={setSearch}
+            autoCorrect={false}
+            autoCapitalize="none"
+            returnKeyType="search"
+            clearButtonMode="while-editing"
+          />
+        </View>
+      ) : null}
+
       {isLoading ? (
-        <View className="flex-1 items-center justify-center" style={overlayPad}>
+        <View className="flex-1 items-center justify-center">
           <ActivityIndicator color={colors.fgDefault} />
         </View>
       ) : error ? (
-        <View className="px-4" style={overlayPad}>
-          <Text className="text-danger dark:text-danger-dk">
-            Failed to load friends: {(error as Error).message}
-          </Text>
-        </View>
+        <Text className="text-danger dark:text-danger-dk">
+          Failed to load friends: {(error as Error).message}
+        </Text>
       ) : !hasFriends ? (
-        <View
-          className="flex-1 items-center justify-center px-8"
-          style={overlayPad}
-        >
+        <View className="flex-1 items-center justify-center px-8">
           <View className="h-20 w-20 rounded-full bg-raised dark:bg-raised-dk items-center justify-center mb-5">
             <Ionicons name="people-outline" size={36} color={colors.brand} />
           </View>
@@ -277,13 +299,14 @@ const FriendsScreen = () => {
           </Link>
         </View>
       ) : sections.length === 0 ? (
-        <View className="flex-1 items-center justify-center" style={overlayPad}>
+        <View className="flex-1 items-center justify-center">
           <Text className="text-muted dark:text-muted-dk">
             {`No friends match “${search.trim()}”`}
           </Text>
         </View>
       ) : (
         <FlatList
+          className="-mx-4"
           data={sections}
           keyExtractor={(section, index) =>
             section.kind === "header"
@@ -299,78 +322,37 @@ const FriendsScreen = () => {
           )}
           renderItem={({ item, index }) =>
             item.kind === "header" ? (
-              <>
-                {index !== 0 ? <Divider className="m-4" /> : null}
-
-                <View className="mt-2 mb-1 px-4">
-                  <Text className="text-base font-medium text-muted dark:text-muted-dk">
-                    {item.title}
-                  </Text>
-                </View>
-              </>
+              <View className="bg-app dark:bg-app-dk pb-2 px-4 flex-row items-center gap-2">
+                <Text className="text-base font-medium text-muted dark:text-muted-dk">
+                  {item.title}
+                </Text>
+                <DashedDivider className="flex-1" />
+              </View>
             ) : (
-              <FriendListItem
-                friend={item.row.friend}
-                action={item.row.action}
-                scheduledAt={item.row.scheduledAt}
-                scheduledEventId={item.row.scheduledEventId}
-                missedAt={item.row.missedAt}
-                isDue={item.row.isDue}
-              />
+              <>
+                <FriendListItem
+                  friend={item.row.friend}
+                  action={item.row.action}
+                  scheduledAt={item.row.scheduledAt}
+                  scheduledEventId={item.row.scheduledEventId}
+                  missedAt={item.row.missedAt}
+                  isDue={item.row.isDue}
+                />
+                {sections[index + 1]?.kind === "header" ? (
+                  <View className="h-4" />
+                ) : null}
+              </>
             )
           }
           refreshing={isRefetching}
           onRefresh={refetch}
-          contentContainerStyle={{
-            paddingTop: topBarHeight,
-            paddingBottom: tabBarHeight + 32,
-          }}
-          scrollIndicatorInsets={{ top: topBarHeight, bottom: tabBarHeight }}
+          stickyHeaderIndices={stickyHeaderIndices}
+          contentContainerStyle={{ paddingBottom: tabBarHeight + 24 }}
+          scrollIndicatorInsets={{ bottom: tabBarHeight }}
           keyboardShouldPersistTaps="handled"
         />
       )}
-
-      <BlurView
-        tint={colorScheme === "dark" ? "dark" : "light"}
-        intensity={70}
-        experimentalBlurMethod="dimezisBlurView"
-        onLayout={(event) => setTopBarHeight(event.nativeEvent.layout.height)}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          paddingTop: insets.top,
-        }}
-      >
-        <View className="px-4 pt-2">
-          <View className="flex-row items-center justify-between mb-4">
-            <Text className="text-3xl font-bold text-default dark:text-default-dk">
-              Catchup
-            </Text>
-            <Link href={ROUTES.friend.pickContact} asChild>
-              <Pressable className="h-10 w-10 rounded-full bg-raised dark:bg-raised-dk items-center justify-center active:bg-high dark:active:bg-high-dk">
-                <Ionicons name="add" size={22} color={colors.fgDefault} />
-              </Pressable>
-            </Link>
-          </View>
-
-          {hasFriends ? (
-            <View className="mb-3">
-              <Input
-                placeholder="Search friends"
-                value={search}
-                onChangeText={setSearch}
-                autoCorrect={false}
-                autoCapitalize="none"
-                returnKeyType="search"
-                clearButtonMode="while-editing"
-              />
-            </View>
-          ) : null}
-        </View>
-      </BlurView>
-    </View>
+    </Screen>
   );
 };
 
