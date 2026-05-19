@@ -3,14 +3,23 @@ import { ActivityIndicator, Pressable, Text } from "react-native";
 
 import { useThemedColors } from "@/hooks/use-themed-colors";
 
-import { ButtonVariant, TEXT_CLASSES, VARIANT_CLASSES } from "./styles";
+import {
+  ButtonSize,
+  ButtonVariant,
+  SIZE_CONTAINER_CLASSES,
+  SIZE_TEXT_CLASSES,
+  TEXT_CLASSES,
+  VARIANT_CLASSES,
+} from "./styles";
 
 interface ButtonProps {
   onPress?: () => void;
   children: React.ReactNode;
   variant?: ButtonVariant;
+  size?: ButtonSize;
   disabled?: boolean;
   loading?: boolean;
+  hitSlop?: number;
   className?: string;
 }
 
@@ -18,8 +27,10 @@ export const Button = ({
   onPress,
   children,
   variant = "primary",
+  size = "lg",
   disabled,
   loading,
+  hitSlop,
   className,
 }: ButtonProps) => {
   const colors = useThemedColors();
@@ -33,8 +44,10 @@ export const Button = ({
     <Pressable
       onPress={onPress}
       disabled={isDisabled}
+      hitSlop={hitSlop}
       className={classNames(
-        "rounded-full px-4 py-3 items-center justify-center",
+        "items-center justify-center",
+        SIZE_CONTAINER_CLASSES[size],
         VARIANT_CLASSES[variant],
         { "opacity-50": isDisabled },
         className,
@@ -44,10 +57,7 @@ export const Button = ({
         <ActivityIndicator color={indicatorColor} />
       ) : (
         <Text
-          className={classNames(
-            "font-semibold text-base",
-            TEXT_CLASSES[variant],
-          )}
+          className={classNames(SIZE_TEXT_CLASSES[size], TEXT_CLASSES[variant])}
         >
           {children}
         </Text>

@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
 
-import { Pill } from "@/components/ui/Pill";
+import { Button } from "@/components/ui/Button";
 import type { FriendWithStatus } from "@/hooks/use-friends";
 
 import { resolveFriendActionHref } from "./friendActionHref";
@@ -35,11 +35,13 @@ export const FriendActionButton = ({
   };
 
   return (
-    <Pill
+    <Button
       variant={meta.primary ? "primary" : "secondary"}
-      label={meta.label}
+      size="md"
       onPress={onPress}
       hitSlop={8}
-    />
+    >
+      {meta.label}
+    </Button>
   );
 };

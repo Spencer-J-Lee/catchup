@@ -16,8 +16,8 @@ import { Calendar, type DateData } from "react-native-calendars";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { CalendarAgendaItem } from "@/components/event/CalendarAgendaItem";
+import { Button } from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
-import { Pill } from "@/components/ui/Pill";
 import { useAllEvents } from "@/hooks/use-events";
 import { useFriends, type FriendWithStatus } from "@/hooks/use-friends";
 import { useThemedColors } from "@/hooks/use-themed-colors";
@@ -218,12 +218,9 @@ const CalendarScreen = () => {
         </Text>
 
         {!isSelectedToday ? (
-          <Pill
-            variant="secondary"
-            size="xs"
-            label="Jump to today"
-            onPress={onJumpToToday}
-          />
+          <Button variant="secondary" size="xs" onPress={onJumpToToday}>
+            Jump to today
+          </Button>
         ) : null}
       </View>
 
