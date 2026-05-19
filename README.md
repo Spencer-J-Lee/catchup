@@ -15,7 +15,7 @@ This is the **Phase 1 scaffold**. It includes:
   with a "next due" indicator on the friend list.
 - Friend detail view with history, per-event notes, and tap-to-open-in-Maps for
   in-person events.
-- Tabs: Friends, Calendar (placeholder for 1.6), Settings.
+- Tabs: Friends, Calendar (month grid + per-day agenda), Settings.
 
 Phase 2 (notifications, contacts integration) and Phase 3 (Google Calendar
 sync, polish) are unscaffolded.
@@ -83,8 +83,6 @@ supabase/migrations/          SQL schema
 
 - Wire up a `Custom` frequency input (amount + unit picker) — currently only
   preset chips are wired up.
-- Build the calendar tab (`app/(tabs)/calendar.tsx`) using
-  `react-native-calendars` agenda + month view.
 - Apple Sign In (requires Apple Developer Program) — see
   https://docs.expo.dev/versions/latest/sdk/apple-authentication/.
 - Regenerate `types/database.generated.ts` after schema changes:

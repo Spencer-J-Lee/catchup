@@ -78,6 +78,10 @@ const contactFor = (args: {
 interface SeedEvent {
   /** Offset in days from now. Negative = past, positive = future. */
   offsetDays: number;
+  /** Local hour-of-day (0-23) to anchor the event to. Defaults to current wall-clock hour. */
+  atHour?: number;
+  /** Local minute (0-59). Defaults to 0 when atHour is set, otherwise current wall-clock minute. */
+  atMinute?: number;
   status: EventStatus;
   medium: Medium | null;
   medium_detail: string | null;
@@ -87,8 +91,16 @@ interface SeedEvent {
   pre_reminder_minutes?: number | null;
 }
 
-const isoOffsetDays = (days: number): string => {
-  return new Date(Date.now() + days * 86_400_000).toISOString();
+const isoOffsetDays = (
+  days: number,
+  atHour?: number,
+  atMinute?: number,
+): string => {
+  const date = new Date(Date.now() + days * 86_400_000);
+  if (atHour !== undefined) {
+    date.setHours(atHour, atMinute ?? 0, 0, 0);
+  }
+  return date.toISOString();
 };
 
 const FRIENDS: SeedFriend[] = [
@@ -112,6 +124,8 @@ const FRIENDS: SeedFriend[] = [
     events: [
       {
         offsetDays: -37,
+        atHour: 15,
+        atMinute: 30,
         status: "completed",
         medium: "text",
         medium_detail: "iMessage",
@@ -122,6 +136,7 @@ const FRIENDS: SeedFriend[] = [
       },
       {
         offsetDays: -70,
+        atHour: 19,
         status: "completed",
         medium: "call",
         medium_detail: null,
@@ -152,6 +167,7 @@ const FRIENDS: SeedFriend[] = [
     events: [
       {
         offsetDays: -107,
+        atHour: 10,
         status: "completed",
         medium: "video",
         medium_detail: "Zoom",
@@ -161,6 +177,8 @@ const FRIENDS: SeedFriend[] = [
       },
       {
         offsetDays: -40,
+        atHour: 12,
+        atMinute: 30,
         status: "missed",
         medium: null,
         medium_detail: null,
@@ -184,6 +202,7 @@ const FRIENDS: SeedFriend[] = [
     events: [
       {
         offsetDays: -8,
+        atHour: 9,
         status: "completed",
         medium: "in_person",
         medium_detail: null,
@@ -214,6 +233,7 @@ const FRIENDS: SeedFriend[] = [
     events: [
       {
         offsetDays: -32,
+        atHour: 20,
         status: "completed",
         medium: "call",
         medium_detail: null,
@@ -242,7 +262,7 @@ const FRIENDS: SeedFriend[] = [
     createdDaysAgo: 60,
     events: [],
   },
-  // scenario: due tomorrow, has an upcoming scheduled event w/ pre-reminder
+  // scenario: scheduled today (was due), upcoming reminder fires shortly before
   {
     first_name: "Faye",
     last_name: mark("Holloway"),
@@ -262,6 +282,7 @@ const FRIENDS: SeedFriend[] = [
     events: [
       {
         offsetDays: -6,
+        atHour: 22,
         status: "completed",
         medium: "text",
         medium_detail: null,
@@ -270,7 +291,8 @@ const FRIENDS: SeedFriend[] = [
         event_notes: "Short chat — they were on the way out.",
       },
       {
-        offsetDays: 1.2,
+        offsetDays: 0,
+        atHour: 19,
         status: "scheduled",
         medium: "video",
         medium_detail: "FaceTime",
@@ -295,6 +317,7 @@ const FRIENDS: SeedFriend[] = [
     events: [
       {
         offsetDays: -7,
+        atHour: 21,
         status: "completed",
         medium: "video",
         medium_detail: "Whatsapp",
@@ -304,6 +327,7 @@ const FRIENDS: SeedFriend[] = [
       },
       {
         offsetDays: -45,
+        atHour: 20,
         status: "cancelled",
         medium: "video",
         medium_detail: null,
@@ -314,6 +338,8 @@ const FRIENDS: SeedFriend[] = [
       },
       {
         offsetDays: -38,
+        atHour: 20,
+        atMinute: 30,
         status: "completed",
         medium: "video",
         medium_detail: "Whatsapp",
@@ -323,6 +349,7 @@ const FRIENDS: SeedFriend[] = [
       },
       {
         offsetDays: -220,
+        atHour: 18,
         status: "completed",
         medium: "in_person",
         medium_detail: null,
@@ -330,6 +357,17 @@ const FRIENDS: SeedFriend[] = [
         location_address: "Pasadena, CA",
         event_notes:
           "She was back stateside for the holidays. Long catch-up over wine.",
+      },
+      {
+        offsetDays: 20,
+        atHour: 21,
+        status: "scheduled",
+        medium: "video",
+        medium_detail: "Whatsapp",
+        location_text: null,
+        location_address: null,
+        event_notes: "Pencilled in to plan her fall trip in detail.",
+        pre_reminder_minutes: 60,
       },
     ],
   },
@@ -353,6 +391,8 @@ const FRIENDS: SeedFriend[] = [
     events: [
       {
         offsetDays: -2,
+        atHour: 19,
+        atMinute: 30,
         status: "completed",
         medium: "in_person",
         medium_detail: null,
@@ -360,6 +400,18 @@ const FRIENDS: SeedFriend[] = [
         location_address: "871 Sutter St, San Francisco, CA",
         event_notes:
           "Long catch-up — talked about the move, the new job, and their plans for the next year. Going to introduce me to their friend Sasha who's also in design.",
+      },
+      {
+        offsetDays: 14,
+        atHour: 12,
+        atMinute: 30,
+        status: "scheduled",
+        medium: "in_person",
+        medium_detail: null,
+        location_text: "Tartine Bakery",
+        location_address: "600 Guerrero St, San Francisco, CA",
+        event_notes: "Tentative lunch — they want to introduce me to Sasha.",
+        pre_reminder_minutes: 60,
       },
     ],
   },
@@ -376,12 +428,24 @@ const FRIENDS: SeedFriend[] = [
     events: [
       {
         offsetDays: -14,
+        atHour: 11,
         status: "completed",
         medium: "text",
         medium_detail: null,
         location_text: null,
         location_address: null,
         event_notes: null,
+      },
+      {
+        offsetDays: 6,
+        atHour: 18,
+        status: "scheduled",
+        medium: "call",
+        medium_detail: null,
+        location_text: null,
+        location_address: null,
+        event_notes: "Open-ended catch-up call.",
+        pre_reminder_minutes: 30,
       },
     ],
   },
@@ -405,6 +469,8 @@ const FRIENDS: SeedFriend[] = [
     events: [
       {
         offsetDays: -34,
+        atHour: 18,
+        atMinute: 30,
         status: "completed",
         medium: "call",
         medium_detail: null,
@@ -414,6 +480,8 @@ const FRIENDS: SeedFriend[] = [
       },
       {
         offsetDays: -2,
+        atHour: 8,
+        atMinute: 30,
         status: "scheduled",
         medium: "in_person",
         medium_detail: null,
@@ -447,6 +515,7 @@ const FRIENDS: SeedFriend[] = [
     events: [
       {
         offsetDays: -15,
+        atHour: 19,
         status: "completed",
         medium: "call",
         medium_detail: null,
@@ -457,6 +526,7 @@ const FRIENDS: SeedFriend[] = [
       },
       {
         offsetDays: -3,
+        atHour: 10,
         status: "missed",
         medium: "in_person",
         medium_detail: null,
@@ -479,6 +549,8 @@ const FRIENDS: SeedFriend[] = [
     events: [
       {
         offsetDays: -10,
+        atHour: 18,
+        atMinute: 30,
         status: "completed",
         medium: "call",
         medium_detail: null,
@@ -487,7 +559,8 @@ const FRIENDS: SeedFriend[] = [
         event_notes: "They were driving — kept it short.",
       },
       {
-        offsetDays: 5,
+        offsetDays: 3,
+        atHour: 12,
         status: "scheduled",
         medium: "in_person",
         medium_detail: null,
@@ -564,7 +637,11 @@ export const seedExampleData = async (userId: string): Promise<SeedResult> => {
     const friendId = byName.get(keyOf(friend));
     if (!friendId) return [];
     return friend.events.map((event) => {
-      const timestamp = isoOffsetDays(event.offsetDays);
+      const timestamp = isoOffsetDays(
+        event.offsetDays,
+        event.atHour,
+        event.atMinute,
+      );
       const isScheduled = event.status === "scheduled";
       return {
         user_id: userId,

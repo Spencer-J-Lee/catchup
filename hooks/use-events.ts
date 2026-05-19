@@ -69,6 +69,20 @@ export const useEvent = (id: string | undefined) => {
   });
 };
 
+export const useAllEvents = () => {
+  return useQuery({
+    queryKey: ["events", "all"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("catch_up_events")
+        .select("*")
+        .neq("status", "cancelled");
+      if (error) throw error;
+      return data as CatchUpEvent[];
+    },
+  });
+};
+
 export const useEventsInRange = (
   args: { from: string; to: string } | undefined,
 ) => {
