@@ -1,11 +1,11 @@
 // TODO: Review
-import { supabase } from "@/lib/supabase";
 import type { ContactSnapshot } from "@/lib/contacts";
+import { supabase } from "@/lib/supabase";
 import type {
   EventStatus,
-  Friend,
   FrequencyPreset,
   FrequencyUnit,
+  Friend,
   Medium,
 } from "@/types/database";
 
@@ -39,8 +39,18 @@ interface SeedFriend {
   events: SeedEvent[];
 }
 
+const PORTRAITS: Record<string, string> = {
+  "alex-chen": "https://randomuser.me/api/portraits/men/32.jpg",
+  "dana-wu": "https://randomuser.me/api/portraits/women/68.jpg",
+  "faye-holloway": "https://randomuser.me/api/portraits/women/22.jpg",
+  "harper-singh": "https://randomuser.me/api/portraits/women/12.jpg",
+  "kai-nakamura": "https://randomuser.me/api/portraits/men/77.jpg",
+  "marlowe-quinn": "https://randomuser.me/api/portraits/women/45.jpg",
+  "jules-marchetti": "https://randomuser.me/api/portraits/men/18.jpg",
+};
+
 const avatarFor = (seed: string): string => {
-  return `https://api.dicebear.com/9.x/avataaars/png?seed=${seed}`;
+  return PORTRAITS[seed];
 };
 
 const contactFor = (args: {
