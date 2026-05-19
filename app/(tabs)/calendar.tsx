@@ -146,12 +146,6 @@ const CalendarScreen = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-app dark:bg-app-dk" edges={["top"]}>
-      <View className="px-4 pt-2 pb-2">
-        <Text className="text-3xl font-bold text-default dark:text-default-dk">
-          Calendar
-        </Text>
-      </View>
-
       <Calendar
         key={`cal-${colorScheme}`}
         current={selectedDate}
@@ -164,9 +158,9 @@ const CalendarScreen = () => {
         hideExtraDays={false}
       />
 
-      <Divider />
+      <Divider className="mt-2 mb-3" />
 
-      <View className="px-4 pt-3 pb-2">
+      <View className="px-4 pb-3">
         <Text className="text-sm font-semibold uppercase tracking-wide text-muted dark:text-muted-dk">
           {selectedLabel}
         </Text>
@@ -200,7 +194,7 @@ const CalendarScreen = () => {
             />
           )}
           contentContainerStyle={{
-            paddingHorizontal: 16,
+            paddingHorizontal: 14,
             paddingBottom: tabBarHeight + 24,
           }}
           scrollIndicatorInsets={{ bottom: tabBarHeight }}
