@@ -3,14 +3,28 @@ import { Pressable, Text } from "react-native";
 
 import { useThemedColors } from "@/hooks/use-themed-colors";
 
+type TextStyle = "default" | "link";
+
+const VALUE_TEXT_VARIANT_CLASSES: Record<TextStyle, string> = {
+  default: "text-default dark:text-default-dk",
+  link: "text-brand dark:text-brand-dk underline",
+};
+
 interface PressableRowProps {
   label: string;
   value: string;
   onPress: () => void;
+  textStyle?: TextStyle;
 }
 
-export const PressableRow = ({ label, value, onPress }: PressableRowProps) => {
+export const PressableRow = ({
+  label,
+  value,
+  onPress,
+  textStyle = "default",
+}: PressableRowProps) => {
   const colors = useThemedColors();
+
   return (
     <Pressable
       onPress={onPress}
@@ -20,7 +34,9 @@ export const PressableRow = ({ label, value, onPress }: PressableRowProps) => {
       <Text className="text-sm text-muted dark:text-muted-dk shrink-0">
         {label}:
       </Text>
-      <Text className="text-base text-default dark:text-default-dk flex-1">
+      <Text
+        className={`text-base flex-1 ${VALUE_TEXT_VARIANT_CLASSES[textStyle]}`}
+      >
         {value}
       </Text>
       <Ionicons name="chevron-forward" size={16} color={colors.fgSubtle} />

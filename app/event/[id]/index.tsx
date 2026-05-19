@@ -13,6 +13,7 @@ import {
 
 import { Button } from "@/components/ui/Button";
 import { DividedList } from "@/components/ui/DividedList";
+import { PressableRow } from "@/components/ui/PressableRow";
 import { Row } from "@/components/ui/Row";
 import { Screen } from "@/components/ui/Screen";
 import { useDeleteEvent, useEvent, useUpdateEvent } from "@/hooks/use-events";
@@ -142,23 +143,15 @@ const EventDetailScreen = () => {
               />
             ) : null}
 
-            {event.location_text || event.location_address ? (
-              <View>
-                <Text className="text-sm text-muted dark:text-muted-dk">
-                  Location
-                </Text>
-                {event.location_address ? (
-                  <Pressable onPress={openMaps}>
-                    <Text className="text-base text-brand dark:text-brand-dk underline">
-                      {event.location_text || event.location_address}
-                    </Text>
-                  </Pressable>
-                ) : (
-                  <Text className="text-base text-default dark:text-default-dk">
-                    {event.location_text}
-                  </Text>
-                )}
-              </View>
+            {event.location_address ? (
+              <PressableRow
+                label="Location"
+                value={event.location_text || event.location_address}
+                onPress={openMaps}
+                textStyle="link"
+              />
+            ) : event.location_text ? (
+              <Row label="Location" value={event.location_text} />
             ) : null}
           </DividedList>
         </View>
