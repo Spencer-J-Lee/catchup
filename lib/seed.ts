@@ -571,6 +571,42 @@ const FRIENDS: SeedFriend[] = [
       },
     ],
   },
+  // scenario: calendar multi-dot coverage — events land on days that already
+  // contain other friends' events to exercise the two- and three-status day
+  // markers (day -7 pairs with Gabriella's completed; day -2 pairs with
+  // Harper's completed and Kai's scheduled).
+  {
+    first_name: "Noor",
+    last_name: mark("Reyes"),
+    frequency_preset: "weekly",
+    frequency_amount: 1,
+    frequency_unit: "weeks",
+    avatar_url: null,
+    contact: null,
+    createdDaysAgo: 45,
+    events: [
+      {
+        offsetDays: -7,
+        atHour: 14,
+        status: "scheduled",
+        medium: "call",
+        medium_detail: null,
+        location_text: null,
+        location_address: null,
+        event_notes: "Phone catch-up — never connected, still need to follow up.",
+      },
+      {
+        offsetDays: -2,
+        atHour: 11,
+        status: "missed",
+        medium: "in_person",
+        medium_detail: null,
+        location_text: "Andytown Coffee",
+        location_address: "3655 Lawton St, San Francisco, CA",
+        event_notes: "They had to bail last minute — kid was sick.",
+      },
+    ],
+  },
 ];
 
 export interface SeedResult {
