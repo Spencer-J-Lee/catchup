@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import { Tabs } from "expo-router";
 import { useColorScheme } from "nativewind";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { useThemedColors } from "@/hooks/use-themed-colors";
 
@@ -18,12 +18,20 @@ const TabsLayout = () => {
         tabBarActiveTintColor: colors.brand,
         tabBarInactiveTintColor: colors.fgMuted,
         tabBarBackground: () => (
-          <BlurView
-            tint={colorScheme === "dark" ? "dark" : "light"}
-            intensity={70}
-            experimentalBlurMethod="dimezisBlurView"
-            style={StyleSheet.absoluteFill}
-          />
+          <>
+            <BlurView
+              tint={colorScheme === "dark" ? "dark" : "light"}
+              intensity={70}
+              experimentalBlurMethod="dimezisBlurView"
+              style={StyleSheet.absoluteFill}
+            />
+            <View
+              style={[
+                StyleSheet.absoluteFill,
+                { backgroundColor: colors.raised + "8C" },
+              ]}
+            />
+          </>
         ),
         tabBarStyle: {
           position: "absolute",
