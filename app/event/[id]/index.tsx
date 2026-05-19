@@ -147,16 +147,17 @@ const EventDetailScreen = () => {
                 <Text className="text-sm text-muted dark:text-muted-dk">
                   Location
                 </Text>
-                <Text className="text-base text-default dark:text-default-dk">
-                  {event.location_text}
-                </Text>
                 {event.location_address ? (
                   <Pressable onPress={openMaps}>
                     <Text className="text-base text-brand dark:text-brand-dk underline">
-                      {event.location_address}
+                      {event.location_text || event.location_address}
                     </Text>
                   </Pressable>
-                ) : null}
+                ) : (
+                  <Text className="text-base text-default dark:text-default-dk">
+                    {event.location_text}
+                  </Text>
+                )}
               </View>
             ) : null}
           </DividedList>

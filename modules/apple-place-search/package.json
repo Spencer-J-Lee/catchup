@@ -1,0 +1,7 @@
+{
+  "name": "apple-place-search",
+  "version": "0.1.0",
+  "description": "Local Expo module wrapping iOS MKLocalSearch for place search.",
+  "main": "index.ts",
+  "private": true
+}

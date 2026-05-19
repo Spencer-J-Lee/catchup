@@ -1,5 +1,6 @@
 import { View } from "react-native";
 
+import { LocationPicker } from "@/components/event/LocationPicker";
 import { MediumPicker } from "@/components/event/MediumPicker";
 import { Chip } from "@/components/ui/Chip";
 import { ChipRow } from "@/components/ui/ChipRow";
@@ -74,24 +75,17 @@ export const EventForm = ({ mode, formValues, onChange }: EventFormProps) => {
       />
 
       {formValues.medium === "in_person" ? (
-        <>
-          <Input
-            label="Location"
-            placeholder="e.g. Joe's Pizza"
-            value={formValues.locationText}
-            onChangeText={(text) =>
-              onChange({ ...formValues, locationText: text })
-            }
-          />
-          <Input
-            label="Address"
-            placeholder="123 Main St, ..."
-            value={formValues.locationAddress}
-            onChangeText={(text) =>
-              onChange({ ...formValues, locationAddress: text })
-            }
-          />
-        </>
+        <LocationPicker
+          name={formValues.locationText}
+          address={formValues.locationAddress}
+          onChange={({ name, address }) =>
+            onChange({
+              ...formValues,
+              locationText: name,
+              locationAddress: address,
+            })
+          }
+        />
       ) : formValues.medium ? (
         <Input
           label="Detail"
