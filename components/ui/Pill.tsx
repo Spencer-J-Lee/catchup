@@ -27,16 +27,10 @@ export const Pill = ({ variant, label, onPress, hitSlop }: PillProps) => {
     <Pressable
       onPress={onPress}
       hitSlop={hitSlop}
-      className={classNames(
-        "rounded-full px-4 py-2",
-        VARIANT_CLASSES[variant],
-      )}
+      className={classNames("rounded-full px-4 py-2", VARIANT_CLASSES[variant])}
     >
       <Text
-        className={classNames(
-          "text-xs font-medium",
-          TEXT_CLASSES[variant],
-        )}
+        className={classNames("text-xs font-medium", TEXT_CLASSES[variant])}
       >
         {label}
       </Text>

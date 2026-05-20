@@ -1,5 +1,1 @@
-export type FriendItemAction =
-  | "schedule"
-  | "logCatchUp"
-  | "edit"
-  | "followUp";
+export type FriendItemAction = "schedule" | "logCatchUp" | "edit" | "followUp";

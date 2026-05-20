@@ -35,7 +35,5 @@ export const LocationPicker = ({
     );
   }
 
-  return (
-    <SearchablePicker name={name} address={address} onChange={onChange} />
-  );
+  return <SearchablePicker name={name} address={address} onChange={onChange} />;
 };

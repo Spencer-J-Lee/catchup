@@ -84,11 +84,7 @@ const EditEventScreen = () => {
         </Button>
       }
     >
-      <EventForm
-        mode={mode}
-        formValues={formValues}
-        onChange={setFormValues}
-      />
+      <EventForm mode={mode} formValues={formValues} onChange={setFormValues} />
     </Screen>
   );
 };

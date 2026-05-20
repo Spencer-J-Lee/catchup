@@ -593,7 +593,8 @@ const FRIENDS: SeedFriend[] = [
         medium_detail: null,
         location_text: null,
         location_address: null,
-        event_notes: "Phone catch-up — never connected, still need to follow up.",
+        event_notes:
+          "Phone catch-up — never connected, still need to follow up.",
       },
       {
         offsetDays: -2,

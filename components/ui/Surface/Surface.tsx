@@ -8,11 +8,7 @@ interface SurfaceProps extends ViewProps {
   className?: string;
 }
 
-export const Surface = ({
-  size = "md",
-  className,
-  ...props
-}: SurfaceProps) => {
+export const Surface = ({ size = "md", className, ...props }: SurfaceProps) => {
   return (
     <View
       className={classNames(SURFACE_CLASS, SIZE_CLASSES[size], className)}

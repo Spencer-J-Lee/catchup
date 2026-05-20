@@ -25,6 +25,7 @@ const useProtectedRoute = (loading: boolean, isAuthed: boolean) => {
 
   useEffect(() => {
     if (loading) return;
+
     const inAuthGroup = segments[0] === "(auth)";
     if (!isAuthed && !inAuthGroup) {
       router.replace(ROUTES.auth.login);

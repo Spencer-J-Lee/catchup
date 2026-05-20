@@ -98,11 +98,7 @@ const NewEventScreen = () => {
       }
     >
       <Stack.Screen options={{ title }} />
-      <EventForm
-        mode={mode}
-        formValues={formValues}
-        onChange={setFormValues}
-      />
+      <EventForm mode={mode} formValues={formValues} onChange={setFormValues} />
     </Screen>
   );
 };

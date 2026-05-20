@@ -31,11 +31,7 @@ export const SearchablePicker = ({
         <Pressable onPress={() => setModalVisible(true)}>
           <View className={INPUT_SURFACE_CLASS}>
             {name || address ? (
-              <SelectedLocation
-                name={name}
-                address={address}
-                onClear={clear}
-              />
+              <SelectedLocation name={name} address={address} onClear={clear} />
             ) : (
               <View className="flex-row items-center gap-2">
                 <Ionicons name="search" size={16} color={colors.fgSubtle} />

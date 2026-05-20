@@ -13,10 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { INPUT_SURFACE_CLASS } from "@/components/ui/InputSurface";
 import { useThemedColors } from "@/hooks/use-themed-colors";
-import {
-  PlaceSearchResult,
-  searchPlaces,
-} from "@/modules/apple-place-search";
+import { PlaceSearchResult, searchPlaces } from "@/modules/apple-place-search";
 
 interface SearchModalProps {
   visible: boolean;
@@ -24,7 +21,11 @@ interface SearchModalProps {
   onSelect: (result: PlaceSearchResult) => void;
 }
 
-export const SearchModal = ({ visible, onClose, onSelect }: SearchModalProps) => {
+export const SearchModal = ({
+  visible,
+  onClose,
+  onSelect,
+}: SearchModalProps) => {
   const colors = useThemedColors();
   const inputRef = useRef<TextInput>(null);
   const [query, setQuery] = useState("");
@@ -86,7 +87,9 @@ export const SearchModal = ({ visible, onClose, onSelect }: SearchModalProps) =>
         edges={["top", "left", "right"]}
       >
         <View className="flex-row items-center gap-3 px-4 py-3">
-          <View className={`flex-1 flex-row items-center gap-2 ${INPUT_SURFACE_CLASS}`}>
+          <View
+            className={`flex-1 flex-row items-center gap-2 ${INPUT_SURFACE_CLASS}`}
+          >
             <Ionicons name="search" size={16} color={colors.fgSubtle} />
             <TextInput
               ref={inputRef}
@@ -122,7 +125,9 @@ export const SearchModal = ({ visible, onClose, onSelect }: SearchModalProps) =>
 
         <FlatList
           data={results}
-          keyExtractor={(item, index) => `${item.name}-${item.address}-${index}`}
+          keyExtractor={(item, index) =>
+            `${item.name}-${item.address}-${index}`
+          }
           keyboardShouldPersistTaps="handled"
           ItemSeparatorComponent={() => (
             <View className="h-px bg-border dark:bg-border-dk ml-12" />
@@ -133,9 +138,7 @@ export const SearchModal = ({ visible, onClose, onSelect }: SearchModalProps) =>
                 icon="create-outline"
                 primary={`Use "${trimmedQuery}"`}
                 secondary="Save just this name"
-                onPress={() =>
-                  onSelect({ name: trimmedQuery, address: "" })
-                }
+                onPress={() => onSelect({ name: trimmedQuery, address: "" })}
               />
             ) : null
           }
