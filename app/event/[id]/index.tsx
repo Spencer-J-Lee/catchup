@@ -22,13 +22,12 @@ const EventDetailScreen = () => {
   const deleteEvent = useDeleteEvent();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: event, isLoading } = useEvent(id);
+  const { formatDateTime } = useFormatters();
 
   if (isLoading || !event) {
     return (
-      <Screen edges={[]}>
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator color={colors.fgDefault} />
-        </View>
+      <Screen scroll edges={[]}>
+        <EventDetailSkeleton />
       </Screen>
     );
   }

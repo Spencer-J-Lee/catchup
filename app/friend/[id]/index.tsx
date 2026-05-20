@@ -45,6 +45,7 @@ const FriendDetailScreen = () => {
   const { data: events } = useEventsForFriend(id);
   const deleteFriend = useDeleteFriend();
   const linkContact = useLinkFriendContact();
+  const { formatDate, formatRelative } = useFormatters();
 
   if (isLoading || !friend) {
     return (
