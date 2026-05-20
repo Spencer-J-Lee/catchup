@@ -11,6 +11,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.spencerlee.catchup",
+      "buildNumber": "1",
       "infoPlist": {
         "NSContactsUsageDescription": "CatchUp uses your contacts to let you connect existing contact info to friends you want to keep up with. You choose which contacts to import.",
         "NSCalendarsUsageDescription": "CatchUp can sync your scheduled catch-ups to your calendar so they appear alongside your other events."
@@ -27,11 +28,10 @@
       "predictiveBackGestureEnabled": false,
       "permissions": [
         "android.permission.READ_CONTACTS",
-        "android.permission.WRITE_CONTACTS",
-        "android.permission.READ_CONTACTS",
         "android.permission.WRITE_CONTACTS"
       ],
-      "package": "com.spencerlee.catchup"
+      "package": "com.spencerlee.catchup",
+      "versionCode": 1
     },
     "web": {
       "output": "static",
