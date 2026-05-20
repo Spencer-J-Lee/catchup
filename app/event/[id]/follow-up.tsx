@@ -49,8 +49,8 @@ const STATUS_OPTIONS: StatusOption[] = [
     status: "cancelled",
     label: "Cancelled",
     icon: "remove",
-    iconBgClass: "bg-high dark:bg-high-dk",
-    badgeClass: "bg-high dark:bg-high-dk",
+    iconBgClass: "bg-[#8a8a93] dark:bg-[#5e5e66]",
+    badgeClass: "bg-[#e4e4e7] dark:bg-high-dk",
     badgeTextClass: "text-muted dark:text-muted-dk",
   },
 ];
@@ -124,11 +124,7 @@ const FollowUpScreen = () => {
                   <Ionicons
                     name={option.icon}
                     size={26}
-                    color={
-                      option.status === "cancelled"
-                        ? colors.fgDefault
-                        : colors.dangerFg
-                    }
+                    color={colors.dangerFg}
                   />
                 </View>
                 <View className="flex-1">
@@ -201,11 +197,7 @@ const FollowUpScreen = () => {
               <Ionicons
                 name={selectedOption.icon}
                 size={18}
-                color={
-                  selectedOption.status === "cancelled"
-                    ? colors.fgDefault
-                    : colors.dangerFg
-                }
+                color={colors.dangerFg}
               />
             </View>
             <View
