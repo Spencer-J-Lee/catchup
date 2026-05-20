@@ -2,7 +2,9 @@
 import {
   differenceInCalendarDays,
   format,
+  formatDistanceStrict,
   formatDistanceToNowStrict,
+  startOfDay,
 } from "date-fns";
 
 import type { EventStatus, FrequencyUnit, Medium } from "@/types/database";
@@ -23,7 +25,18 @@ export const formatDateTime = (date: Date | string): string => {
 
 export const formatRelative = (date: Date | string): string => {
   const parsed = typeof date === "string" ? new Date(date) : date;
-  return formatDistanceToNowStrict(parsed, { addSuffix: true });
+  const now = new Date();
+
+  // Same calendar day → intraday precision ("3 hours ago", "in 20 minutes").
+  if (differenceInCalendarDays(parsed, now) === 0) {
+    return formatDistanceToNowStrict(parsed, { addSuffix: true });
+  }
+
+  // Different calendar day → measure midnight-to-midnight so the displayed
+  // day count tracks the date label rather than the wall-clock hour.
+  return formatDistanceStrict(startOfDay(parsed), startOfDay(now), {
+    addSuffix: true,
+  });
 };
 
 export const formatOverdueDays = (dueAt: Date | string): string => {
