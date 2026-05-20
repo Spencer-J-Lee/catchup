@@ -11,6 +11,7 @@ import type { AppStateStatus } from "react-native";
 import { AppState, Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Toaster } from "sonner-native";
 
 import { TimezoneBootstrap } from "@/components/TimezoneBootstrap";
 import { useAuth } from "@/hooks/use-auth";
@@ -152,6 +153,18 @@ const RootLayout = () => {
           <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
         </QueryClientProvider>
       </SafeAreaProvider>
+      <Toaster
+        theme={colorScheme === "dark" ? "dark" : "light"}
+        toastOptions={{
+          style: {
+            backgroundColor: colors.raised,
+            borderColor: colors.border,
+            borderWidth: 1,
+          },
+          titleStyle: { color: colors.fgDefault },
+          descriptionStyle: { color: colors.fgMuted },
+        }}
+      />
     </GestureHandlerRootView>
   );
 };

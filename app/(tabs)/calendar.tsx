@@ -4,14 +4,8 @@ import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import classNames from "classnames";
 import { format, isToday, parseISO } from "date-fns";
 import { useColorScheme } from "nativewind";
-import { useMemo, useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  Pressable,
-  Text,
-  View,
-} from "react-native";
+import { useEffect, useMemo, useState } from "react";
+import { FlatList, Pressable, Text, View } from "react-native";
 import { Calendar, type DateData } from "react-native-calendars";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -25,6 +19,7 @@ import { useFormatters } from "@/hooks/use-formatters";
 import { useFriends, type FriendWithStatus } from "@/hooks/use-friends";
 import { useThemedColors } from "@/hooks/use-themed-colors";
 import { darkColors, lightColors } from "@/lib/colors";
+import { toast } from "@/lib/toast";
 import type { CatchUpEvent, EventStatus } from "@/types/database";
 
 type DotStatus = Exclude<EventStatus, "cancelled">;
@@ -118,10 +113,27 @@ const CalendarScreen = () => {
   const tabBarHeight = useBottomTabBarHeight();
   const isDark = colorScheme === "dark";
 
-  const { data: events, isLoading } = useAllEvents();
-  const { data: friends } = useFriends();
+  const { data: events, isLoading, error: eventsError } = useAllEvents();
+  const { data: friends, error: friendsError } = useFriends();
   const { formatLocalDateKey } = useFormatters();
   const todayKey = formatLocalDateKey(new Date());
+
+  useEffect(() => {
+    if (eventsError) {
+      toast.error("Couldn't load events", {
+        description: (eventsError as Error).message,
+      });
+    }
+  }, [eventsError]);
+
+  useEffect(() => {
+    if (friendsError) {
+      toast.error("Couldn't load friends", {
+        description: (friendsError as Error).message,
+      });
+    }
+  }, [friendsError]);
+
   const [selectedDate, setSelectedDate] = useState<string>(() =>
     formatLocalDateKey(new Date()),
   );

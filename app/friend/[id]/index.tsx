@@ -2,16 +2,10 @@
 
 import { Ionicons } from "@expo/vector-icons";
 import classNames from "classnames";
-import { format, isThisYear } from "date-fns";
+import { isThisYear } from "date-fns";
 import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
-import {
-  ActivityIndicator,
-  Alert,
-  FlatList,
-  Pressable,
-  Text,
-  View,
-} from "react-native";
+
+import { Alert, FlatList, Pressable, Text, View } from "react-native";
 
 import { FriendDetailSkeleton } from "@/components/friend/FriendDetailSkeleton";
 import { FriendAvatar } from "@/components/friend/FriendListItem/FriendAvatar";
@@ -38,14 +32,9 @@ import {
   pickContact,
   snapshotFrom,
 } from "@/lib/contacts";
-import {
-  formatDate,
-  formatFrequency,
-  formatMedium,
-  formatRelative,
-  fullName,
-} from "@/lib/format";
+import { formatFrequency, formatMedium, fullName } from "@/lib/format";
 import { ROUTES } from "@/lib/routes";
+import { toast, toastMutationError } from "@/lib/toast";
 import type { CatchUpEvent, EventStatus } from "@/types/database";
 
 const FriendDetailScreen = () => {
@@ -65,9 +54,7 @@ const FriendDetailScreen = () => {
     );
   }
 
-  const lastCompleted = events?.find(
-    (event) => event.status === "completed",
-  );
+  const lastCompleted = events?.find((event) => event.status === "completed");
 
   const onDelete = () => {
     Alert.alert(
@@ -102,17 +89,15 @@ const FriendDetailScreen = () => {
         contact_snapshot: picked.snapshot as unknown as Record<string, unknown>,
         avatar_url: picked.avatar_url,
       });
+      toast.success("Linked contact");
     } catch (error) {
-      Alert.alert("Couldn't link contact", (error as Error).message);
+      toastMutationError(error, "Couldn't link contact");
     }
   };
 
   const onMessage = () => {
     if (!phone) {
-      Alert.alert(
-        "No phone number",
-        "This contact has no phone number on file.",
-      );
+      toast.info("No phone number on file");
       return;
     }
     openMessage(phone);
@@ -120,10 +105,7 @@ const FriendDetailScreen = () => {
 
   const onCall = () => {
     if (!phone) {
-      Alert.alert(
-        "No phone number",
-        "This contact has no phone number on file.",
-      );
+      toast.info("No phone number on file");
       return;
     }
     openCall(phone);
@@ -131,7 +113,7 @@ const FriendDetailScreen = () => {
 
   const onEmail = () => {
     if (!email) {
-      Alert.alert("No email", "This contact has no email on file.");
+      toast.info("No email on file");
       return;
     }
     openEmail(email);

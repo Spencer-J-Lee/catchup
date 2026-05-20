@@ -1,6 +1,6 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 
 import { NotesStep } from "@/components/event/FollowUp/NotesStep";
 import { StatusPicker } from "@/components/event/FollowUp/StatusPicker";
@@ -11,6 +11,7 @@ import {
 import { Screen } from "@/components/ui/Screen";
 import { useEvent, useUpdateEvent } from "@/hooks/use-events";
 import { useThemedColors } from "@/hooks/use-themed-colors";
+import { toast, toastMutationError } from "@/lib/toast";
 
 const FollowUpScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -53,9 +54,10 @@ const FollowUpScreen = () => {
 
     try {
       await update.mutateAsync(payload);
+      toast.success("Follow-up saved");
       router.back();
     } catch (error) {
-      Alert.alert("Failed to save", (error as Error).message);
+      toastMutationError(error, "Couldn't save follow-up");
     }
   };
 

@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/Input";
 import { Screen } from "@/components/ui/Screen";
 import { ROUTES } from "@/lib/routes";
 import { supabase } from "@/lib/supabase";
+import { toast } from "@/lib/toast";
 
 const SignupScreen = () => {
   const [email, setEmail] = useState("");
@@ -29,7 +30,7 @@ const SignupScreen = () => {
     });
     setSubmitting(false);
     if (error) {
-      Alert.alert("Sign up failed", error.message);
+      toast.error("Sign up failed", { description: error.message });
       return;
     }
     Alert.alert(

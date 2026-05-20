@@ -2,7 +2,7 @@
 
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo, useState } from "react";
-import { Alert, Text } from "react-native";
+import { Text } from "react-native";
 
 import {
   EventForm,
@@ -15,6 +15,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useCreateEvent } from "@/hooks/use-events";
 import { useProfile } from "@/hooks/use-profile";
 import { eventInputSchema } from "@/lib/schemas";
+import { toast, toastMutationError } from "@/lib/toast";
 
 const NewEventScreen = () => {
   const params = useLocalSearchParams<{ friend_id?: string; mode?: string }>();
@@ -69,14 +70,19 @@ const NewEventScreen = () => {
     };
     const parsed = eventInputSchema.safeParse(payload);
     if (!parsed.success) {
-      Alert.alert("Invalid input", parsed.error.issues[0]?.message ?? "");
+      toast.error("Invalid input", {
+        description: parsed.error.issues[0]?.message ?? "",
+      });
       return;
     }
     try {
       await create.mutateAsync({ ...parsed.data, user_id: user.id });
+      toast.success(
+        mode === "schedule" ? "Catch-up scheduled" : "Catch-up logged",
+      );
       router.back();
     } catch (error) {
-      Alert.alert("Failed to save", (error as Error).message);
+      toastMutationError(error, "Couldn't save catch-up");
     }
   };
 

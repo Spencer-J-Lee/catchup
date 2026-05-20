@@ -2,13 +2,14 @@
 
 import { Link } from "expo-router";
 import { useState } from "react";
-import { Alert, Text, View } from "react-native";
+import { Text, View } from "react-native";
 
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Screen } from "@/components/ui/Screen";
 import { ROUTES } from "@/lib/routes";
 import { supabase } from "@/lib/supabase";
+import { toast } from "@/lib/toast";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -22,7 +23,7 @@ const LoginScreen = () => {
       password,
     });
     setSubmitting(false);
-    if (error) Alert.alert("Sign in failed", error.message);
+    if (error) toast.error("Sign in failed", { description: error.message });
   };
 
   return (

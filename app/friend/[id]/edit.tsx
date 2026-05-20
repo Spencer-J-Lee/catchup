@@ -2,13 +2,14 @@
 
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Alert, View } from "react-native";
+import { View } from "react-native";
 
 import { FrequencyPicker } from "@/components/friend/FrequencyPicker";
 import { Button } from "@/components/ui/Button";
 import { Screen } from "@/components/ui/Screen";
 import { useFriend, useUpdateFriend } from "@/hooks/use-friends";
 import { friendInputSchema } from "@/lib/schemas";
+import { toast, toastMutationError } from "@/lib/toast";
 import type { FrequencyPreset, FrequencyUnit } from "@/types/database";
 
 const EditFriendScreen = () => {
@@ -42,14 +43,17 @@ const EditFriendScreen = () => {
       frequency_unit: frequency.unit,
     });
     if (!parsed.success) {
-      Alert.alert("Invalid input", parsed.error.issues[0]?.message ?? "");
+      toast.error("Invalid input", {
+        description: parsed.error.issues[0]?.message ?? "",
+      });
       return;
     }
     try {
       await update.mutateAsync({ id, ...parsed.data });
+      toast.success("Saved");
       router.back();
     } catch (error) {
-      Alert.alert("Failed to save", (error as Error).message);
+      toastMutationError(error, "Couldn't save changes");
     }
   };
 

@@ -1,16 +1,9 @@
 // TODO: Review
 
 import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
-import {
-  ActivityIndicator,
-  Alert,
-  Linking,
-  Platform,
-  Pressable,
-  Text,
-  View,
-} from "react-native";
+import { Alert, Linking, Platform, Pressable, Text, View } from "react-native";
 
+import { EventDetailSkeleton } from "@/components/event/EventDetailSkeleton";
 import { Button } from "@/components/ui/Button";
 import { DividedList } from "@/components/ui/DividedList";
 import { PressableRow } from "@/components/ui/PressableRow";
@@ -18,13 +11,13 @@ import { Row } from "@/components/ui/Row";
 import { Screen } from "@/components/ui/Screen";
 import { Surface } from "@/components/ui/Surface";
 import { useDeleteEvent, useEvent, useUpdateEvent } from "@/hooks/use-events";
-import { useThemedColors } from "@/hooks/use-themed-colors";
-import { formatDateTime, formatMedium, formatStatus } from "@/lib/format";
+import { useFormatters } from "@/hooks/use-formatters";
+import { formatMedium, formatStatus } from "@/lib/format";
 import { ROUTES } from "@/lib/routes";
+import { toast, toastMutationError } from "@/lib/toast";
 
 const EventDetailScreen = () => {
   const router = useRouter();
-  const colors = useThemedColors();
   const update = useUpdateEvent();
   const deleteEvent = useDeleteEvent();
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -49,8 +42,9 @@ const EventDetailScreen = () => {
         status: "completed",
         friend_id: event.friend_id,
       });
+      toast.success("Marked complete");
     } catch (error) {
-      Alert.alert("Failed", (error as Error).message);
+      toastMutationError(error, "Couldn't update catch-up");
     }
   };
 
@@ -63,8 +57,9 @@ const EventDetailScreen = () => {
         status: "missed",
         friend_id: event.friend_id,
       });
+      toast.success("Marked missed");
     } catch (error) {
-      Alert.alert("Failed", (error as Error).message);
+      toastMutationError(error, "Couldn't update catch-up");
     }
   };
 
@@ -77,8 +72,9 @@ const EventDetailScreen = () => {
         status: "cancelled",
         friend_id: event.friend_id,
       });
+      toast.success("Marked cancelled");
     } catch (error) {
-      Alert.alert("Failed", (error as Error).message);
+      toastMutationError(error, "Couldn't update catch-up");
     }
   };
 

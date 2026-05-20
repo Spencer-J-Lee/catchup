@@ -4,19 +4,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Link } from "expo-router";
 import { useMemo, useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  Pressable,
-  Text,
-  View,
-} from "react-native";
+import { FlatList, Pressable, Text, View } from "react-native";
 
 import {
   FriendListItem,
   type FriendItemAction,
 } from "@/components/friend/FriendListItem";
-import { Button } from "@/components/ui/Button";
 import { FriendListSkeleton } from "@/components/friend/FriendRowSkeleton";
 import { DashedDivider } from "@/components/ui/DashedDivider";
 import { EmptyState } from "@/components/ui/EmptyState";

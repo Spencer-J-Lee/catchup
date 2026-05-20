@@ -1,16 +1,19 @@
-// TODO: Implement
+// TODO: Review
 
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Alert, Text, View } from "react-native";
 
+import { PreReminderSection } from "@/components/settings/PreReminderSection";
 import { ThemeSection } from "@/components/settings/ThemeSection";
+import { TimezoneSection } from "@/components/settings/TimezoneSection";
 import { Button } from "@/components/ui/Button";
 import { DeveloperCard } from "@/components/ui/DeveloperCard";
 import { Screen } from "@/components/ui/Screen";
 import { useAuth } from "@/hooks/use-auth";
 import { clearSeedData, seedExampleData } from "@/lib/seed";
+import { toast, toastMutationError } from "@/lib/toast";
 
 const SettingsScreen = () => {
   const { user, signOut } = useAuth();
@@ -21,17 +24,17 @@ const SettingsScreen = () => {
 
   const onSeed = async () => {
     if (!user) return;
+
     setSeeding(true);
     try {
       const result = await seedExampleData(user.id);
       queryClient.invalidateQueries({ queryKey: ["friends"] });
       queryClient.invalidateQueries({ queryKey: ["events"] });
-      Alert.alert(
-        "Seed data loaded",
-        `Removed ${result.friendsDeleted} previous seed friend${result.friendsDeleted === 1 ? "" : "s"}.\nCreated ${result.friendsCreated} friends and ${result.eventsCreated} events.`,
-      );
+      toast.success("Seed data loaded", {
+        description: `Removed ${result.friendsDeleted} previous seed friend${result.friendsDeleted === 1 ? "" : "s"}. Created ${result.friendsCreated} friends and ${result.eventsCreated} events.`,
+      });
     } catch (error) {
-      Alert.alert("Failed to seed", (error as Error).message);
+      toastMutationError(error, "Couldn't seed data");
     } finally {
       setSeeding(false);
     }
@@ -53,12 +56,11 @@ const SettingsScreen = () => {
               const removedCount = await clearSeedData(user.id);
               queryClient.invalidateQueries({ queryKey: ["friends"] });
               queryClient.invalidateQueries({ queryKey: ["events"] });
-              Alert.alert(
-                "Seed data cleared",
-                `Removed ${removedCount} friend${removedCount === 1 ? "" : "s"}.`,
+              toast.success(
+                `Cleared ${removedCount} seed friend${removedCount === 1 ? "" : "s"}`,
               );
             } catch (error) {
-              Alert.alert("Failed to clear", (error as Error).message);
+              toastMutationError(error, "Couldn't clear seed data");
             } finally {
               setClearing(false);
             }

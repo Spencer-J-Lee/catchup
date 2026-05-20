@@ -2,7 +2,7 @@
 
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo, useState } from "react";
-import { Alert, Image, Text, View } from "react-native";
+import { Image, Text, View } from "react-native";
 
 import { FrequencyPicker } from "@/components/friend/FrequencyPicker";
 import { Button } from "@/components/ui/Button";
@@ -14,6 +14,7 @@ import { useCreateFriend } from "@/hooks/use-friends";
 import type { ContactSnapshot } from "@/lib/contacts";
 import { initialsOf } from "@/lib/format";
 import { friendInputSchema } from "@/lib/schemas";
+import { toast, toastMutationError } from "@/lib/toast";
 import type { FrequencyPreset, FrequencyUnit } from "@/types/database";
 
 type ContactParams = {
@@ -60,10 +61,10 @@ const NewFriendScreen = () => {
       frequency_unit: frequency.unit,
     });
     if (!parsed.success) {
-      Alert.alert(
-        "Invalid input",
-        parsed.error.issues[0]?.message ?? "Please check the fields",
-      );
+      toast.error("Invalid input", {
+        description:
+          parsed.error.issues[0]?.message ?? "Please check the fields",
+      });
       return;
     }
     try {
@@ -77,9 +78,10 @@ const NewFriendScreen = () => {
         avatar_url: avatarUrl,
         contact_synced_at: contactId ? new Date().toISOString() : null,
       });
+      toast.success("Friend added");
       router.dismissAll();
     } catch (error) {
-      Alert.alert("Failed to save", (error as Error).message);
+      toastMutationError(error, "Couldn't save friend");
     }
   };
 
