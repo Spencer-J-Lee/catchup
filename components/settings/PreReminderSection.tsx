@@ -16,7 +16,7 @@ const PRE_REMINDER_OPTIONS: PreReminderOption[] = [
   { value: 15, label: "15 min" },
   { value: 30, label: "30 min" },
   { value: 60, label: "1 hr" },
-  { value: 240, label: "4 hr" },
+  { value: 180, label: "3 hr" },
   { value: 1440, label: "1 day" },
 ];
 
