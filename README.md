@@ -60,6 +60,23 @@ npm start          # opens the Metro bundler — scan QR with Expo Go on your ph
 The first time you sign up, Supabase creates an auth user and a trigger
 populates a matching `profiles` row.
 
+## Running on your iPhone (no Apple Developer Program required)
+
+- **iOS Simulator (daily driver, no expiry):** just `npm run ios`. It builds
+  and launches the app in the simulator on your Mac.
+- **Physical iPhone, free Apple ID (7-day signing):**
+  1. Open `ios/catchup.xcworkspace` in Xcode.
+  2. Plug in your iPhone and select it as the run target.
+  3. In the project's *Signing & Capabilities* tab, set *Team* to your
+     personal free Apple ID and let Xcode manage signing automatically.
+  4. Hit Run. Xcode builds, signs, and installs the app onto the device.
+  5. The install is valid for 7 days; plug in and re-run from Xcode to
+     refresh.
+
+TestFlight / App Store distribution requires the paid Apple Developer
+Program ($99/yr). When you enroll, the next step is `eas init` + setting up
+`eas.json` to build signed `.ipa`s on Expo's cloud — out of scope for now.
+
 ## Project layout
 
 ```
