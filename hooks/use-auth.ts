@@ -4,6 +4,7 @@ import type { Session } from "@supabase/supabase-js";
 import * as Linking from "expo-linking";
 import { useEffect, useState } from "react";
 
+import { queryClient } from "@/lib/query-client";
 import { supabase } from "@/lib/supabase";
 
 const handleAuthUrl = async (url: string) => {
@@ -47,6 +48,10 @@ export const useAuth = () => {
     session,
     user: session?.user ?? null,
     loading,
-    signOut: () => supabase.auth.signOut(),
+    signOut: async () => {
+      const result = await supabase.auth.signOut();
+      queryClient.clear();
+      return result;
+    },
   };
 };
