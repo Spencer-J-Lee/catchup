@@ -46,10 +46,9 @@ export const CalendarAgendaItem = ({
   event,
   friend,
 }: CalendarAgendaItemProps) => {
-  const whenISO = event.occurred_at ?? event.scheduled_at;
-  const when = whenISO ? new Date(whenISO) : null;
-  const timeDigits = when ? format(when, "h:mm") : "";
-  const timeMeridiem = when ? format(when, "a") : "";
+  const when = new Date(event.event_at);
+  const timeDigits = format(when, "h:mm");
+  const timeMeridiem = format(when, "a");
   const meta = STATUS_META[event.status];
   const friendLabel = friend ? fullName(friend) : "Unknown friend";
 
@@ -65,7 +64,7 @@ export const CalendarAgendaItem = ({
       <PressableSurface
         size="sm"
         className="flex-row items-center gap-3 overflow-hidden"
-        accessibilityLabel={`${meta.label} · ${friendLabel}${timeDigits ? ` at ${timeDigits} ${timeMeridiem}` : ""}${subline ? ` · ${subline}` : ""}`}
+        accessibilityLabel={`${meta.label} · ${friendLabel} at ${timeDigits} ${timeMeridiem}${subline ? ` · ${subline}` : ""}`}
       >
         <View
           className={classNames(

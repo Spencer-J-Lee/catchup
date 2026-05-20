@@ -46,12 +46,10 @@ const NewEventScreen = () => {
 
   const onSave = async () => {
     if (!user || !params.friend_id) return;
-    const isScheduled = mode === "schedule";
-    const status = isScheduled ? "scheduled" : "completed";
+    const status = mode === "schedule" ? "scheduled" : "completed";
     const payload = {
       friend_id: params.friend_id,
-      scheduled_at: isScheduled ? formValues.date.toISOString() : null,
-      occurred_at: !isScheduled ? formValues.date.toISOString() : null,
+      event_at: formValues.date.toISOString(),
       status: status as "scheduled" | "completed",
       medium: formValues.medium,
       medium_detail:

@@ -29,7 +29,7 @@ import { ROUTES } from "@/lib/routes";
 type FriendRow = {
   friend: FriendWithStatus;
   action: FriendItemAction | null;
-  scheduledAt: string | null;
+  whenAt: string | null;
   scheduledEventId: string | null;
   missedAt: string | null;
   isDue: boolean;
@@ -52,38 +52,36 @@ const FriendsScreen = () => {
     const now = new Date();
     const nowMs = now.getTime();
 
-    type ScheduledRef = { id: string; scheduled_at: string };
-    const pastByFriend = new Map<string, ScheduledRef>();
-    const upcomingByFriend = new Map<string, ScheduledRef>();
+    type EventRef = { id: string; event_at: string };
+    const pastByFriend = new Map<string, EventRef>();
+    const upcomingByFriend = new Map<string, EventRef>();
     for (const event of scheduledEvents ?? []) {
-      if (!event.scheduled_at) continue;
-      const scheduledMs = new Date(event.scheduled_at).getTime();
+      const scheduledMs = new Date(event.event_at).getTime();
       const isPast = scheduledMs < nowMs;
       const bucket = isPast ? pastByFriend : upcomingByFriend;
       const existing = bucket.get(event.friend_id);
       // Past: keep the oldest (longest awaiting). Upcoming: keep the soonest.
       const replace =
-        !existing || scheduledMs < new Date(existing.scheduled_at).getTime();
+        !existing || scheduledMs < new Date(existing.event_at).getTime();
       if (replace) {
         bucket.set(event.friend_id, {
           id: event.id,
-          scheduled_at: event.scheduled_at,
+          event_at: event.event_at,
         });
       }
     }
 
-    const recentMissedByFriend = new Map<string, ScheduledRef>();
+    const recentMissedByFriend = new Map<string, EventRef>();
     for (const event of missedEvents ?? []) {
-      if (!event.scheduled_at) continue;
       const existing = recentMissedByFriend.get(event.friend_id);
       if (
         !existing ||
-        new Date(event.scheduled_at).getTime() >
-          new Date(existing.scheduled_at).getTime()
+        new Date(event.event_at).getTime() >
+          new Date(existing.event_at).getTime()
       ) {
         recentMissedByFriend.set(event.friend_id, {
           id: event.id,
-          scheduled_at: event.scheduled_at,
+          event_at: event.event_at,
         });
       }
     }
@@ -120,7 +118,7 @@ const FriendsScreen = () => {
         awaitingFollowup.push({
           friend,
           action: "followUp",
-          scheduledAt: past.scheduled_at,
+          whenAt: past.event_at,
           scheduledEventId: past.id,
           missedAt: null,
           isDue: true,
@@ -129,7 +127,7 @@ const FriendsScreen = () => {
         scheduled.push({
           friend,
           action: "edit",
-          scheduledAt: upcoming.scheduled_at,
+          whenAt: upcoming.event_at,
           scheduledEventId: upcoming.id,
           missedAt: null,
           isDue: false,
@@ -138,15 +136,15 @@ const FriendsScreen = () => {
         // Surface a "missed N days ago" hint when the auto-flow kicked in.
         const missedAt = missed
           ? !friend.last_caught_up_at ||
-            new Date(missed.scheduled_at).getTime() >
+            new Date(missed.event_at).getTime() >
               new Date(friend.last_caught_up_at).getTime()
-            ? missed.scheduled_at
+            ? missed.event_at
             : null
           : null;
         due.push({
           friend,
           action: "schedule",
-          scheduledAt: null,
+          whenAt: null,
           scheduledEventId: null,
           missedAt,
           isDue: true,
@@ -155,7 +153,7 @@ const FriendsScreen = () => {
         caughtUp.push({
           friend,
           action: null,
-          scheduledAt: null,
+          whenAt: null,
           scheduledEventId: null,
           missedAt: null,
           isDue: false,
@@ -165,13 +163,11 @@ const FriendsScreen = () => {
 
     awaitingFollowup.sort(
       (left, right) =>
-        new Date(left.scheduledAt!).getTime() -
-        new Date(right.scheduledAt!).getTime(),
+        new Date(left.whenAt!).getTime() - new Date(right.whenAt!).getTime(),
     );
     scheduled.sort(
       (left, right) =>
-        new Date(left.scheduledAt!).getTime() -
-        new Date(right.scheduledAt!).getTime(),
+        new Date(left.whenAt!).getTime() - new Date(right.whenAt!).getTime(),
     );
     due.sort((left, right) => {
       // Missed friends first; within each group, sort by the relevant timestamp.
@@ -333,7 +329,7 @@ const FriendsScreen = () => {
                 <FriendListItem
                   friend={item.row.friend}
                   action={item.row.action}
-                  scheduledAt={item.row.scheduledAt}
+                  whenAt={item.row.whenAt}
                   scheduledEventId={item.row.scheduledEventId}
                   missedAt={item.row.missedAt}
                   isDue={item.row.isDue}

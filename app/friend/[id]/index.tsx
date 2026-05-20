@@ -65,7 +65,7 @@ const FriendDetailScreen = () => {
   }
 
   const lastCompleted = events?.find(
-    (event) => event.status === "completed" && event.occurred_at,
+    (event) => event.status === "completed",
   );
 
   const onDelete = () => {
@@ -219,10 +219,10 @@ const FriendDetailScreen = () => {
 
         <Surface>
           <DividedList>
-            {lastCompleted?.occurred_at ? (
+            {lastCompleted ? (
               <PressableRow
                 label="Last caught up"
-                value={`${formatRelative(lastCompleted.occurred_at)} (${formatDate(lastCompleted.occurred_at)})`}
+                value={`${formatRelative(lastCompleted.event_at)} (${formatDate(lastCompleted.event_at)})`}
                 onPress={() =>
                   router.push(ROUTES.event.detail(lastCompleted.id))
                 }
@@ -354,8 +354,7 @@ interface HistoryItemProps {
 
 const HistoryItem = ({ event }: HistoryItemProps) => {
   const meta = STATUS_META[event.status];
-  const whenISO = event.occurred_at ?? event.scheduled_at;
-  const when = whenISO ? new Date(whenISO) : null;
+  const when = new Date(event.event_at);
   const mediumText = event.medium
     ? `${formatMedium(event.medium)}${event.medium_detail ? ` · ${event.medium_detail}` : ""}`
     : "";
@@ -364,26 +363,24 @@ const HistoryItem = ({ event }: HistoryItemProps) => {
     <Link href={ROUTES.event.detail(event.id)} asChild>
       <PressableSurface size="sm" className="gap-2">
         <View className="flex-row items-center gap-3">
-          {when ? (
-            <View className="h-12 w-12 rounded-lg bg-high dark:bg-high-dk items-center justify-center">
-              <Text className="text-[10px] font-semibold uppercase text-subtle dark:text-subtle-dk tracking-wider">
-                {format(when, "MMM")}
+          <View className="h-12 w-12 rounded-lg bg-high dark:bg-high-dk items-center justify-center">
+            <Text className="text-[10px] font-semibold uppercase text-subtle dark:text-subtle-dk tracking-wider">
+              {format(when, "MMM")}
+            </Text>
+            <Text
+              className={classNames(
+                "font-bold text-default dark:text-default-dk leading-tight",
+                isThisYear(when) ? "text-xl" : "text-base",
+              )}
+            >
+              {format(when, "d")}
+            </Text>
+            {!isThisYear(when) ? (
+              <Text className="text-[9px] text-subtle dark:text-subtle-dk leading-tight">
+                {format(when, "yyyy")}
               </Text>
-              <Text
-                className={classNames(
-                  "font-bold text-default dark:text-default-dk leading-tight",
-                  isThisYear(when) ? "text-xl" : "text-base",
-                )}
-              >
-                {format(when, "d")}
-              </Text>
-              {!isThisYear(when) ? (
-                <Text className="text-[9px] text-subtle dark:text-subtle-dk leading-tight">
-                  {format(when, "yyyy")}
-                </Text>
-              ) : null}
-            </View>
-          ) : null}
+            ) : null}
+          </View>
           <Text
             className="flex-1 text-base font-medium text-default dark:text-default-dk"
             numberOfLines={1}

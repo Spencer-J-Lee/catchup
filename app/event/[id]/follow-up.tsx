@@ -47,10 +47,6 @@ const FollowUpScreen = () => {
       status: selectedStatus,
     };
 
-    if (selectedStatus === "completed") {
-      payload.occurred_at = new Date().toISOString();
-    }
-
     if (notesToSave) {
       payload.event_notes = notesToSave.trim() || null;
     }

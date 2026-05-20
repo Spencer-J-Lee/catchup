@@ -6,15 +6,15 @@ import type { FriendItemAction } from "./types";
 interface SubLabelArgs {
   friend: FriendWithStatus;
   action?: FriendItemAction | null;
-  scheduledAt?: string | null;
+  whenAt?: string | null;
   missedAt?: string | null;
   isDue?: boolean;
 }
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
-const isWithinOneCalendarDay = (scheduledAt: string): boolean => {
-  const scheduled = new Date(scheduledAt);
+const isWithinOneCalendarDay = (whenAt: string): boolean => {
+  const scheduled = new Date(whenAt);
   const now = new Date();
   const scheduledMidnight = new Date(
     scheduled.getFullYear(),
@@ -37,22 +37,22 @@ const URGENT = "text-accent dark:text-accent-dk";
 export const getFriendSubLabelData = ({
   friend,
   action,
-  scheduledAt,
+  whenAt,
   missedAt,
   isDue,
 }: SubLabelArgs): { label: string; className: string } => {
-  if (action === "followUp" && scheduledAt) {
+  if (action === "followUp" && whenAt) {
     return {
-      label: `Catch-up was ${formatRelative(scheduledAt)}`,
+      label: `Catch-up was ${formatRelative(whenAt)}`,
       className: `${MUTED} font-medium`,
     };
   }
 
-  if (action === "edit" && scheduledAt) {
-    const isImminent = isWithinOneCalendarDay(scheduledAt);
+  if (action === "edit" && whenAt) {
+    const isImminent = isWithinOneCalendarDay(whenAt);
 
     return {
-      label: `Coming up ${formatRelative(scheduledAt)}`,
+      label: `Coming up ${formatRelative(whenAt)}`,
       className: isImminent ? `${BRAND} font-medium` : MUTED,
     };
   }

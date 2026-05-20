@@ -24,9 +24,8 @@ const EditEventScreen = () => {
   useEffect(() => {
     if (!event) return;
 
-    const dateStr = event.scheduled_at ?? event.occurred_at;
     setFormValues({
-      date: dateStr ? new Date(dateStr) : new Date(),
+      date: new Date(event.event_at),
       status: event.status,
       medium: event.medium,
       mediumDetail: event.medium_detail ?? "",
@@ -51,8 +50,6 @@ const EditEventScreen = () => {
   const onSave = async () => {
     if (!event || !formValues) return;
 
-    const isScheduled = formValues.status === "scheduled";
-    const dateIso = formValues.date.toISOString();
     const hasMediumDetail =
       formValues.medium &&
       formValues.medium !== "in_person" &&
@@ -62,8 +59,7 @@ const EditEventScreen = () => {
       id: event.id,
       friend_id: event.friend_id,
       status: formValues.status,
-      scheduled_at: isScheduled ? dateIso : (event.scheduled_at ?? null),
-      occurred_at: isScheduled ? null : dateIso,
+      event_at: formValues.date.toISOString(),
       medium: formValues.medium,
       medium_detail: hasMediumDetail ? formValues.mediumDetail : null,
       location_text: formValues.locationText || null,

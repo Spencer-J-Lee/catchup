@@ -679,17 +679,10 @@ export const seedExampleData = async (userId: string): Promise<SeedResult> => {
         event.atHour,
         event.atMinute,
       );
-      const isScheduled = event.status === "scheduled";
       return {
         user_id: userId,
         friend_id: friendId,
-        scheduled_at:
-          isScheduled ||
-          event.status === "cancelled" ||
-          event.status === "missed"
-            ? timestamp
-            : null,
-        occurred_at: event.status === "completed" ? timestamp : null,
+        event_at: timestamp,
         status: event.status,
         medium: event.medium,
         medium_detail: event.medium_detail,

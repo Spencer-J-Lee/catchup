@@ -44,12 +44,12 @@ export interface DeriveFriendStateInput {
   nextDueAt: string | null;
   /** From `friend_frequency_status.last_caught_up_at`. */
   lastCaughtUpAt: string | null;
-  /** Latest scheduled event with `scheduled_at` > now. */
-  upcomingScheduled: Pick<CatchUpEvent, "id" | "scheduled_at"> | null;
-  /** Oldest scheduled event with `scheduled_at` <= now (still unresolved). */
-  pastScheduled: Pick<CatchUpEvent, "id" | "scheduled_at"> | null;
+  /** Latest scheduled event with `event_at` > now. */
+  upcomingScheduled: Pick<CatchUpEvent, "id" | "event_at"> | null;
+  /** Oldest scheduled event with `event_at` <= now (still unresolved). */
+  pastScheduled: Pick<CatchUpEvent, "id" | "event_at"> | null;
   /** Most recent event with status='missed'. */
-  recentMissed: Pick<CatchUpEvent, "id" | "scheduled_at"> | null;
+  recentMissed: Pick<CatchUpEvent, "id" | "event_at"> | null;
   now: Date;
 }
 
@@ -81,8 +81,8 @@ export const deriveFriendState = (
   // 3. Most recent activity was a miss → Due (auto-flow back).
   //    Compare against last_caught_up_at so a stale miss doesn't outrank a
   //    subsequent completion.
-  if (args.recentMissed?.scheduled_at) {
-    const missedMs = new Date(args.recentMissed.scheduled_at).getTime();
+  if (args.recentMissed?.event_at) {
+    const missedMs = new Date(args.recentMissed.event_at).getTime();
     const completedMs = args.lastCaughtUpAt
       ? new Date(args.lastCaughtUpAt).getTime()
       : -Infinity;

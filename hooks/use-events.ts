@@ -14,7 +14,7 @@ export const useScheduledEvents = () => {
         .from("catch_up_events")
         .select("*")
         .eq("status", "scheduled")
-        .order("scheduled_at", { ascending: true });
+        .order("event_at", { ascending: true });
       if (error) throw error;
       return data as CatchUpEvent[];
     },
@@ -29,7 +29,7 @@ export const useMissedEvents = () => {
         .from("catch_up_events")
         .select("*")
         .eq("status", "missed")
-        .order("scheduled_at", { ascending: false });
+        .order("event_at", { ascending: false });
       if (error) throw error;
       return data as CatchUpEvent[];
     },
@@ -45,8 +45,7 @@ export const useEventsForFriend = (friendId: string | undefined) => {
         .from("catch_up_events")
         .select("*")
         .eq("friend_id", friendId!)
-        .order("scheduled_at", { ascending: false, nullsFirst: false })
-        .order("occurred_at", { ascending: false, nullsFirst: false });
+        .order("event_at", { ascending: false });
       if (error) throw error;
       return data as CatchUpEvent[];
     },
@@ -93,9 +92,8 @@ export const useEventsInRange = (
       const { data, error } = await supabase
         .from("catch_up_events")
         .select("*")
-        .or(
-          `and(scheduled_at.gte.${args!.from},scheduled_at.lte.${args!.to}),and(occurred_at.gte.${args!.from},occurred_at.lte.${args!.to})`,
-        );
+        .gte("event_at", args!.from)
+        .lte("event_at", args!.to);
       if (error) throw error;
       return data as CatchUpEvent[];
     },

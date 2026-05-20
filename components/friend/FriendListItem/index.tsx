@@ -22,7 +22,7 @@ export type { FriendItemAction };
 interface FriendListItemProps {
   friend: FriendWithStatus;
   action?: FriendItemAction | null;
-  scheduledAt?: string | null;
+  whenAt?: string | null;
   scheduledEventId?: string | null;
   /** When set and `action === "schedule"`, render a "Missed X ago" hint —
    * signals the missed→reaching-out auto-flow. */
@@ -33,7 +33,7 @@ interface FriendListItemProps {
 export const FriendListItem = ({
   friend,
   action,
-  scheduledAt,
+  whenAt,
   scheduledEventId,
   missedAt,
   isDue,
@@ -77,7 +77,7 @@ export const FriendListItem = ({
   const subLabelData = getFriendSubLabelData({
     friend,
     action,
-    scheduledAt,
+    whenAt,
     missedAt,
     isDue,
   });

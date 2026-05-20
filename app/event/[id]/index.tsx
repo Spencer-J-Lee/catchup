@@ -23,12 +23,12 @@ import { formatDateTime, formatMedium, formatStatus } from "@/lib/format";
 import { ROUTES } from "@/lib/routes";
 
 const EventDetailScreen = () => {
-  const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const colors = useThemedColors();
-  const { data: event, isLoading } = useEvent(id);
   const update = useUpdateEvent();
   const deleteEvent = useDeleteEvent();
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const { data: event, isLoading } = useEvent(id);
 
   if (isLoading || !event) {
     return (
@@ -42,11 +42,11 @@ const EventDetailScreen = () => {
 
   const onMarkComplete = async () => {
     if (!event) return;
+
     try {
       await update.mutateAsync({
         id: event.id,
         status: "completed",
-        occurred_at: new Date().toISOString(),
         friend_id: event.friend_id,
       });
     } catch (error) {
@@ -56,6 +56,7 @@ const EventDetailScreen = () => {
 
   const onMarkMissed = async () => {
     if (!event) return;
+
     try {
       await update.mutateAsync({
         id: event.id,
@@ -69,6 +70,7 @@ const EventDetailScreen = () => {
 
   const onMarkCancelled = async () => {
     if (!event) return;
+
     try {
       await update.mutateAsync({
         id: event.id,
@@ -126,16 +128,10 @@ const EventDetailScreen = () => {
           <DividedList>
             <Row label="Status" value={formatStatus(event.status)} />
 
-            {event.scheduled_at ? (
-              <Row
-                label="Scheduled"
-                value={formatDateTime(event.scheduled_at)}
-              />
-            ) : null}
-
-            {event.occurred_at ? (
-              <Row label="Occurred" value={formatDateTime(event.occurred_at)} />
-            ) : null}
+            <Row
+              label={event.status === "scheduled" ? "Scheduled" : "When"}
+              value={formatDateTime(event.event_at)}
+            />
 
             {event.medium ? (
               <Row

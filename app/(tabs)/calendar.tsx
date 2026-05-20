@@ -49,10 +49,8 @@ const toLocalDateKey = (iso: string): string => {
 
 const todayKey = (): string => toLocalDateKey(new Date().toISOString());
 
-const eventTimestamp = (event: CatchUpEvent): number => {
-  const iso = event.occurred_at ?? event.scheduled_at;
-  return iso ? new Date(iso).getTime() : 0;
-};
+const eventTimestamp = (event: CatchUpEvent): number =>
+  new Date(event.event_at).getTime();
 
 interface CalendarDayProps {
   date?: DateData;
@@ -130,6 +128,7 @@ const CalendarScreen = () => {
   const { data: events, isLoading } = useAllEvents();
   const { data: friends } = useFriends();
   const [selectedDate, setSelectedDate] = useState<string>(() => todayKey());
+  const [jumpToken, setJumpToken] = useState(0);
 
   const friendById = useMemo(() => {
     const map = new Map<string, FriendWithStatus>();
@@ -140,9 +139,7 @@ const CalendarScreen = () => {
   const eventsByDate = useMemo(() => {
     const map = new Map<string, CatchUpEvent[]>();
     for (const event of events ?? []) {
-      const iso = event.occurred_at ?? event.scheduled_at;
-      if (!iso) continue;
-      const key = toLocalDateKey(iso);
+      const key = toLocalDateKey(event.event_at);
       const list = map.get(key);
       if (list) list.push(event);
       else map.set(key, [event]);
@@ -200,12 +197,15 @@ const CalendarScreen = () => {
   })();
 
   const onDayPress = (date: DateData) => setSelectedDate(date.dateString);
-  const onJumpToToday = () => setSelectedDate(todayKey());
+  const onJumpToToday = () => {
+    setSelectedDate(todayKey());
+    setJumpToken((token) => token + 1);
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-app dark:bg-app-dk" edges={["top"]}>
       <Calendar
-        key={`cal-${colorScheme}`}
+        key={`cal-${colorScheme}-${jumpToken}`}
         current={selectedDate}
         markedDates={markedDates}
         markingType="multi-dot"

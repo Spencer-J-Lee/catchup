@@ -53,27 +53,16 @@ export const friendInputSchema = z
 
 export type FriendInput = z.infer<typeof friendInputSchema>;
 
-export const eventInputSchema = z
-  .object({
-    friend_id: z.string().uuid(),
-    scheduled_at: z.string().datetime().nullable().optional(),
-    occurred_at: z.string().datetime().nullable().optional(),
-    status: eventStatusSchema,
-    medium: mediumSchema.nullable().optional(),
-    medium_detail: z.string().max(200).nullable().optional(),
-    location_text: z.string().max(200).nullable().optional(),
-    location_address: z.string().max(500).nullable().optional(),
-    pre_reminder_minutes: z.number().int().nonnegative().nullable().optional(),
-    event_notes: z.string().max(5000).nullable().optional(),
-  })
-  .refine((event) => event.scheduled_at != null || event.occurred_at != null, {
-    message: "An event must have a scheduled or occurred time",
-  })
-  .refine(
-    (event) => event.status !== "completed" || event.occurred_at != null,
-    {
-      message: "Completed events must have an occurred_at",
-    },
-  );
+export const eventInputSchema = z.object({
+  friend_id: z.string().uuid(),
+  event_at: z.string().datetime(),
+  status: eventStatusSchema,
+  medium: mediumSchema.nullable().optional(),
+  medium_detail: z.string().max(200).nullable().optional(),
+  location_text: z.string().max(200).nullable().optional(),
+  location_address: z.string().max(500).nullable().optional(),
+  pre_reminder_minutes: z.number().int().nonnegative().nullable().optional(),
+  event_notes: z.string().max(5000).nullable().optional(),
+});
 
 export type EventInput = z.infer<typeof eventInputSchema>;
