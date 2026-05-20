@@ -15,6 +15,7 @@ import {
 
 import { FriendAvatar } from "@/components/friend/FriendListItem/FriendAvatar";
 import { DividedList } from "@/components/ui/DividedList";
+import { IconActionRow } from "@/components/ui/IconActionRow";
 import { PressableRow } from "@/components/ui/PressableRow";
 import { Row } from "@/components/ui/Row";
 import { Screen } from "@/components/ui/Screen";
@@ -183,26 +184,14 @@ const FriendDetailScreen = () => {
             />
           </View>
         ) : (
-          <PressableSurface
+          <IconActionRow
+            label={linkContact.isPending ? "Linking…" : "Link to phone contact"}
+            subtitle="Enables Message, Call, and Contact actions."
+            icon="person-add"
+            iconColor={colors.brand}
             onPress={onLinkContact}
             disabled={linkContact.isPending}
-            className="flex-row items-center gap-3"
-          >
-            <Ionicons name="person-add" size={20} color={colors.brand} />
-            <View className="flex-1">
-              <Text className="text-base font-medium text-default dark:text-default-dk">
-                {linkContact.isPending ? "Linking…" : "Link to phone contact"}
-              </Text>
-              <Text className="text-xs text-muted dark:text-muted-dk mt-0.5">
-                Enables Message, Call, and Contact actions.
-              </Text>
-            </View>
-            <Ionicons
-              name="chevron-forward"
-              size={18}
-              color={colors.fgSubtle}
-            />
-          </PressableSurface>
+          />
         )}
 
         <View className="flex-row gap-2">

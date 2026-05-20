@@ -15,9 +15,9 @@ import {
 } from "react-native";
 
 import { Button } from "@/components/ui/Button";
+import { IconActionRow } from "@/components/ui/IconActionRow";
 import { Input } from "@/components/ui/Input";
 import { Screen } from "@/components/ui/Screen";
-import { PressableSurface } from "@/components/ui/Surface";
 import { useFriends } from "@/hooks/use-friends";
 import { useThemedColors } from "@/hooks/use-themed-colors";
 import {
@@ -167,23 +167,15 @@ const PickContactScreen = () => {
           contentContainerClassName="pb-8"
           ItemSeparatorComponent={() => <View className="h-1" />}
           ListHeaderComponent={
-            <PressableSurface
+            <IconActionRow
+              label="Add without a contact"
+              icon="person-add"
+              iconColor={colors.brand}
+              iconBgClass="bg-app dark:bg-app-dk"
               onPress={() => goToNewFriend()}
-              size="sm"
-              className="flex-row items-center gap-3 mb-3"
-            >
-              <View className="h-12 w-12 rounded-full bg-app dark:bg-app-dk items-center justify-center">
-                <Ionicons name="person-add" size={20} color={colors.brand} />
-              </View>
-              <Text className="text-base font-medium text-default dark:text-default-dk flex-1">
-                Add without a contact
-              </Text>
-              <Ionicons
-                name="chevron-forward"
-                size={18}
-                color={colors.fgSubtle}
-              />
-            </PressableSurface>
+              surfaceSize="sm"
+              className="mb-3"
+            />
           }
           ListEmptyComponent={
             <View className="py-12 items-center">
