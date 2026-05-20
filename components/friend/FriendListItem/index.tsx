@@ -7,6 +7,7 @@ import ReanimatedSwipeable, {
   type SwipeableMethods,
 } from "react-native-gesture-handler/ReanimatedSwipeable";
 
+import { useFormatters } from "@/hooks/use-formatters";
 import { useDeleteFriend, type FriendWithStatus } from "@/hooks/use-friends";
 import { useThemedColors } from "@/hooks/use-themed-colors";
 import { fullName } from "@/lib/format";
@@ -41,6 +42,7 @@ export const FriendListItem = ({
   const swipeableRef = useRef<SwipeableMethods>(null);
   const deleteFriend = useDeleteFriend();
   const colors = useThemedColors();
+  const { formatRelative, formatOverdueDays } = useFormatters();
 
   const onDeletePress = () => {
     Alert.alert(
@@ -80,6 +82,8 @@ export const FriendListItem = ({
     whenAt,
     missedAt,
     isDue,
+    formatRelative,
+    formatOverdueDays,
   });
 
   return (

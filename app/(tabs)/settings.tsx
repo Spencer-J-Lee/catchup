@@ -85,6 +85,10 @@ const SettingsScreen = () => {
 
         <ThemeSection />
 
+        <TimezoneSection />
+
+        <PreReminderSection />
+
         <View className="mt-4">
           <DeveloperCard
             title="Seed data"

@@ -12,6 +12,7 @@ import { AppState, Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
+import { TimezoneBootstrap } from "@/components/TimezoneBootstrap";
 import { useAuth } from "@/hooks/use-auth";
 import { useThemedColors } from "@/hooks/use-themed-colors";
 import { queryClient } from "@/lib/query-client";
@@ -71,6 +72,7 @@ const RootLayout = () => {
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: colors.app }}>
       <SafeAreaProvider>
         <QueryClientProvider client={queryClient}>
+          {session ? <TimezoneBootstrap /> : null}
           <Stack screenOptions={{ headerShown: false, ...stackHeaderOptions }}>
             <Stack.Screen name="(auth)" />
             <Stack.Screen name="(tabs)" />

@@ -23,6 +23,7 @@ import { Row } from "@/components/ui/Row";
 import { Screen } from "@/components/ui/Screen";
 import { PressableSurface, Surface } from "@/components/ui/Surface";
 import { useEventsForFriend } from "@/hooks/use-events";
+import { useFormatters } from "@/hooks/use-formatters";
 import {
   useDeleteFriend,
   useFriend,
@@ -359,6 +360,7 @@ interface HistoryItemProps {
 const HistoryItem = ({ event }: HistoryItemProps) => {
   const meta = STATUS_META[event.status];
   const when = new Date(event.event_at);
+  const { formatPattern } = useFormatters();
   const mediumText = event.medium
     ? `${formatMedium(event.medium)}${event.medium_detail ? ` · ${event.medium_detail}` : ""}`
     : "";
@@ -369,7 +371,7 @@ const HistoryItem = ({ event }: HistoryItemProps) => {
         <View className="flex-row items-center gap-3">
           <View className="h-12 w-12 rounded-lg bg-high dark:bg-high-dk items-center justify-center">
             <Text className="text-[10px] font-semibold uppercase text-subtle dark:text-subtle-dk tracking-wider">
-              {format(when, "MMM")}
+              {formatPattern(when, "MMM")}
             </Text>
             <Text
               className={classNames(
@@ -377,11 +379,11 @@ const HistoryItem = ({ event }: HistoryItemProps) => {
                 isThisYear(when) ? "text-xl" : "text-base",
               )}
             >
-              {format(when, "d")}
+              {formatPattern(when, "d")}
             </Text>
             {!isThisYear(when) ? (
               <Text className="text-[9px] text-subtle dark:text-subtle-dk leading-tight">
-                {format(when, "yyyy")}
+                {formatPattern(when, "yyyy")}
               </Text>
             ) : null}
           </View>

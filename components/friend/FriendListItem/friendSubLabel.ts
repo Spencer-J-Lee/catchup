@@ -1,5 +1,4 @@
 import type { FriendWithStatus } from "@/hooks/use-friends";
-import { formatOverdueDays, formatRelative } from "@/lib/format";
 
 import type { FriendItemAction } from "./types";
 
@@ -9,6 +8,8 @@ interface SubLabelArgs {
   whenAt?: string | null;
   missedAt?: string | null;
   isDue?: boolean;
+  formatRelative: (date: Date | string) => string;
+  formatOverdueDays: (date: Date | string) => string;
 }
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
@@ -40,6 +41,8 @@ export const getFriendSubLabelData = ({
   whenAt,
   missedAt,
   isDue,
+  formatRelative,
+  formatOverdueDays,
 }: SubLabelArgs): { label: string; className: string } => {
   if (action === "followUp" && whenAt) {
     return {

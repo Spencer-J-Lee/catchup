@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/Button";
 import { Screen } from "@/components/ui/Screen";
 import { useAuth } from "@/hooks/use-auth";
 import { useCreateEvent } from "@/hooks/use-events";
+import { useProfile } from "@/hooks/use-profile";
 import { eventInputSchema } from "@/lib/schemas";
 
 const NewEventScreen = () => {
@@ -20,6 +21,7 @@ const NewEventScreen = () => {
   const router = useRouter();
   const { user } = useAuth();
   const create = useCreateEvent();
+  const { data: profile } = useProfile();
 
   const mode: EventMode =
     params.mode === "logCatchUp" ? "logCatchUp" : "schedule";
@@ -47,6 +49,7 @@ const NewEventScreen = () => {
   const onSave = async () => {
     if (!user || !params.friend_id) return;
     const status = mode === "schedule" ? "scheduled" : "completed";
+    const defaultPreReminder = profile?.default_pre_reminder_minutes ?? 0;
     const payload = {
       friend_id: params.friend_id,
       event_at: formValues.date.toISOString(),
@@ -60,6 +63,8 @@ const NewEventScreen = () => {
           : null,
       location_text: formValues.locationText || null,
       location_address: formValues.locationAddress || null,
+      pre_reminder_minutes:
+        mode === "schedule" && defaultPreReminder > 0 ? defaultPreReminder : null,
       event_notes: formValues.notes || null,
     };
     const parsed = eventInputSchema.safeParse(payload);

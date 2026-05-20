@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { useAllEvents } from "@/hooks/use-events";
+import { useFormatters } from "@/hooks/use-formatters";
 import { useFriends, type FriendWithStatus } from "@/hooks/use-friends";
 import { useThemedColors } from "@/hooks/use-themed-colors";
 import { darkColors, lightColors } from "@/lib/colors";
@@ -40,16 +41,6 @@ const STATUS_DOT_PALETTE: Record<DotStatus, { light: string; dark: string }> = {
 };
 
 const STATUS_DOT_ORDER: DotStatus[] = ["scheduled", "missed", "completed"];
-
-const toLocalDateKey = (iso: string): string => {
-  const date = new Date(iso);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-};
-
-const todayKey = (): string => toLocalDateKey(new Date().toISOString());
 
 const eventTimestamp = (event: CatchUpEvent): number =>
   new Date(event.event_at).getTime();
@@ -129,7 +120,11 @@ const CalendarScreen = () => {
 
   const { data: events, isLoading } = useAllEvents();
   const { data: friends } = useFriends();
-  const [selectedDate, setSelectedDate] = useState<string>(() => todayKey());
+  const { formatLocalDateKey } = useFormatters();
+  const todayKey = formatLocalDateKey(new Date());
+  const [selectedDate, setSelectedDate] = useState<string>(() =>
+    formatLocalDateKey(new Date()),
+  );
   const [jumpToken, setJumpToken] = useState(0);
 
   const friendById = useMemo(() => {
@@ -141,7 +136,7 @@ const CalendarScreen = () => {
   const eventsByDate = useMemo(() => {
     const map = new Map<string, CatchUpEvent[]>();
     for (const event of events ?? []) {
-      const key = toLocalDateKey(event.event_at);
+      const key = formatLocalDateKey(event.event_at);
       const list = map.get(key);
       if (list) list.push(event);
       else map.set(key, [event]);
@@ -150,7 +145,7 @@ const CalendarScreen = () => {
       list.sort((a, b) => eventTimestamp(a) - eventTimestamp(b));
     }
     return map;
-  }, [events]);
+  }, [events, formatLocalDateKey]);
 
   const markedDates = useMemo(() => {
     const marks: Record<string, DayMarking> = {};
@@ -200,7 +195,7 @@ const CalendarScreen = () => {
 
   const onDayPress = (date: DateData) => setSelectedDate(date.dateString);
   const onJumpToToday = () => {
-    setSelectedDate(todayKey());
+    setSelectedDate(todayKey);
     setJumpToken((token) => token + 1);
   };
 

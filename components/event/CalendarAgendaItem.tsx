@@ -1,12 +1,12 @@
 // TODO: REVIEW
 
 import classNames from "classnames";
-import { format } from "date-fns";
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
 
 import { FriendAvatar } from "@/components/friend/FriendListItem/FriendAvatar";
 import { PressableSurface } from "@/components/ui/Surface";
+import { useFormatters } from "@/hooks/use-formatters";
 import { formatMedium, fullName } from "@/lib/format";
 import { ROUTES } from "@/lib/routes";
 import type { CatchUpEvent, EventStatus } from "@/types/database";
@@ -46,9 +46,9 @@ export const CalendarAgendaItem = ({
   event,
   friend,
 }: CalendarAgendaItemProps) => {
-  const when = new Date(event.event_at);
-  const timeDigits = format(when, "h:mm");
-  const timeMeridiem = format(when, "a");
+  const { formatTimeOfDay } = useFormatters();
+  const fullTime = formatTimeOfDay(event.event_at);
+  const [timeDigits, timeMeridiem] = fullTime.split(" ");
   const meta = STATUS_META[event.status];
   const friendLabel = friend ? fullName(friend) : "Unknown friend";
 

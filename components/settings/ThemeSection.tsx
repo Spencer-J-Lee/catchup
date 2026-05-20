@@ -1,5 +1,4 @@
-import { Text, View } from "react-native";
-
+import { SettingsSection } from "@/components/settings/SettingsSection";
 import { ChipRow } from "@/components/ui/ChipRow";
 import { Pill } from "@/components/ui/Pill";
 import { useThemeStore } from "@/lib/theme-store";
@@ -16,10 +15,7 @@ export const ThemeSection = () => {
   const setPref = useThemeStore((s) => s.setPref);
 
   return (
-    <View className="gap-2">
-      <Text className="text-xs uppercase tracking-wide font-semibold text-muted dark:text-muted-dk">
-        Appearance
-      </Text>
+    <SettingsSection label="Appearance">
       <ChipRow>
         {OPTIONS.map((opt) => (
           <Pill
@@ -30,6 +26,6 @@ export const ThemeSection = () => {
           />
         ))}
       </ChipRow>
-    </View>
+    </SettingsSection>
   );
 };

@@ -5,7 +5,7 @@ import { Platform, Pressable, Text } from "react-native";
 
 import { Field } from "@/components/ui/Field";
 import { InputSurface } from "@/components/ui/InputSurface";
-import { formatDateTime } from "@/lib/format";
+import { useFormatters } from "@/hooks/use-formatters";
 
 interface DateTimeFieldProps {
   label: string;
@@ -20,6 +20,7 @@ export const DateTimeField = ({
 }: DateTimeFieldProps) => {
   const [showPicker, setShowPicker] = useState(false);
   const { colorScheme } = useColorScheme();
+  const { formatDateTime } = useFormatters();
 
   return (
     <Field label={label}>

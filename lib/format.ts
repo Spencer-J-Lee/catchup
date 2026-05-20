@@ -6,44 +6,73 @@ import {
   formatDistanceToNowStrict,
   startOfDay,
 } from "date-fns";
+import { formatInTimeZone, toZonedTime } from "date-fns-tz";
 
 import type { EventStatus, FrequencyUnit, Medium } from "@/types/database";
 
-export const formatDate = (date: Date | string): string => {
-  return format(
-    typeof date === "string" ? new Date(date) : date,
-    "MMM d, yyyy",
-  );
+const toDate = (date: Date | string): Date =>
+  typeof date === "string" ? new Date(date) : date;
+
+export const formatDate = (date: Date | string, tz?: string): string => {
+  const parsed = toDate(date);
+  return tz
+    ? formatInTimeZone(parsed, tz, "MMM d, yyyy")
+    : format(parsed, "MMM d, yyyy");
 };
 
-export const formatDateTime = (date: Date | string): string => {
-  return format(
-    typeof date === "string" ? new Date(date) : date,
-    "MMM d, yyyy 'at' h:mm a",
-  );
+export const formatDateTime = (date: Date | string, tz?: string): string => {
+  const parsed = toDate(date);
+  return tz
+    ? formatInTimeZone(parsed, tz, "MMM d, yyyy 'at' h:mm a")
+    : format(parsed, "MMM d, yyyy 'at' h:mm a");
 };
 
-export const formatRelative = (date: Date | string): string => {
-  const parsed = typeof date === "string" ? new Date(date) : date;
+export const formatRelative = (date: Date | string, tz?: string): string => {
+  const parsed = toDate(date);
   const now = new Date();
 
-  // Same calendar day → intraday precision ("3 hours ago", "in 20 minutes").
-  if (differenceInCalendarDays(parsed, now) === 0) {
+  const parsedForCalendar = tz ? toZonedTime(parsed, tz) : parsed;
+  const nowForCalendar = tz ? toZonedTime(now, tz) : now;
+
+  if (differenceInCalendarDays(parsedForCalendar, nowForCalendar) === 0) {
     return formatDistanceToNowStrict(parsed, { addSuffix: true });
   }
 
-  // Different calendar day → measure midnight-to-midnight so the displayed
-  // day count tracks the date label rather than the wall-clock hour.
-  return formatDistanceStrict(startOfDay(parsed), startOfDay(now), {
-    addSuffix: true,
-  });
+  return formatDistanceStrict(
+    startOfDay(parsedForCalendar),
+    startOfDay(nowForCalendar),
+    { addSuffix: true },
+  );
 };
 
-export const formatOverdueDays = (dueAt: Date | string): string => {
-  const date = typeof dueAt === "string" ? new Date(dueAt) : dueAt;
-  const days = differenceInCalendarDays(new Date(), date);
+export const formatOverdueDays = (
+  dueAt: Date | string,
+  tz?: string,
+): string => {
+  const parsed = toDate(dueAt);
+  const now = new Date();
+  const parsedForCalendar = tz ? toZonedTime(parsed, tz) : parsed;
+  const nowForCalendar = tz ? toZonedTime(now, tz) : now;
+  const days = differenceInCalendarDays(nowForCalendar, parsedForCalendar);
   if (days <= 0) return "Reconnect today";
   return days === 1 ? "1 day past due" : `${days} days past due`;
+};
+
+export const formatTimeOfDay = (date: Date | string, tz?: string): string => {
+  const parsed = toDate(date);
+  return tz
+    ? formatInTimeZone(parsed, tz, "h:mm a")
+    : format(parsed, "h:mm a");
+};
+
+export const formatLocalDateKey = (
+  date: Date | string,
+  tz?: string,
+): string => {
+  const parsed = toDate(date);
+  return tz
+    ? formatInTimeZone(parsed, tz, "yyyy-MM-dd")
+    : format(parsed, "yyyy-MM-dd");
 };
 
 export const fullName = (parts: {
