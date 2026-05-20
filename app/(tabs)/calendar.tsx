@@ -16,8 +16,10 @@ import { Calendar, type DateData } from "react-native-calendars";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { CalendarAgendaItem } from "@/components/event/CalendarAgendaItem";
+import { EventListSkeleton } from "@/components/event/EventRowSkeleton";
 import { Button } from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { useAllEvents } from "@/hooks/use-events";
 import { useFriends, type FriendWithStatus } from "@/hooks/use-friends";
 import { useThemedColors } from "@/hooks/use-themed-colors";
@@ -231,21 +233,14 @@ const CalendarScreen = () => {
         ) : null}
       </View>
 
-      {isLoading ? (
-        <View
-          className="flex-1 items-center justify-center"
-          style={{ paddingBottom: tabBarHeight + 24 }}
-        >
-          <ActivityIndicator color={colors.fgDefault} />
-        </View>
+      {isLoading && !events ? (
+        <EventListSkeleton paddingBottom={tabBarHeight + 24} />
       ) : selectedEvents.length === 0 ? (
-        <View
-          className="flex-1 items-center justify-center px-8"
-          style={{ paddingBottom: tabBarHeight + 24 }}
-        >
-          <Text className="text-muted dark:text-muted-dk text-center">
-            No catch-ups on this day.
-          </Text>
+        <View className="flex-1" style={{ paddingBottom: tabBarHeight + 24 }}>
+          <EmptyState
+            icon="calendar-outline"
+            title="No catch-ups on this day"
+          />
         </View>
       ) : (
         <FlatList

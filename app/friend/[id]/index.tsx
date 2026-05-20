@@ -13,8 +13,10 @@ import {
   View,
 } from "react-native";
 
+import { FriendDetailSkeleton } from "@/components/friend/FriendDetailSkeleton";
 import { FriendAvatar } from "@/components/friend/FriendListItem/FriendAvatar";
 import { DividedList } from "@/components/ui/DividedList";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { IconActionRow } from "@/components/ui/IconActionRow";
 import { PressableRow } from "@/components/ui/PressableRow";
 import { Row } from "@/components/ui/Row";
@@ -56,10 +58,8 @@ const FriendDetailScreen = () => {
 
   if (isLoading || !friend) {
     return (
-      <Screen edges={[]}>
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator color={colors.fgDefault} />
-        </View>
+      <Screen scroll edges={[]}>
+        <FriendDetailSkeleton />
       </Screen>
     );
   }
@@ -262,9 +262,13 @@ const FriendDetailScreen = () => {
             History
           </Text>
           {!events || events.length === 0 ? (
-            <Text className="text-muted dark:text-muted-dk">
-              No events yet.
-            </Text>
+            <View className="py-6">
+              <EmptyState
+                icon="time-outline"
+                title="No catch-ups yet"
+                description="Schedule or log your first catch-up to see history here."
+              />
+            </View>
           ) : (
             <FlatList
               scrollEnabled={false}

@@ -17,7 +17,9 @@ import {
   type FriendItemAction,
 } from "@/components/friend/FriendListItem";
 import { Button } from "@/components/ui/Button";
+import { FriendListSkeleton } from "@/components/friend/FriendRowSkeleton";
 import { DashedDivider } from "@/components/ui/DashedDivider";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { Input } from "@/components/ui/Input";
 import { Screen } from "@/components/ui/Screen";
 import { useMissedEvents, useScheduledEvents } from "@/hooks/use-events";
@@ -271,31 +273,29 @@ const FriendsScreen = () => {
         </View>
       ) : null}
 
-      {isLoading ? (
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator color={colors.fgDefault} />
-        </View>
+      {(isLoading && !data) ? (
+        <FriendListSkeleton />
       ) : error ? (
         <Text className="text-danger dark:text-danger-dk">
           Failed to load friends: {(error as Error).message}
         </Text>
       ) : !hasFriends ? (
-        <View className="flex-1 items-center justify-center px-8">
-          <View className="h-20 w-20 rounded-full bg-raised dark:bg-raised-dk items-center justify-center mb-5">
-            <Ionicons name="people-outline" size={36} color={colors.brand} />
-          </View>
-          <Text className="text-xl font-semibold text-default dark:text-default-dk mb-2">
-            No friends yet
-          </Text>
-          <Text className="text-muted dark:text-muted-dk text-center mb-6">
-            Add a friend to start tracking your catch-ups.
-          </Text>
-          <Link href={ROUTES.friend.pickContact} asChild>
-            <Button className="px-6">Add your first friend</Button>
-          </Link>
+        <View className="flex-1" style={{ paddingBottom: tabBarHeight }}>
+          <EmptyState
+            icon="people-outline"
+            title="No friends yet"
+            description="Add a friend to start tracking your catch-ups."
+            cta={{
+              label: "Add your first friend",
+              href: ROUTES.friend.pickContact,
+            }}
+          />
         </View>
       ) : sections.length === 0 ? (
-        <View className="flex-1 items-center justify-center">
+        <View
+          className="flex-1 items-center justify-center"
+          style={{ paddingBottom: tabBarHeight }}
+        >
           <Text className="text-muted dark:text-muted-dk">
             {`No friends match “${search.trim()}”`}
           </Text>
