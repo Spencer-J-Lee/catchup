@@ -1,5 +1,3 @@
-// TODO: Review
-
 import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import { Tabs } from "expo-router";
@@ -41,7 +39,7 @@ const TabsLayout = () => {
         },
         tabBarLabelStyle: {
           fontSize: 11,
-          fontWeight: "500",
+          fontWeight: 500,
           marginTop: 2,
         },
         headerShown: false,

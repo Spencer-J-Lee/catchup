@@ -1,5 +1,3 @@
-// TODO: Review
-
 import "@/lib/theme-store";
 import "react-native-reanimated";
 import "../global.css";
@@ -9,8 +7,8 @@ import { SplashScreen, Stack, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useColorScheme } from "nativewind";
 import { useEffect } from "react";
-import { AppState, Platform } from "react-native";
 import type { AppStateStatus } from "react-native";
+import { AppState, Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
