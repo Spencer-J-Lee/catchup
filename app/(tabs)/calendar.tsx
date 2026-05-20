@@ -84,6 +84,13 @@ const CalendarDay = ({ date, state, marking, onPress }: CalendarDayProps) => {
             : "border-transparent",
       )}
     >
+      {isDayToday ? (
+        // Need to force width here due to strange behavior with text wrapping when it shouldn't
+        <Text className="absolute w-[34px] -top-1.5 text-[9px] font-medium tracking-wider text-brand dark:text-brand-dk">
+          TODAY
+        </Text>
+      ) : null}
+
       <Text
         className={classNames(
           "text-lg",
