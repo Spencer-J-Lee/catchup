@@ -18,8 +18,22 @@ import { Screen } from "@/components/ui/Screen";
 import { useMissedEvents, useScheduledEvents } from "@/hooks/use-events";
 import { useFriends, type FriendWithStatus } from "@/hooks/use-friends";
 import { useThemedColors } from "@/hooks/use-themed-colors";
-import { deriveFriendState, formatLifecycleState } from "@/lib/lifecycle";
+import {
+  deriveFriendState,
+  formatLifecycleState,
+  type FriendLifecycleState,
+} from "@/lib/lifecycle";
 import { ROUTES } from "@/lib/routes";
+
+const SECTION_ICONS: Record<
+  FriendLifecycleState,
+  React.ComponentProps<typeof Ionicons>["name"]
+> = {
+  awaiting_followup: "sparkles-outline",
+  scheduled: "calendar-outline",
+  due: "time-outline",
+  caught_up: "checkmark-circle-outline",
+};
 
 type FriendRow = {
   friend: FriendWithStatus;
@@ -31,7 +45,12 @@ type FriendRow = {
 };
 
 type Section =
-  | { kind: "header"; title: string; count: number }
+  | {
+      kind: "header";
+      title: string;
+      count: number;
+      state: FriendLifecycleState;
+    }
   | { kind: "friend"; row: FriendRow };
 
 const FriendsScreen = () => {
@@ -197,6 +216,7 @@ const FriendsScreen = () => {
         kind: "header",
         title: formatLifecycleState("awaiting_followup"),
         count: awaitingFollowup.length,
+        state: "awaiting_followup",
       });
       for (const row of awaitingFollowup)
         sections.push({ kind: "friend", row });
@@ -206,6 +226,7 @@ const FriendsScreen = () => {
         kind: "header",
         title: formatLifecycleState("scheduled"),
         count: scheduled.length,
+        state: "scheduled",
       });
       for (const row of scheduled) sections.push({ kind: "friend", row });
     }
@@ -214,6 +235,7 @@ const FriendsScreen = () => {
         kind: "header",
         title: formatLifecycleState("due"),
         count: due.length,
+        state: "due",
       });
       for (const row of due) sections.push({ kind: "friend", row });
     }
@@ -222,6 +244,7 @@ const FriendsScreen = () => {
         kind: "header",
         title: formatLifecycleState("caught_up"),
         count: caughtUp.length,
+        state: "caught_up",
       });
       for (const row of caughtUp) sections.push({ kind: "friend", row });
     }
@@ -266,7 +289,7 @@ const FriendsScreen = () => {
         </View>
       ) : null}
 
-      {(isLoading && !data) ? (
+      {isLoading && !data ? (
         <FriendListSkeleton />
       ) : error ? (
         <Text className="text-danger dark:text-danger-dk">
@@ -312,6 +335,11 @@ const FriendsScreen = () => {
           renderItem={({ item, index }) =>
             item.kind === "header" ? (
               <View className="bg-app dark:bg-app-dk pb-2 px-4 flex-row items-center gap-2">
+                <Ionicons
+                  name={SECTION_ICONS[item.state]}
+                  size={16}
+                  color={colors.fgMuted}
+                />
                 <Text className="text-base font-medium text-muted dark:text-muted-dk">
                   {item.title}
                 </Text>
