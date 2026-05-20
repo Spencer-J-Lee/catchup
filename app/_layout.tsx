@@ -4,11 +4,13 @@ import "@/lib/theme-store";
 import "react-native-reanimated";
 import "../global.css";
 
-import { QueryClientProvider } from "@tanstack/react-query";
+import { focusManager, QueryClientProvider } from "@tanstack/react-query";
 import { SplashScreen, Stack, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useColorScheme } from "nativewind";
 import { useEffect } from "react";
+import { AppState, Platform } from "react-native";
+import type { AppStateStatus } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -18,6 +20,19 @@ import { queryClient } from "@/lib/query-client";
 import { ROUTES } from "@/lib/routes";
 
 SplashScreen.preventAutoHideAsync();
+
+const onAppStateChange = (status: AppStateStatus) => {
+  if (Platform.OS !== "web") {
+    focusManager.setFocused(status === "active");
+  }
+};
+
+const useReactQueryFocusManager = () => {
+  useEffect(() => {
+    const subscription = AppState.addEventListener("change", onAppStateChange);
+    return () => subscription.remove();
+  }, []);
+};
 
 const useProtectedRoute = (loading: boolean, isAuthed: boolean) => {
   const segments = useSegments();
@@ -39,6 +54,7 @@ const RootLayout = () => {
   const { session, loading } = useAuth();
   const { colorScheme } = useColorScheme();
   const colors = useThemedColors();
+  useReactQueryFocusManager();
   useProtectedRoute(loading, !!session);
 
   useEffect(() => {
