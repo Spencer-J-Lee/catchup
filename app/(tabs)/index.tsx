@@ -294,7 +294,7 @@ const FriendsScreen = () => {
         </View>
       ) : null}
 
-      {true || (isLoading && !data) ? (
+      {isLoading && !data ? (
         <View
           className="flex-1 items-center justify-center"
           style={{ paddingBottom: tabBarHeight + 24 }}
