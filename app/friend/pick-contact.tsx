@@ -15,7 +15,6 @@ import {
 } from "react-native";
 
 import { Button } from "@/components/ui/Button";
-import { IconActionRow } from "@/components/ui/IconActionRow";
 import { Input } from "@/components/ui/Input";
 import { Screen } from "@/components/ui/Screen";
 import { useFriends } from "@/hooks/use-friends";
@@ -84,11 +83,7 @@ const PickContactScreen = () => {
     });
   }, [contacts, search, linkedContactIds]);
 
-  const goToNewFriend = (contact?: ContactListItem) => {
-    if (!contact) {
-      router.push(ROUTES.friend.new());
-      return;
-    }
+  const goToNewFriend = (contact: ContactListItem) => {
     const [firstFallback, ...restFallback] = contact.display_name.split(" ");
     router.push(
       ROUTES.friend.new({
@@ -122,8 +117,8 @@ const PickContactScreen = () => {
             Contacts access needed
           </Text>
           <Text className="text-muted dark:text-muted-dk text-center mb-6">
-            Allow CatchUp to read your contacts to pick from them, or add a
-            friend manually.
+            Allow CatchUp to read your contacts so you can add friends from
+            them.
           </Text>
           {error ? (
             <Text className="text-danger dark:text-danger-dk text-sm mb-4">
@@ -133,15 +128,6 @@ const PickContactScreen = () => {
           <Button onPress={() => Linking.openSettings()} className="px-6">
             Open Settings
           </Button>
-          <Pressable
-            onPress={() => goToNewFriend()}
-            className="mt-4 py-2 px-3"
-            hitSlop={8}
-          >
-            <Text className="text-brand dark:text-brand-dk font-medium">
-              Add manually
-            </Text>
-          </Pressable>
         </View>
       </Screen>
     );
@@ -166,17 +152,6 @@ const PickContactScreen = () => {
           keyboardShouldPersistTaps="handled"
           contentContainerClassName="pb-8"
           ItemSeparatorComponent={() => <View className="h-1" />}
-          ListHeaderComponent={
-            <IconActionRow
-              label="Add without a contact"
-              icon="person-add"
-              iconColor={colors.brand}
-              iconBgClass="bg-app dark:bg-app-dk"
-              onPress={() => goToNewFriend()}
-              surfaceSize="sm"
-              className="mb-3"
-            />
-          }
           ListEmptyComponent={
             <View className="py-12 items-center">
               <Text className="text-muted dark:text-muted-dk text-center">

@@ -26,7 +26,7 @@ export const ROUTES = {
   },
   friend: {
     pickContact: `${FRIEND}/pick-contact`,
-    new: (params?: FriendNewParams) => ({
+    new: (params: FriendNewParams) => ({
       pathname: `${FRIEND}/new`,
       params,
     }),
@@ -62,7 +62,7 @@ export const ROUTES = {
   auth: { login: Href; signup: Href };
   friend: {
     pickContact: Href;
-    new: (params?: FriendNewParams) => Href;
+    new: (params: FriendNewParams) => Href;
     detail: (id: string) => Href;
     edit: (id: string) => Href;
   };
