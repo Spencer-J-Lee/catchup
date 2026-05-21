@@ -10,47 +10,47 @@ export const FriendDetailSkeleton = () => {
     <View className="gap-4">
       <View className="items-center gap-3 pt-2">
         <Skeleton width={192} height={192} circle />
-        <Skeleton width={160} height={26} />
+        <Skeleton width={180} height={30} />
       </View>
 
       <View className="flex-row gap-2">
         {Array.from({ length: 4 }).map((_unused, index) => (
           <View key={index} className="flex-1">
-            <Surface size="sm" className="items-center justify-center gap-1.5">
+            <Surface size="sm" className="items-center justify-center gap-1">
               <Skeleton width={22} height={22} circle />
-              <Skeleton width={48} height={10} />
+              <Skeleton width={48} height={12} />
             </Surface>
           </View>
         ))}
       </View>
 
       <View className="flex-row gap-2">
-        <Skeleton width="50%" height={44} className="flex-1 rounded-full" />
-        <Skeleton width="50%" height={44} className="flex-1 rounded-full" />
+        <Skeleton width="50%" height={48} className="flex-1 rounded-full" />
+        <Skeleton width="50%" height={48} className="flex-1 rounded-full" />
       </View>
 
       <Surface>
-        <View className="gap-3">
-          <View className="flex-row justify-between">
-            <Skeleton width={120} height={14} />
-            <Skeleton width={80} height={14} />
+        <View className="gap-4">
+          <View className="flex-row justify-between items-center">
+            <Skeleton width={120} height={16} />
+            <Skeleton width={80} height={18} />
           </View>
-          <View className="flex-row justify-between">
-            <Skeleton width={90} height={14} />
-            <Skeleton width={70} height={14} />
+          <View className="flex-row justify-between items-center">
+            <Skeleton width={90} height={16} />
+            <Skeleton width={70} height={18} />
           </View>
         </View>
       </Surface>
 
-      <Skeleton width={100} height={20} />
+      <Skeleton width={100} height={22} />
 
       <View className="gap-2">
         {Array.from({ length: HISTORY_ROW_COUNT }).map((_unused, index) => (
           <Surface key={index} size="sm">
             <View className="flex-row items-center gap-3">
               <Skeleton width={48} height={48} />
-              <Skeleton width="55%" height={16} className="flex-1" />
-              <Skeleton width={64} height={20} className="rounded-full" />
+              <Skeleton width="55%" height={18} className="flex-1" />
+              <Skeleton width={72} height={21} className="rounded-full" />
             </View>
           </Surface>
         ))}

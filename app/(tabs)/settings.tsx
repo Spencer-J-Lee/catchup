@@ -76,6 +76,7 @@ const SettingsScreen = () => {
         <Text className="text-2xl font-bold text-default dark:text-default-dk">
           Settings
         </Text>
+
         <View className="gap-1">
           <Text className="text-sm text-muted dark:text-muted-dk">
             Signed in as

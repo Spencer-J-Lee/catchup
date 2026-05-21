@@ -8,9 +8,9 @@ export const FriendRowSkeleton = () => {
   return (
     <View className="flex-row items-center gap-3 py-2 px-4">
       <Skeleton width={56} height={56} circle />
-      <View className="flex-1 gap-1.5">
-        <Skeleton width="55%" height={16} />
-        <Skeleton width="35%" height={12} />
+      <View className="flex-1 gap-1">
+        <Skeleton width="55%" height={20} />
+        <Skeleton width="35%" height={14} />
       </View>
     </View>
   );

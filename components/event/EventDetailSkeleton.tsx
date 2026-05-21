@@ -7,33 +7,34 @@ export const EventDetailSkeleton = () => {
   return (
     <View className="gap-4">
       <Surface>
-        <View className="gap-3">
-          <View className="flex-row justify-between">
-            <Skeleton width={70} height={14} />
-            <Skeleton width={90} height={14} />
+        <View className="gap-4">
+          <View className="flex-row justify-between items-center">
+            <Skeleton width={70} height={16} />
+            <Skeleton width={90} height={18} />
           </View>
-          <View className="flex-row justify-between">
-            <Skeleton width={90} height={14} />
-            <Skeleton width={140} height={14} />
+          <View className="flex-row justify-between items-center">
+            <Skeleton width={90} height={16} />
+            <Skeleton width={140} height={18} />
           </View>
-          <View className="flex-row justify-between">
-            <Skeleton width={70} height={14} />
-            <Skeleton width={100} height={14} />
+          <View className="flex-row justify-between items-center">
+            <Skeleton width={70} height={16} />
+            <Skeleton width={100} height={18} />
           </View>
         </View>
       </Surface>
 
       <Surface>
         <View className="gap-2">
-          <Skeleton width={50} height={12} />
-          <Skeleton width="90%" height={14} />
-          <Skeleton width="75%" height={14} />
+          <Skeleton width={50} height={14} />
+          <Skeleton width="90%" height={18} />
+          <Skeleton width="75%" height={18} />
         </View>
       </Surface>
 
       <View className="gap-2">
-        <Skeleton width="100%" height={44} className="rounded-full" />
-        <Skeleton width="100%" height={44} className="rounded-full" />
+        <Skeleton width="100%" height={48} className="rounded-xl" />
+        <Skeleton width="100%" height={48} className="rounded-xl" />
+        <Skeleton width="100%" height={48} className="rounded-xl" />
       </View>
     </View>
   );
