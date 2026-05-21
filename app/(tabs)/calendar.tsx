@@ -5,12 +5,17 @@ import classNames from "classnames";
 import { format, isToday, parseISO } from "date-fns";
 import { useColorScheme } from "nativewind";
 import { useEffect, useMemo, useState } from "react";
-import { FlatList, Pressable, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
 import { Calendar, type DateData } from "react-native-calendars";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { CalendarAgendaItem } from "@/components/event/CalendarAgendaItem";
-import { EventListSkeleton } from "@/components/event/EventRowSkeleton";
 import { Button } from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -234,14 +239,24 @@ const CalendarScreen = () => {
         </Text>
 
         {!isSelectedToday ? (
-          <Button variant="secondary" size="xs" onPress={onJumpToToday}>
+          <Button
+            variant="secondary"
+            size="xs"
+            onPress={onJumpToToday}
+            hitSlop={8}
+          >
             Jump to today
           </Button>
         ) : null}
       </View>
 
       {isLoading && !events ? (
-        <EventListSkeleton paddingBottom={tabBarHeight + 24} />
+        <View
+          className="flex-1 items-center justify-center"
+          style={{ paddingBottom: tabBarHeight + 24 }}
+        >
+          <ActivityIndicator color={colors.fgDefault} />
+        </View>
       ) : selectedEvents.length === 0 ? (
         <View className="flex-1" style={{ paddingBottom: tabBarHeight + 24 }}>
           <EmptyState
