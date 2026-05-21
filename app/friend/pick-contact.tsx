@@ -2,8 +2,14 @@
 
 import { Ionicons } from "@expo/vector-icons";
 import * as Contacts from "expo-contacts";
-import { useRouter } from "expo-router";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useNavigation, useRouter } from "expo-router";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -17,7 +23,8 @@ import {
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Screen } from "@/components/ui/Screen";
-import { useFriends } from "@/hooks/use-friends";
+import { useAuth } from "@/hooks/use-auth";
+import { useCreateFriends, useFriends } from "@/hooks/use-friends";
 import { useThemedColors } from "@/hooks/use-themed-colors";
 import {
   listContacts,
@@ -26,17 +33,23 @@ import {
 } from "@/lib/contacts";
 import { initialsOf } from "@/lib/format";
 import { ROUTES } from "@/lib/routes";
+import { toast, toastMutationError } from "@/lib/toast";
 
 type PermissionState = "loading" | "granted" | "denied";
 
 const PickContactScreen = () => {
   const router = useRouter();
+  const navigation = useNavigation();
   const colors = useThemedColors();
+  const { user } = useAuth();
   const { data: friends } = useFriends();
+  const createFriends = useCreateFriends();
   const [permission, setPermission] = useState<PermissionState>("loading");
   const [contacts, setContacts] = useState<ContactListItem[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+  const [selectMode, setSelectMode] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
   const load = useCallback(async () => {
     setError(null);
@@ -82,6 +95,84 @@ const PickContactScreen = () => {
       return contact.display_name.toLowerCase().includes(query);
     });
   }, [contacts, search, linkedContactIds]);
+
+  const contactsById = useMemo(() => {
+    const map = new Map<string, ContactListItem>();
+    for (const contact of contacts) map.set(contact.id, contact);
+    return map;
+  }, [contacts]);
+
+  const exitSelectMode = useCallback(() => {
+    setSelectMode(false);
+    setSelectedIds(new Set());
+  }, []);
+
+  useLayoutEffect(() => {
+    if (permission !== "granted") {
+      navigation.setOptions({ headerRight: undefined });
+      return;
+    }
+
+    navigation.setOptions({
+      headerRight: () => (
+        <Pressable
+          onPress={() => (selectMode ? exitSelectMode() : setSelectMode(true))}
+          hitSlop={8}
+        >
+          <Text
+            className="text-base font-medium"
+            style={{ color: colors.brand }}
+          >
+            {selectMode ? "Cancel" : "Select"}
+          </Text>
+        </Pressable>
+      ),
+    });
+  }, [navigation, selectMode, permission, colors.brand, exitSelectMode]);
+
+  const toggleSelected = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const onAddSelected = async () => {
+    if (!user) return;
+
+    const now = new Date().toISOString();
+    const inputs = Array.from(selectedIds)
+      .map((id) => contactsById.get(id))
+      .filter((contact): contact is ContactListItem => contact !== undefined)
+      .map((contact) => {
+        const [firstFallback, ...restFallback] =
+          contact.display_name.split(" ");
+        return {
+          user_id: user.id,
+          first_name: contact.first_name ?? firstFallback ?? "",
+          last_name: contact.last_name ?? restFallback.join(" ") ?? null,
+          contact_id: contact.id,
+          contact_snapshot:
+            (contact.snapshot as unknown as Record<string, unknown>) ?? null,
+          avatar_url: contact.image_uri ?? null,
+          contact_synced_at: now,
+        };
+      });
+
+    if (inputs.length === 0) return;
+
+    try {
+      await createFriends.mutateAsync(inputs);
+      toast.success(
+        `Added ${inputs.length} friend${inputs.length === 1 ? "" : "s"}`,
+      );
+      router.dismissAll();
+    } catch (caught) {
+      toastMutationError(caught, "Couldn't add friends");
+    }
+  };
 
   const goToNewFriend = (contact: ContactListItem) => {
     const [firstFallback, ...restFallback] = contact.display_name.split(" ");
@@ -133,9 +224,20 @@ const PickContactScreen = () => {
     );
   }
 
+  const selectedCount = selectedIds.size;
+
   return (
-    <Screen edges={[]}>
-      <View className="flex-1 gap-3">
+    <Screen
+      edges={[]}
+      footer={
+        selectMode && selectedCount > 0 ? (
+          <Button onPress={onAddSelected} loading={createFriends.isPending}>
+            {`Add ${selectedCount} friend${selectedCount === 1 ? "" : "s"}`}
+          </Button>
+        ) : undefined
+      }
+    >
+      <View className="flex-1 gap-3 pt-4">
         <Input
           placeholder="Search contacts"
           value={search}
@@ -163,45 +265,81 @@ const PickContactScreen = () => {
               </Text>
             </View>
           }
-          renderItem={({ item }) => (
-            <Pressable
-              onPress={() => goToNewFriend(item)}
-              className="flex-row items-center gap-3 py-2 active:opacity-70"
-            >
-              {item.image_uri ? (
-                <Image
-                  source={{ uri: item.image_uri }}
-                  className="h-12 w-12 rounded-full bg-raised dark:bg-raised-dk"
-                  resizeMode="cover"
-                />
-              ) : (
-                <View className="h-12 w-12 rounded-full bg-raised dark:bg-raised-dk items-center justify-center">
-                  <Text className="text-default dark:text-default-dk text-base font-semibold">
-                    {initialsOf(
-                      item.first_name ?? item.display_name,
-                      item.last_name,
-                    )}
-                  </Text>
-                </View>
-              )}
-              <View className="flex-1">
-                <Text
-                  className="text-base font-semibold text-default dark:text-default-dk"
-                  numberOfLines={1}
-                >
-                  {item.display_name}
-                </Text>
-                {item.phone ? (
+          renderItem={({ item }) => {
+            const isSelected = selectedIds.has(item.id);
+
+            return (
+              <Pressable
+                onPress={() =>
+                  selectMode ? toggleSelected(item.id) : goToNewFriend(item)
+                }
+                onLongPress={() => {
+                  if (!selectMode) {
+                    setSelectMode(true);
+                    toggleSelected(item.id);
+                  }
+                }}
+                className="flex-row items-center gap-3 py-2 active:opacity-70"
+              >
+                {item.image_uri ? (
+                  <Image
+                    source={{ uri: item.image_uri }}
+                    className="h-12 w-12 rounded-full bg-raised dark:bg-raised-dk"
+                    resizeMode="cover"
+                  />
+                ) : (
+                  <View className="h-12 w-12 rounded-full bg-raised dark:bg-raised-dk items-center justify-center">
+                    <Text className="text-default dark:text-default-dk text-base font-semibold">
+                      {initialsOf(
+                        item.first_name ?? item.display_name,
+                        item.last_name,
+                      )}
+                    </Text>
+                  </View>
+                )}
+
+                <View className="flex-1">
                   <Text
-                    className="text-sm text-muted dark:text-muted-dk"
+                    className="text-base font-semibold text-default dark:text-default-dk"
                     numberOfLines={1}
                   >
-                    {item.phone}
+                    {item.display_name}
                   </Text>
+
+                  {item.phone ? (
+                    <Text
+                      className="text-sm text-muted dark:text-muted-dk"
+                      numberOfLines={1}
+                    >
+                      {item.phone}
+                    </Text>
+                  ) : null}
+                </View>
+
+                {selectMode ? (
+                  <View
+                    className="h-6 w-6 rounded-full items-center justify-center"
+                    style={
+                      isSelected
+                        ? { backgroundColor: colors.brand }
+                        : {
+                            borderWidth: 1.5,
+                            borderColor: colors.fgMuted,
+                          }
+                    }
+                  >
+                    {isSelected ? (
+                      <Ionicons
+                        name="checkmark"
+                        size={16}
+                        color={colors.brandFg}
+                      />
+                    ) : null}
+                  </View>
                 ) : null}
-              </View>
-            </Pressable>
-          )}
+              </Pressable>
+            );
+          }}
         />
       </View>
     </Screen>

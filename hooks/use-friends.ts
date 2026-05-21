@@ -84,6 +84,21 @@ export const useCreateFriend = () => {
   });
 };
 
+export const useCreateFriends = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (inputs: CreateFriendInput[]) => {
+      const { data, error } = await supabase
+        .from("friends")
+        .insert(inputs)
+        .select();
+      if (error) throw error;
+      return data as Friend[];
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: FRIENDS_KEY }),
+  });
+};
+
 export const useUpdateFriend = () => {
   const queryClient = useQueryClient();
   return useMutation({
