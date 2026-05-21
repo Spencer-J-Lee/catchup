@@ -80,7 +80,9 @@ const RootLayout = () => {
             <Stack.Screen
               name="friend/pick-contact"
               options={{
-                presentation: "modal",
+                presentation: "formSheet",
+                sheetAllowedDetents: "fitToContents",
+                sheetGrabberVisible: true,
                 headerShown: true,
                 title: "Add friend",
                 ...stackHeaderOptions,
@@ -89,6 +91,9 @@ const RootLayout = () => {
             <Stack.Screen
               name="friend/new"
               options={{
+                presentation: "formSheet",
+                sheetAllowedDetents: "fitToContents",
+                sheetGrabberVisible: true,
                 headerShown: true,
                 title: "Add friend",
                 ...stackHeaderOptions,
@@ -116,7 +121,9 @@ const RootLayout = () => {
             <Stack.Screen
               name="event/new"
               options={{
-                presentation: "modal",
+                presentation: "formSheet",
+                sheetAllowedDetents: "fitToContents",
+                sheetGrabberVisible: true,
                 headerShown: true,
                 title: "New catch-up",
                 ...stackHeaderOptions,
@@ -133,6 +140,9 @@ const RootLayout = () => {
             <Stack.Screen
               name="event/[id]/edit"
               options={{
+                presentation: "formSheet",
+                sheetAllowedDetents: "fitToContents",
+                sheetGrabberVisible: true,
                 headerShown: true,
                 title: "Edit catch-up",
                 ...stackHeaderOptions,
