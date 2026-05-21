@@ -4,13 +4,18 @@ import { Ionicons } from "@expo/vector-icons";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Link } from "expo-router";
 import { useMemo, useState } from "react";
-import { FlatList, Pressable, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
 
 import {
   FriendListItem,
   type FriendItemAction,
 } from "@/components/friend/FriendListItem";
-import { FriendListSkeleton } from "@/components/friend/FriendRowSkeleton";
 import { DashedDivider } from "@/components/ui/DashedDivider";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Input } from "@/components/ui/Input";
@@ -289,8 +294,13 @@ const FriendsScreen = () => {
         </View>
       ) : null}
 
-      {isLoading && !data ? (
-        <FriendListSkeleton />
+      {true || (isLoading && !data) ? (
+        <View
+          className="flex-1 items-center justify-center"
+          style={{ paddingBottom: tabBarHeight + 24 }}
+        >
+          <ActivityIndicator color={colors.fgDefault} />
+        </View>
       ) : error ? (
         <Text className="text-danger dark:text-danger-dk">
           Failed to load friends: {(error as Error).message}
