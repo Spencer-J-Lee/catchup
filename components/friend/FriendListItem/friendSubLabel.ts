@@ -56,7 +56,7 @@ export const getFriendSubLabelData = ({
 
     return {
       label: `Coming up ${formatRelative(whenAt)}`,
-      className: isImminent ? `${BRAND} font-medium` : MUTED,
+      className: isImminent ? `${URGENT} font-medium` : MUTED,
     };
   }
 

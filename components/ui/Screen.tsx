@@ -86,7 +86,7 @@ export const Screen = ({
       >
         {content}
         <View
-          className="px-4 pt-3 bg-app dark:bg-app-dk"
+          className="px-4 pt-4 bg-app border-t border-border dark:border-border-dk dark:bg-app-dk"
           style={{
             paddingBottom: keyboardVisible ? 16 : Math.max(insets.bottom, 16),
           }}

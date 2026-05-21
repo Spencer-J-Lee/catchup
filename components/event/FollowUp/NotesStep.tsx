@@ -67,7 +67,7 @@ export const NotesStep = ({
     >
       <Animated.View
         entering={FadeIn.duration(FADE_MS)}
-        className="gap-4 pt-6"
+        className="gap-4 py-6"
         key="step-notes"
       >
         <View className="flex-row justify-between gap-2">
