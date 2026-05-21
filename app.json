@@ -10,7 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.spencerlee.catchup",
+      "bundleIdentifier": "com.spencerlee.catchup.dev",
       "buildNumber": "1",
       "infoPlist": {
         "NSContactsUsageDescription": "CatchUp uses your contacts to let you connect existing contact info to friends you want to keep up with. You choose which contacts to import.",
