@@ -9,8 +9,8 @@ export const FriendDetailSkeleton = () => {
   return (
     <View className="gap-4">
       <View className="items-center gap-3 pt-2">
-        <Skeleton width={192} height={192} circle />
-        <Skeleton width={180} height={30} />
+        <Skeleton width={170} height={170} circle />
+        <Skeleton width={180} height={28} />
       </View>
 
       <View className="flex-row gap-2">

@@ -77,7 +77,7 @@ const CalendarDay = ({ date, state, marking, onPress }: CalendarDayProps) => {
     >
       {isDayToday ? (
         // Need explicit width here due to strange behavior with text wrapping when it shouldn't
-        <Text className="absolute w-[35px] -top-4 text-[9px] font-bold tracking-wider text-brand dark:text-high-dk">
+        <Text className="absolute w-[35px] -top-4 text-[9px] font-bold tracking-wider text-brand dark:text-brand-dk">
           TODAY
         </Text>
       ) : null}
