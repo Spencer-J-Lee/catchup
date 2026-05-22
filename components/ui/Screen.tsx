@@ -3,13 +3,8 @@
 import { useHeaderHeight } from "@react-navigation/elements";
 import classNames from "classnames";
 import { ReactNode, useEffect, useState } from "react";
-import {
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  View,
-} from "react-native";
+import { Keyboard, Platform, ScrollView, View } from "react-native";
+import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import {
   Edge,
   SafeAreaView,
@@ -82,9 +77,12 @@ export const Screen = ({
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={headerHeight}
-        className="flex-1"
+        // safer to use inline style with the library's wrapped
+        // Reanimated.View and nativewind interop
+        style={{ flex: 1 }}
       >
         {content}
+
         <View
           className="px-4 pt-4 bg-app border-t border-border dark:border-border-dk dark:bg-app-dk"
           style={{
