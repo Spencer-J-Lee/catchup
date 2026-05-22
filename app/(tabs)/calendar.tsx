@@ -1,21 +1,13 @@
-// TODO: REVIEW
-
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-import classNames from "classnames";
 import { format, isToday, parseISO } from "date-fns";
 import { useColorScheme } from "nativewind";
 import { useEffect, useMemo, useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  Pressable,
-  Text,
-  View,
-} from "react-native";
+import { ActivityIndicator, FlatList, Text, View } from "react-native";
 import { Calendar, type DateData } from "react-native-calendars";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { CalendarAgendaItem } from "@/components/event/CalendarAgendaItem";
+import { CalendarDay } from "@/components/event/CalendarDay";
 import { Button } from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -44,73 +36,6 @@ const STATUS_DOT_ORDER: DotStatus[] = ["scheduled", "missed", "completed"];
 
 const eventTimestamp = (event: CatchUpEvent): number =>
   new Date(event.event_at).getTime();
-
-interface CalendarDayProps {
-  date?: DateData;
-  state?: "selected" | "disabled" | "inactive" | "today" | "";
-  marking?: {
-    selected?: boolean;
-    dots?: { key?: string; color: string }[];
-  };
-  onPress?: (date?: DateData) => void;
-}
-
-const CalendarDay = ({ date, state, marking, onPress }: CalendarDayProps) => {
-  const isSelected = marking?.selected === true;
-  const isDayToday = state === "today";
-  const isDisabled = state === "disabled" || state === "inactive";
-  const dots = marking?.dots ?? [];
-
-  return (
-    <Pressable
-      onPress={() => onPress?.(date)}
-      disabled={isDisabled}
-      accessibilityRole="button"
-      className={classNames(
-        "w-10 h-10 items-center justify-center rounded-full border-2",
-        isSelected
-          ? "bg-raised dark:bg-raised-dk border-raised dark:border-raised-dk active:bg-high dark:active:bg-high-dk active:border-high dark:active:border-high-dk"
-          : isDayToday
-            ? "border-dotted border-high dark:border-high-dk"
-            : "border-transparent",
-      )}
-    >
-      {isDayToday ? (
-        // Need explicit width here due to strange behavior with text wrapping when it shouldn't
-        <Text className="absolute w-[35px] -top-4 text-[9px] font-bold tracking-wider text-brand dark:text-brand-dk">
-          TODAY
-        </Text>
-      ) : null}
-
-      <Text
-        className={classNames(
-          "text-lg",
-          isDisabled
-            ? "text-subtle dark:text-subtle-dk"
-            : "text-default dark:text-default-dk",
-        )}
-      >
-        {date?.day}
-      </Text>
-
-      {dots.length > 0 ? (
-        <View className="absolute bottom-[3px] flex-row gap-0.5">
-          {dots.map((dot, index) => (
-            <View
-              key={dot.key ?? `${dot.color}-${index}`}
-              style={{
-                width: 4,
-                height: 4,
-                borderRadius: 2,
-                backgroundColor: dot.color,
-              }}
-            />
-          ))}
-        </View>
-      ) : null}
-    </Pressable>
-  );
-};
 
 const CalendarScreen = () => {
   const colors = useThemedColors();
@@ -142,6 +67,7 @@ const CalendarScreen = () => {
   const [selectedDate, setSelectedDate] = useState<string>(() =>
     formatLocalDateKey(new Date()),
   );
+  // Used to jump the user to today's date by re-rendering the calendar
   const [jumpToken, setJumpToken] = useState(0);
 
   const friendById = useMemo(() => {
@@ -152,39 +78,43 @@ const CalendarScreen = () => {
 
   const eventsByDate = useMemo(() => {
     const map = new Map<string, CatchUpEvent[]>();
+
     for (const event of events ?? []) {
       const key = formatLocalDateKey(event.event_at);
       const list = map.get(key);
       if (list) list.push(event);
       else map.set(key, [event]);
     }
-    for (const list of map.values()) {
-      list.sort((a, b) => eventTimestamp(a) - eventTimestamp(b));
+
+    for (const events of map.values()) {
+      events.sort((a, b) => eventTimestamp(a) - eventTimestamp(b));
     }
+
     return map;
   }, [events, formatLocalDateKey]);
 
   const markedDates = useMemo(() => {
-    const marks: Record<string, DayMarking> = {};
-    for (const [date, list] of eventsByDate) {
-      const present = new Set<DotStatus>();
-      for (const event of list) {
-        if (event.status === "cancelled") continue;
-        present.add(event.status);
-      }
-      const dots = STATUS_DOT_ORDER.filter((status) => present.has(status)).map(
-        (status) => ({
-          key: status,
-          color: isDark
-            ? STATUS_DOT_PALETTE[status].dark
-            : STATUS_DOT_PALETTE[status].light,
-        }),
-      );
-      if (dots.length > 0) marks[date] = { dots };
+    const marksByDate: Record<string, DayMarking> = {};
+
+    for (const [date, events] of eventsByDate) {
+      const statuses = new Set<EventStatus>();
+      for (const event of events) statuses.add(event.status);
+
+      const dots = STATUS_DOT_ORDER.filter((status) =>
+        statuses.has(status),
+      ).map((status) => ({
+        key: status,
+        color: isDark
+          ? STATUS_DOT_PALETTE[status].dark
+          : STATUS_DOT_PALETTE[status].light,
+      }));
+
+      if (dots.length > 0) marksByDate[date] = { dots };
     }
-    const existing = marks[selectedDate] ?? {};
-    marks[selectedDate] = { ...existing, selected: true };
-    return marks;
+
+    const marksForToday = marksByDate[selectedDate] ?? {};
+    marksByDate[selectedDate] = { ...marksForToday, selected: true };
+    return marksByDate;
   }, [eventsByDate, selectedDate, isDark]);
 
   const calendarTheme = useMemo(
@@ -202,13 +132,15 @@ const CalendarScreen = () => {
   );
 
   const selectedEvents = eventsByDate.get(selectedDate) ?? [];
-  const isSelectedToday = isToday(parseISO(selectedDate));
-  const selectedLabel = (() => {
-    const parsed = parseISO(selectedDate);
-    return isSelectedToday
-      ? `Today · ${format(parsed, "EEEE, MMM d")}`
-      : format(parsed, "EEEE, MMM d, yyyy");
-  })();
+  const isTodaySelected = isToday(parseISO(selectedDate));
+  const formattedSelectedDate = format(
+    parseISO(selectedDate),
+    "EEEE, MMM d, yyyy",
+  );
+  const selectedLabel = isTodaySelected
+    ? `Today · ${formattedSelectedDate}`
+    : formattedSelectedDate;
+  const listBottomPadding = tabBarHeight + 24;
 
   const onDayPress = (date: DateData) => setSelectedDate(date.dateString);
   const onJumpToToday = () => {
@@ -238,7 +170,7 @@ const CalendarScreen = () => {
           {selectedLabel}
         </Text>
 
-        {!isSelectedToday ? (
+        {!isTodaySelected ? (
           <Button
             variant="secondary"
             size="xs"
@@ -253,12 +185,12 @@ const CalendarScreen = () => {
       {isLoading && !events ? (
         <View
           className="flex-1 items-center justify-center"
-          style={{ paddingBottom: tabBarHeight + 24 }}
+          style={{ paddingBottom: listBottomPadding }}
         >
           <ActivityIndicator color={colors.fgDefault} />
         </View>
       ) : selectedEvents.length === 0 ? (
-        <View className="flex-1" style={{ paddingBottom: tabBarHeight + 24 }}>
+        <View className="flex-1" style={{ paddingBottom: listBottomPadding }}>
           <EmptyState
             icon="calendar-outline"
             title="No catch-ups on this day"
@@ -277,7 +209,7 @@ const CalendarScreen = () => {
           )}
           contentContainerStyle={{
             paddingHorizontal: 14,
-            paddingBottom: tabBarHeight + 24,
+            paddingBottom: listBottomPadding,
           }}
           scrollIndicatorInsets={{ bottom: tabBarHeight }}
         />
