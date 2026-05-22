@@ -1,20 +1,23 @@
-// TODO: Review
-
 import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { Alert, Linking, Platform, Pressable, Text, View } from "react-native";
+import { Alert, Pressable, Text, View } from "react-native";
 
+import { EventDetailsCard } from "@/components/event/Detail/EventDetailsCard";
+import {
+  EventStatusActions,
+  type MarkableStatus,
+} from "@/components/event/Detail/EventStatusActions";
 import { EventDetailSkeleton } from "@/components/event/EventDetailSkeleton";
-import { Button } from "@/components/ui/Button";
-import { DividedList } from "@/components/ui/DividedList";
-import { PressableRow } from "@/components/ui/PressableRow";
-import { Row } from "@/components/ui/Row";
 import { Screen } from "@/components/ui/Screen";
 import { Surface } from "@/components/ui/Surface";
 import { useDeleteEvent, useEvent, useUpdateEvent } from "@/hooks/use-events";
-import { useFormatters } from "@/hooks/use-formatters";
-import { formatMedium, formatStatus } from "@/lib/format";
 import { ROUTES } from "@/lib/routes";
 import { toast, toastMutationError } from "@/lib/toast";
+
+const TOAST_LABEL_BY_STATUS: Record<MarkableStatus, string> = {
+  completed: "Marked complete",
+  missed: "Marked missed",
+  cancelled: "Marked cancelled",
+};
 
 const EventDetailScreen = () => {
   const router = useRouter();
@@ -22,7 +25,6 @@ const EventDetailScreen = () => {
   const deleteEvent = useDeleteEvent();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: event, isLoading } = useEvent(id);
-  const { formatDateTime } = useFormatters();
 
   if (isLoading || !event) {
     return (
@@ -32,46 +34,14 @@ const EventDetailScreen = () => {
     );
   }
 
-  const onMarkComplete = async () => {
-    if (!event) return;
-
+  const markAs = async (status: MarkableStatus) => {
     try {
       await update.mutateAsync({
         id: event.id,
-        status: "completed",
+        status,
         friend_id: event.friend_id,
       });
-      toast.success("Marked complete");
-    } catch (error) {
-      toastMutationError(error, "Couldn't update catch-up");
-    }
-  };
-
-  const onMarkMissed = async () => {
-    if (!event) return;
-
-    try {
-      await update.mutateAsync({
-        id: event.id,
-        status: "missed",
-        friend_id: event.friend_id,
-      });
-      toast.success("Marked missed");
-    } catch (error) {
-      toastMutationError(error, "Couldn't update catch-up");
-    }
-  };
-
-  const onMarkCancelled = async () => {
-    if (!event) return;
-
-    try {
-      await update.mutateAsync({
-        id: event.id,
-        status: "cancelled",
-        friend_id: event.friend_id,
-      });
-      toast.success("Marked cancelled");
+      toast.success(TOAST_LABEL_BY_STATUS[status]);
     } catch (error) {
       toastMutationError(error, "Couldn't update catch-up");
     }
@@ -89,16 +59,6 @@ const EventDetailScreen = () => {
         },
       },
     ]);
-  };
-
-  const openMaps = () => {
-    if (!event?.location_address) return;
-    const query = encodeURIComponent(event.location_address);
-    const url =
-      Platform.OS === "ios" ? `maps://?q=${query}` : `geo:0,0?q=${query}`;
-    Linking.openURL(url).catch(() =>
-      Linking.openURL(`https://maps.google.com/?q=${query}`),
-    );
   };
 
   return (
@@ -119,34 +79,7 @@ const EventDetailScreen = () => {
       />
 
       <View className="gap-4">
-        <Surface>
-          <DividedList>
-            <Row label="Status" value={formatStatus(event.status)} />
-
-            <Row
-              label={event.status === "scheduled" ? "Scheduled" : "When"}
-              value={formatDateTime(event.event_at)}
-            />
-
-            {event.medium ? (
-              <Row
-                label="Medium"
-                value={`${formatMedium(event.medium)}${event.medium_detail ? ` · ${event.medium_detail}` : ""}`}
-              />
-            ) : null}
-
-            {event.location_address ? (
-              <PressableRow
-                label="Location"
-                value={event.location_text || event.location_address}
-                onPress={openMaps}
-                textStyle="link"
-              />
-            ) : event.location_text ? (
-              <Row label="Location" value={event.location_text} />
-            ) : null}
-          </DividedList>
-        </Surface>
+        <EventDetailsCard event={event} />
 
         {event.event_notes ? (
           <Surface>
@@ -159,28 +92,12 @@ const EventDetailScreen = () => {
           </Surface>
         ) : null}
 
+        {/* TODO: Improve */}
         {event.status === "scheduled" ? (
-          <View className="gap-2">
-            <Button onPress={onMarkComplete} loading={update.isPending}>
-              Mark as completed
-            </Button>
-            <Button
-              variant="secondary"
-              onPress={onMarkMissed}
-              loading={update.isPending}
-            >
-              Mark as missed
-            </Button>
-            <Button
-              variant="secondary"
-              onPress={onMarkCancelled}
-              loading={update.isPending}
-            >
-              Mark as cancelled
-            </Button>
-          </View>
+          <EventStatusActions onMark={markAs} isPending={update.isPending} />
         ) : null}
 
+        {/* TODO: Improve */}
         <Pressable
           onPress={onDelete}
           disabled={deleteEvent.isPending}
