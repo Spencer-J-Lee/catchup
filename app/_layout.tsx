@@ -15,7 +15,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Toaster } from "sonner-native";
 
 import { TimezoneBootstrap } from "@/components/TimezoneBootstrap";
-import { useAuth } from "@/hooks/use-auth";
+import { AuthProvider, useAuth } from "@/hooks/use-auth";
 import { useThemedColors } from "@/hooks/use-themed-colors";
 import { queryClient } from "@/lib/query-client";
 import { ROUTES } from "@/lib/routes";
@@ -51,7 +51,7 @@ const useProtectedRoute = (loading: boolean, isAuthed: boolean) => {
   }, [loading, isAuthed, segments, router]);
 };
 
-const RootLayout = () => {
+const RootLayoutInner = () => {
   const { session, loading } = useAuth();
   const { colorScheme } = useColorScheme();
   const colors = useThemedColors();
@@ -173,5 +173,11 @@ const RootLayout = () => {
     </GestureHandlerRootView>
   );
 };
+
+const RootLayout = () => (
+  <AuthProvider>
+    <RootLayoutInner />
+  </AuthProvider>
+);
 
 export default RootLayout;
