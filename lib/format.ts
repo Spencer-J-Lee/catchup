@@ -58,13 +58,6 @@ export const formatOverdueDays = (
   return days === 1 ? "1 day past due" : `${days} days past due`;
 };
 
-export const formatTimeOfDay = (date: Date | string, tz?: string): string => {
-  const parsed = toDate(date);
-  return tz
-    ? formatInTimeZone(parsed, tz, "h:mm a")
-    : format(parsed, "h:mm a");
-};
-
 export const formatLocalDateKey = (
   date: Date | string,
   tz?: string,
