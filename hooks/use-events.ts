@@ -1,5 +1,3 @@
-// TODO: Review
-
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import type { EventInput } from "@/lib/schemas";
@@ -54,7 +52,7 @@ export const useEventsForFriend = (friendId: string | undefined) => {
 
 export const useEvent = (id: string | undefined) => {
   return useQuery({
-    queryKey: ["event", id],
+    queryKey: ["events", "by-id", id],
     enabled: !!id,
     queryFn: async () => {
       const { data, error } = await supabase
@@ -82,6 +80,7 @@ export const useAllEvents = () => {
   });
 };
 
+// We should use this if event fetching becomes a performance concern
 export const useEventsInRange = (
   args: { from: string; to: string } | undefined,
 ) => {
@@ -112,11 +111,8 @@ export const useCreateEvent = () => {
       if (error) throw error;
       return data as CatchUpEvent;
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["events"] });
-      queryClient.invalidateQueries({
-        queryKey: ["events", "by-friend", data.friend_id],
-      });
       queryClient.invalidateQueries({ queryKey: ["friends"] });
     },
   });
@@ -138,12 +134,8 @@ export const useUpdateEvent = () => {
       if (error) throw error;
       return data as CatchUpEvent;
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["events"] });
-      queryClient.invalidateQueries({ queryKey: ["event", data.id] });
-      queryClient.invalidateQueries({
-        queryKey: ["events", "by-friend", data.friend_id],
-      });
       queryClient.invalidateQueries({ queryKey: ["friends"] });
     },
   });
