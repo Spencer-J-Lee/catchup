@@ -1,5 +1,3 @@
-// TODO: REVIEW
-
 import classNames from "classnames";
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
@@ -9,32 +7,35 @@ import { PressableSurface } from "@/components/ui/Surface";
 import { useFormatters } from "@/hooks/use-formatters";
 import { formatMedium, fullName } from "@/lib/format";
 import { ROUTES } from "@/lib/routes";
-import type { CatchUpEvent, EventStatus } from "@/types/database";
+import type { CatchUpEvent, EventStatus, Friend } from "@/types/database";
 
-const STATUS_META: Record<EventStatus, { label: string; stripClass: string }> =
-  {
-    scheduled: {
-      label: "Scheduled",
-      stripClass: "bg-brand dark:bg-brand-dk",
-    },
-    completed: {
-      label: "Completed",
-      stripClass: "bg-success dark:bg-success-dk",
-    },
-    missed: {
-      label: "Missed",
-      stripClass: "bg-danger dark:bg-danger-dk",
-    },
-    cancelled: {
-      label: "Cancelled",
-      stripClass: "bg-muted dark:bg-muted-dk",
-    },
-  };
+const STATUS_META: Record<
+  Extract<EventStatus, "scheduled" | "completed" | "missed">,
+  { label: string; stripClass: string }
+> = {
+  scheduled: {
+    label: "Scheduled",
+    stripClass: "bg-brand dark:bg-brand-dk",
+  },
+  completed: {
+    label: "Completed",
+    stripClass: "bg-success dark:bg-success-dk",
+  },
+  missed: {
+    label: "Missed",
+    stripClass: "bg-danger dark:bg-danger-dk",
+  },
+};
 
-export type CalendarAgendaFriend = {
-  first_name: string;
-  last_name: string | null;
-  avatar_url: string | null;
+type CalendarAgendaFriend = Pick<
+  Friend,
+  "first_name" | "last_name" | "avatar_url"
+>;
+
+const PLACEHOLDER_FRIEND: CalendarAgendaFriend = {
+  first_name: "",
+  last_name: null,
+  avatar_url: null,
 };
 
 interface CalendarAgendaItemProps {
@@ -46,15 +47,15 @@ export const CalendarAgendaItem = ({
   event,
   friend,
 }: CalendarAgendaItemProps) => {
-  const { formatTimeOfDay } = useFormatters();
-  const fullTime = formatTimeOfDay(event.event_at);
-  const [timeDigits, timeMeridiem] = fullTime.split(" ");
+  const { formatPattern } = useFormatters();
+  const timeDigits = formatPattern(event.event_at, "h:mm");
+  const timeMeridiem = formatPattern(event.event_at, "a");
   const meta = STATUS_META[event.status];
   const friendLabel = friend ? fullName(friend) : "Unknown friend";
 
   const subline = [
     event.medium ? formatMedium(event.medium) : null,
-    event.location_text || null,
+    event.location_text,
   ]
     .filter(Boolean)
     .join(" · ");
@@ -71,7 +72,8 @@ export const CalendarAgendaItem = ({
             "absolute left-0 top-0 bottom-0 w-2",
             meta.stripClass,
           )}
-          accessibilityLabel={meta.label}
+          importantForAccessibility="no-hide-descendants"
+          accessibilityElementsHidden
         />
         <View className="w-14 items-end">
           <Text className="text-lg font-semibold text-default dark:text-default-dk">
@@ -82,7 +84,7 @@ export const CalendarAgendaItem = ({
           </Text>
         </View>
 
-        {friend ? <FriendAvatar friend={friend} /> : null}
+        <FriendAvatar friend={friend ?? PLACEHOLDER_FRIEND} />
 
         <View className="flex-1 min-w-0 gap-0.5">
           <Text
