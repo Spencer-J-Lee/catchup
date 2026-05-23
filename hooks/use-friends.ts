@@ -1,5 +1,3 @@
-// TODO: Review
-
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import type { FriendInput } from "@/lib/schemas";
@@ -11,7 +9,13 @@ export type FriendWithStatus = Friend & {
   next_due_at: string | null;
 };
 
-const FRIENDS_KEY = ["friends"] as const;
+type CreateFriendInput = FriendInput & {
+  user_id: string;
+  contact_id?: string | null;
+  contact_snapshot?: Record<string, unknown> | null;
+  avatar_url?: string | null;
+  contact_synced_at?: string | null;
+};
 
 const fetchFriends = async (): Promise<FriendWithStatus[]> => {
   const [friendsRes, statusRes] = await Promise.all([
@@ -24,14 +28,17 @@ const fetchFriends = async (): Promise<FriendWithStatus[]> => {
   ]);
   if (friendsRes.error) throw friendsRes.error;
   if (statusRes.error) throw statusRes.error;
+
   const statusByFriend = new Map<string, FriendFrequencyStatus>(
     (statusRes.data ?? []).map((status) => [
       status.friend_id,
       status as FriendFrequencyStatus,
     ]),
   );
+
   return (friendsRes.data as Friend[]).map((friend) => {
     const status = statusByFriend.get(friend.id);
+
     return {
       ...friend,
       last_caught_up_at: status?.last_caught_up_at ?? null,
@@ -41,12 +48,12 @@ const fetchFriends = async (): Promise<FriendWithStatus[]> => {
 };
 
 export const useFriends = () => {
-  return useQuery({ queryKey: FRIENDS_KEY, queryFn: fetchFriends });
+  return useQuery({ queryKey: ["friends", "list"], queryFn: fetchFriends });
 };
 
 export const useFriend = (id: string | undefined) => {
   return useQuery({
-    queryKey: ["friend", id],
+    queryKey: ["friends", "by-id", id],
     enabled: !!id,
     queryFn: async () => {
       const { data, error } = await supabase
@@ -55,17 +62,10 @@ export const useFriend = (id: string | undefined) => {
         .eq("id", id!)
         .single();
       if (error) throw error;
+
       return data as Friend;
     },
   });
-};
-
-type CreateFriendInput = FriendInput & {
-  user_id: string;
-  contact_id?: string | null;
-  contact_snapshot?: Record<string, unknown> | null;
-  avatar_url?: string | null;
-  contact_synced_at?: string | null;
 };
 
 export const useCreateFriend = () => {
@@ -78,9 +78,10 @@ export const useCreateFriend = () => {
         .select()
         .single();
       if (error) throw error;
+
       return data as Friend;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: FRIENDS_KEY }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["friends"] }),
   });
 };
 
@@ -95,7 +96,7 @@ export const useCreateFriends = () => {
       if (error) throw error;
       return data as Friend[];
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: FRIENDS_KEY }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["friends"] }),
   });
 };
 
@@ -112,10 +113,7 @@ export const useUpdateFriend = () => {
       if (error) throw error;
       return data as Friend;
     },
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: FRIENDS_KEY });
-      queryClient.invalidateQueries({ queryKey: ["friend", variables.id] });
-    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["friends"] }),
   });
 };
 
@@ -143,10 +141,7 @@ export const useLinkFriendContact = () => {
       if (error) throw error;
       return data as Friend;
     },
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: FRIENDS_KEY });
-      queryClient.invalidateQueries({ queryKey: ["friend", variables.id] });
-    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["friends"] }),
   });
 };
 
@@ -157,6 +152,9 @@ export const useDeleteFriend = () => {
       const { error } = await supabase.from("friends").delete().eq("id", id);
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: FRIENDS_KEY }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["friends"] });
+      queryClient.invalidateQueries({ queryKey: ["events"] });
+    },
   });
 };
