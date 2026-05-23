@@ -12,12 +12,12 @@ interface HistoryProps {
 export const History = ({ events }: HistoryProps) => {
   return (
     <View>
-      <Text className="text-lg font-semibold text-default dark:text-default-dk mb-2">
+      <Text className="mb-2 text-lg font-semibold text-default dark:text-default-dk">
         History
       </Text>
 
       {!events || events.length === 0 ? (
-        <View className="pt-4 pb-6">
+        <View className="pb-6 pt-4">
           <EmptyState
             icon="time-outline"
             title="No catch-ups yet"

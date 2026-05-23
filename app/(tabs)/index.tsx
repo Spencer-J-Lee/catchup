@@ -94,12 +94,12 @@ const FriendsScreen = () => {
 
   return (
     <Screen>
-      <View className="flex-row items-center justify-between mb-4">
+      <View className="mb-4 flex-row items-center justify-between">
         <Text className="text-3xl font-bold text-default dark:text-default-dk">
           Catchup
         </Text>
         <Link href={ROUTES.friend.pickContact} asChild>
-          <Pressable className="h-10 w-10 rounded-full bg-raised dark:bg-raised-dk items-center justify-center active:bg-high dark:active:bg-high-dk">
+          <Pressable className="h-10 w-10 items-center justify-center rounded-full bg-raised active:bg-high dark:bg-raised-dk dark:active:bg-high-dk">
             <Ionicons name="add" size={22} color={colors.fgDefault} />
           </Pressable>
         </Link>

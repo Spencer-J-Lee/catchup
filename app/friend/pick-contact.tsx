@@ -201,18 +201,18 @@ const PickContactScreen = () => {
     return (
       <Screen edges={[]}>
         <View className="flex-1 items-center justify-center px-8">
-          <View className="h-20 w-20 rounded-full bg-raised dark:bg-raised-dk items-center justify-center mb-5">
+          <View className="mb-5 h-20 w-20 items-center justify-center rounded-full bg-raised dark:bg-raised-dk">
             <Ionicons name="people-outline" size={36} color={colors.brand} />
           </View>
-          <Text className="text-xl font-semibold text-default dark:text-default-dk mb-2 text-center">
+          <Text className="mb-2 text-center text-xl font-semibold text-default dark:text-default-dk">
             Contacts access needed
           </Text>
-          <Text className="text-muted dark:text-muted-dk text-center mb-6">
+          <Text className="mb-6 text-center text-muted dark:text-muted-dk">
             Allow CatchUp to read your contacts so you can add friends from
             them.
           </Text>
           {error ? (
-            <Text className="text-danger dark:text-danger-dk text-sm mb-4">
+            <Text className="mb-4 text-sm text-danger dark:text-danger-dk">
               {error}
             </Text>
           ) : null}
@@ -255,8 +255,8 @@ const PickContactScreen = () => {
           contentContainerClassName="pb-8"
           ItemSeparatorComponent={() => <View className="h-1" />}
           ListEmptyComponent={
-            <View className="py-12 items-center">
-              <Text className="text-muted dark:text-muted-dk text-center">
+            <View className="items-center py-12">
+              <Text className="text-center text-muted dark:text-muted-dk">
                 {search.trim()
                   ? `No contacts match "${search.trim()}"`
                   : contacts.length === 0
@@ -288,8 +288,8 @@ const PickContactScreen = () => {
                     resizeMode="cover"
                   />
                 ) : (
-                  <View className="h-12 w-12 rounded-full bg-raised dark:bg-raised-dk items-center justify-center">
-                    <Text className="text-default dark:text-default-dk text-base font-semibold">
+                  <View className="h-12 w-12 items-center justify-center rounded-full bg-raised dark:bg-raised-dk">
+                    <Text className="text-base font-semibold text-default dark:text-default-dk">
                       {initialsOf(
                         item.first_name ?? item.display_name,
                         item.last_name,
@@ -318,7 +318,7 @@ const PickContactScreen = () => {
 
                 {selectMode ? (
                   <View
-                    className="h-6 w-6 rounded-full items-center justify-center"
+                    className="h-6 w-6 items-center justify-center rounded-full"
                     style={
                       isSelected
                         ? { backgroundColor: colors.brand }

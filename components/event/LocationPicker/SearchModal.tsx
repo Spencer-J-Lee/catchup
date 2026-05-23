@@ -130,7 +130,7 @@ export const SearchModal = ({
           }
           keyboardShouldPersistTaps="handled"
           ItemSeparatorComponent={() => (
-            <View className="h-px bg-border dark:bg-border-dk ml-12" />
+            <View className="ml-12 h-px bg-border dark:bg-border-dk" />
           )}
           ListHeaderComponent={
             trimmedQuery.length > 0 ? (
@@ -214,8 +214,8 @@ const EmptyState = ({ loading, hasQuery, hasSearched }: EmptyStateProps) => {
   }
   if (!hasQuery) {
     return (
-      <View className="items-center py-8 px-6">
-        <Text className="text-sm text-muted dark:text-muted-dk text-center">
+      <View className="items-center px-6 py-8">
+        <Text className="text-center text-sm text-muted dark:text-muted-dk">
           Start typing to search for a place
         </Text>
       </View>
@@ -223,8 +223,8 @@ const EmptyState = ({ loading, hasQuery, hasSearched }: EmptyStateProps) => {
   }
   if (hasSearched) {
     return (
-      <View className="items-center py-8 px-6">
-        <Text className="text-sm text-muted dark:text-muted-dk text-center">
+      <View className="items-center px-6 py-8">
+        <Text className="text-center text-sm text-muted dark:text-muted-dk">
           No places found
         </Text>
       </View>

@@ -51,14 +51,14 @@ export const HistoryItem = ({ event }: HistoryItemProps) => {
     <Link href={ROUTES.event.detail(event.id)} asChild>
       <PressableSurface size="sm" className="gap-2">
         <View className="flex-row items-center gap-3">
-          <View className="h-12 w-12 rounded-lg bg-high dark:bg-high-dk items-center justify-center">
-            <Text className="text-[10px] font-semibold uppercase text-subtle dark:text-subtle-dk tracking-wider">
+          <View className="h-12 w-12 items-center justify-center rounded-lg bg-high dark:bg-high-dk">
+            <Text className="text-[10px] font-semibold uppercase tracking-wider text-subtle dark:text-subtle-dk">
               {formatPattern(when, "MMM")}
             </Text>
 
             <Text
               className={classNames(
-                "font-bold text-default dark:text-default-dk leading-tight",
+                "font-bold leading-tight text-default dark:text-default-dk",
                 isThisYear(when) ? "text-xl" : "text-base",
               )}
             >
@@ -66,7 +66,7 @@ export const HistoryItem = ({ event }: HistoryItemProps) => {
             </Text>
 
             {!isThisYear(when) ? (
-              <Text className="text-[9px] text-subtle dark:text-subtle-dk leading-tight">
+              <Text className="text-[9px] leading-tight text-subtle dark:text-subtle-dk">
                 {formatPattern(when, "yyyy")}
               </Text>
             ) : null}
@@ -80,7 +80,7 @@ export const HistoryItem = ({ event }: HistoryItemProps) => {
           </Text>
 
           <View
-            className={classNames("px-2 py-0.5 rounded-full border", meta.pill)}
+            className={classNames("rounded-full border px-2 py-0.5", meta.pill)}
           >
             <Text className={classNames("text-xs font-semibold", meta.text)}>
               {meta.label}

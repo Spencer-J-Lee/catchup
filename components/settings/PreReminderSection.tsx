@@ -32,8 +32,7 @@ export const PreReminderSection = () => {
       { default_pre_reminder_minutes: value },
       {
         onSuccess: () => toast.success("Default reminder updated"),
-        onError: (error) =>
-          toastMutationError(error, "Couldn't save reminder"),
+        onError: (error) => toastMutationError(error, "Couldn't save reminder"),
       },
     );
   };

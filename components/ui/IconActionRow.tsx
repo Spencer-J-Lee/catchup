@@ -35,7 +35,7 @@ export const IconActionRow = ({
   const leading = iconBgClass ? (
     <View
       className={classNames(
-        "h-12 w-12 rounded-full items-center justify-center",
+        "h-12 w-12 items-center justify-center rounded-full",
         iconBgClass,
       )}
     >

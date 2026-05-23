@@ -37,7 +37,7 @@ export const FriendAvatar = ({ friend, size = "sm" }: FriendAvatarProps) => {
     <View className={classNames(baseClassName, "items-center justify-center")}>
       <Text
         className={classNames(
-          "text-default dark:text-default-dk font-semibold leading-none",
+          "font-semibold leading-none text-default dark:text-default-dk",
           sizing.text,
         )}
       >

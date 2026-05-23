@@ -18,10 +18,10 @@ export const DeveloperCard = ({
   const heading = "DEVTOOLS" + (title ? `: ${title}` : "");
 
   return (
-    <View className="gap-3 p-4 rounded-2xl border-2 border-dashed border-accent dark:border-accent-dk bg-accent/5 dark:bg-accent-dk/10">
+    <View className="gap-3 rounded-2xl border-2 border-dashed border-accent bg-accent/5 p-4 dark:border-accent-dk dark:bg-accent-dk/10">
       <View className="flex-row items-center gap-2">
         <Ionicons name="construct" size={16} color={colors.accent} />
-        <Text className="text-xs uppercase tracking-wide font-bold text-accent dark:text-accent-dk">
+        <Text className="text-xs font-bold uppercase tracking-wide text-accent dark:text-accent-dk">
           {heading}
         </Text>
       </View>

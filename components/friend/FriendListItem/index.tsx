@@ -69,7 +69,7 @@ export const FriendListItem = ({
     return (
       <Pressable
         onPress={onDeletePress}
-        className="w-20 bg-danger dark:bg-danger-dk active:bg-danger-hov dark:active:bg-danger-hov-dk items-center justify-center"
+        className="w-20 items-center justify-center bg-danger active:bg-danger-hov dark:bg-danger-dk dark:active:bg-danger-hov-dk"
       >
         <Ionicons name="trash" size={22} color={colors.dangerFg} />
       </Pressable>
@@ -95,7 +95,7 @@ export const FriendListItem = ({
       overshootRight={false}
     >
       <Link href={ROUTES.friend.detail(friend.id)} asChild>
-        <Pressable className="flex-row items-center gap-3 py-2 px-4 bg-app dark:bg-app-dk active:opacity-70">
+        <Pressable className="flex-row items-center gap-3 bg-app px-4 py-2 active:opacity-70 dark:bg-app-dk">
           <FriendAvatar friend={friend} />
 
           <View className="flex-1 gap-0.5">

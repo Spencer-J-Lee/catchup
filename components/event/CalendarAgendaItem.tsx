@@ -69,7 +69,7 @@ export const CalendarAgendaItem = ({
       >
         <View
           className={classNames(
-            "absolute left-0 top-0 bottom-0 w-2",
+            "absolute bottom-0 left-0 top-0 w-2",
             meta.stripClass,
           )}
           importantForAccessibility="no-hide-descendants"
@@ -79,14 +79,14 @@ export const CalendarAgendaItem = ({
           <Text className="text-lg font-semibold text-default dark:text-default-dk">
             {timeDigits}
           </Text>
-          <Text className="text-xs font-semibold uppercase tracking-wide -mt-1 text-muted dark:text-muted-dk">
+          <Text className="-mt-1 text-xs font-semibold uppercase tracking-wide text-muted dark:text-muted-dk">
             {timeMeridiem}
           </Text>
         </View>
 
         <FriendAvatar friend={friend ?? PLACEHOLDER_FRIEND} />
 
-        <View className="flex-1 min-w-0 gap-0.5">
+        <View className="min-w-0 flex-1 gap-0.5">
           <Text
             className="text-base font-semibold text-default dark:text-default-dk"
             numberOfLines={1}

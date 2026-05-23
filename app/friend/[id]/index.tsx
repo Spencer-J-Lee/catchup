@@ -106,7 +106,7 @@ const FriendDetailScreen = () => {
       <View className="gap-4">
         <View className="items-center gap-3 pt-2">
           <FriendAvatar friend={friend} size="lg" />
-          <Text className="text-2xl font-semibold text-center text-default dark:text-default-dk">
+          <Text className="text-center text-2xl font-semibold text-default dark:text-default-dk">
             {fullName(friend)}
           </Text>
         </View>
@@ -153,18 +153,18 @@ const FriendDetailScreen = () => {
             href={ROUTES.event.new({ friend_id: id, mode: "schedule" })}
             asChild
           >
-            <Pressable className="flex-1 bg-brand dark:bg-brand-dk active:bg-brand-hov dark:active:bg-brand-hov-dk rounded-full px-4 py-3 items-center justify-center flex-row gap-2">
+            <Pressable className="flex-1 flex-row items-center justify-center gap-2 rounded-full bg-brand px-4 py-3 active:bg-brand-hov dark:bg-brand-dk dark:active:bg-brand-hov-dk">
               <Ionicons name="calendar" size={18} color={colors.dangerFg} />
-              <Text className="text-danger-fg font-semibold">Schedule</Text>
+              <Text className="font-semibold text-danger-fg">Schedule</Text>
             </Pressable>
           </Link>
           <Link
             href={ROUTES.event.new({ friend_id: id, mode: "logCatchUp" })}
             asChild
           >
-            <Pressable className="flex-1 bg-raised dark:bg-raised-dk active:bg-high dark:active:bg-high-dk rounded-full px-4 py-3 items-center justify-center flex-row gap-2">
+            <Pressable className="flex-1 flex-row items-center justify-center gap-2 rounded-full bg-raised px-4 py-3 active:bg-high dark:bg-raised-dk dark:active:bg-high-dk">
               <Ionicons name="create" size={18} color={colors.fgDefault} />
-              <Text className="text-default dark:text-default-dk font-semibold">
+              <Text className="font-semibold text-default dark:text-default-dk">
                 Log catch-up
               </Text>
             </Pressable>
@@ -200,7 +200,7 @@ const FriendDetailScreen = () => {
           <Pressable
             onPress={onLinkContact}
             disabled={linkContact.isPending}
-            className="self-center py-1 px-2"
+            className="self-center px-2 py-1"
             hitSlop={8}
           >
             <Text className="text-xs text-muted dark:text-muted-dk">

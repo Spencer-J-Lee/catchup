@@ -69,7 +69,7 @@ const EventDetailScreen = () => {
           headerRight: () => (
             <Link href={ROUTES.event.edit(id)} asChild>
               <Pressable className="p-2" hitSlop={16}>
-                <Text className="text-brand dark:text-brand-dk font-medium">
+                <Text className="font-medium text-brand dark:text-brand-dk">
                   Edit
                 </Text>
               </Pressable>
@@ -83,7 +83,7 @@ const EventDetailScreen = () => {
 
         {event.event_notes ? (
           <Surface>
-            <Text className="text-sm text-muted dark:text-muted-dk mb-1">
+            <Text className="mb-1 text-sm text-muted dark:text-muted-dk">
               Notes
             </Text>
             <Text className="text-base text-default dark:text-default-dk">
@@ -101,10 +101,10 @@ const EventDetailScreen = () => {
         <Pressable
           onPress={onDelete}
           disabled={deleteEvent.isPending}
-          className="self-center py-2 px-3 mt-2"
+          className="mt-2 self-center px-3 py-2"
           hitSlop={8}
         >
-          <Text className="text-sm text-danger dark:text-danger-dk font-medium">
+          <Text className="text-sm font-medium text-danger dark:text-danger-dk">
             {deleteEvent.isPending ? "Deleting…" : "Delete"}
           </Text>
         </Pressable>

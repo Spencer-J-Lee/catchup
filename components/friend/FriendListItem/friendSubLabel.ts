@@ -32,7 +32,6 @@ const isWithinOneCalendarDay = (whenAt: string): boolean => {
 };
 
 const MUTED = "text-muted dark:text-muted-dk";
-const BRAND = "text-brand dark:text-brand-dk";
 const URGENT = "text-accent dark:text-accent-dk";
 
 export const getFriendSubLabelData = ({

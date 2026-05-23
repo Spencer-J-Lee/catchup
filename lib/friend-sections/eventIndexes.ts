@@ -29,8 +29,7 @@ export const buildEventIndexes = (
     const existing = recentMissedByFriend.get(event.friend_id);
     if (
       !existing ||
-      new Date(event.event_at).getTime() >
-        new Date(existing.event_at).getTime()
+      new Date(event.event_at).getTime() > new Date(existing.event_at).getTime()
     ) {
       recentMissedByFriend.set(event.friend_id, {
         id: event.id,

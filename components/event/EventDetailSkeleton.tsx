@@ -8,15 +8,15 @@ export const EventDetailSkeleton = () => {
     <View className="gap-4">
       <Surface>
         <View className="gap-4">
-          <View className="flex-row justify-between items-center">
+          <View className="flex-row items-center justify-between">
             <Skeleton width={70} height={16} />
             <Skeleton width={90} height={18} />
           </View>
-          <View className="flex-row justify-between items-center">
+          <View className="flex-row items-center justify-between">
             <Skeleton width={90} height={16} />
             <Skeleton width={140} height={18} />
           </View>
-          <View className="flex-row justify-between items-center">
+          <View className="flex-row items-center justify-between">
             <Skeleton width={70} height={16} />
             <Skeleton width={100} height={18} />
           </View>

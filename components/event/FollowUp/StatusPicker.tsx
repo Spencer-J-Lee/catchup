@@ -18,7 +18,7 @@ export const StatusPicker = ({ onSelect }: StatusPickerProps) => {
     <Screen edges={["bottom"]}>
       <Animated.View
         entering={FadeIn.duration(FADE_MS)}
-        className="gap-4 pt-6 pb-4"
+        className="gap-4 pb-4 pt-6"
       >
         <View className="gap-2">
           {STATUS_OPTIONS.map((option) => (

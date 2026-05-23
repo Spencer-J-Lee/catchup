@@ -32,7 +32,7 @@ const FollowUpScreen = () => {
   if (isLoading || !event) {
     return (
       <Screen edges={["bottom"]}>
-        <View className="py-8 items-center justify-center">
+        <View className="items-center justify-center py-8">
           <ActivityIndicator color={colors.fgDefault} />
         </View>
       </Screen>

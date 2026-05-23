@@ -28,14 +28,14 @@ export const PressableRow = ({
   return (
     <Pressable
       onPress={onPress}
-      className="flex-row gap-2 items-center -mx-2 px-2 py-1 rounded-lg active:bg-high dark:active:bg-high-dk"
+      className="-mx-2 flex-row items-center gap-2 rounded-lg px-2 py-1 active:bg-high dark:active:bg-high-dk"
       hitSlop={4}
     >
-      <Text className="text-sm text-muted dark:text-muted-dk shrink-0">
+      <Text className="shrink-0 text-sm text-muted dark:text-muted-dk">
         {label}:
       </Text>
       <Text
-        className={`text-base flex-1 ${VALUE_TEXT_VARIANT_CLASSES[textStyle]}`}
+        className={`flex-1 text-base ${VALUE_TEXT_VARIANT_CLASSES[textStyle]}`}
       >
         {value}
       </Text>

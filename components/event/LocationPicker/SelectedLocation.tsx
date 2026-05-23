@@ -38,7 +38,7 @@ export const SelectedLocation = ({
       <Pressable
         onPress={onClear}
         hitSlop={8}
-        className="p-1 -mr-1"
+        className="-mr-1 p-1"
         accessibilityLabel="Clear location"
       >
         <Ionicons name="close-circle" size={20} color={colors.fgSubtle} />

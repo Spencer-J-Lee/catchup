@@ -31,11 +31,11 @@ export const FriendDetailSkeleton = () => {
 
       <Surface>
         <View className="gap-4">
-          <View className="flex-row justify-between items-center">
+          <View className="flex-row items-center justify-between">
             <Skeleton width={120} height={16} />
             <Skeleton width={80} height={18} />
           </View>
-          <View className="flex-row justify-between items-center">
+          <View className="flex-row items-center justify-between">
             <Skeleton width={90} height={16} />
             <Skeleton width={70} height={18} />
           </View>

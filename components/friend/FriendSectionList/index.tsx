@@ -44,9 +44,7 @@ export const FriendSectionList = ({
         leadingItem,
       }: {
         leadingItem: FriendSection;
-      }) => (
-        <View className={leadingItem?.kind === "header" ? "h-0" : "h-1"} />
-      )}
+      }) => <View className={leadingItem?.kind === "header" ? "h-0" : "h-1"} />}
       renderItem={({ item, index }) =>
         item.kind === "header" ? (
           <SectionHeader state={item.state} title={item.title} />

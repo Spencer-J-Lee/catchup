@@ -25,7 +25,7 @@ interface SectionHeaderProps {
 export const SectionHeader = ({ state, title }: SectionHeaderProps) => {
   const colors = useThemedColors();
   return (
-    <View className="bg-app dark:bg-app-dk pb-2 px-4 flex-row items-center gap-2">
+    <View className="flex-row items-center gap-2 bg-app px-4 pb-2 dark:bg-app-dk">
       <Ionicons name={SECTION_ICONS[state]} size={16} color={colors.fgMuted} />
       <Text className="text-base font-medium text-muted dark:text-muted-dk">
         {title}

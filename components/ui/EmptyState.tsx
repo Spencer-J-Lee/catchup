@@ -26,16 +26,16 @@ export const EmptyState = ({
 
   return (
     <View className="flex-1 items-center justify-center px-8">
-      <View className="h-20 w-20 rounded-full bg-raised dark:bg-raised-dk items-center justify-center mb-5">
+      <View className="mb-5 h-20 w-20 items-center justify-center rounded-full bg-raised dark:bg-raised-dk">
         <Ionicons name={icon} size={36} color={colors.brand} />
       </View>
 
-      <Text className="text-xl font-semibold text-default dark:text-default-dk mb-2 text-center">
+      <Text className="mb-2 text-center text-xl font-semibold text-default dark:text-default-dk">
         {title}
       </Text>
 
       {description ? (
-        <Text className="text-muted dark:text-muted-dk text-center mb-6">
+        <Text className="mb-6 text-center text-muted dark:text-muted-dk">
           {description}
         </Text>
       ) : null}

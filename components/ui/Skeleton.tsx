@@ -26,11 +26,7 @@ export const Skeleton = ({
   const opacity = useSharedValue(0.4);
 
   useEffect(() => {
-    opacity.value = withRepeat(
-      withTiming(0.8, { duration: 800 }),
-      -1,
-      true,
-    );
+    opacity.value = withRepeat(withTiming(0.8, { duration: 800 }), -1, true);
   }, [opacity]);
 
   const animatedStyle = useAnimatedStyle(() => ({

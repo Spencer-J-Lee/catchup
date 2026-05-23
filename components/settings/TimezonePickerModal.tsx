@@ -131,11 +131,11 @@ export const TimezonePickerModal = ({
           keyExtractor={(timezone) => timezone}
           keyboardShouldPersistTaps="handled"
           ItemSeparatorComponent={() => (
-            <View className="h-px bg-border dark:bg-border-dk ml-4" />
+            <View className="ml-4 h-px bg-border dark:bg-border-dk" />
           )}
           ListEmptyComponent={
-            <View className="items-center py-8 px-6">
-              <Text className="text-sm text-muted dark:text-muted-dk text-center">
+            <View className="items-center px-6 py-8">
+              <Text className="text-center text-sm text-muted dark:text-muted-dk">
                 No matching time zones
               </Text>
             </View>

@@ -55,10 +55,10 @@ export const NotesStep = ({
           <Pressable
             onPress={onChangeStatus}
             disabled={isSubmitting}
-            className="self-center py-2 px-3 mt-1"
+            className="mt-1 self-center px-3 py-2"
             hitSlop={8}
           >
-            <Text className="text-sm text-muted dark:text-muted-dk font-medium">
+            <Text className="text-sm font-medium text-muted dark:text-muted-dk">
               Change status
             </Text>
           </Pressable>
@@ -76,7 +76,7 @@ export const NotesStep = ({
           </Text>
           <View className="flex-row items-center gap-2">
             <View
-              className={`h-8 w-8 rounded-full items-center justify-center ${selectedOption.iconBgClass}`}
+              className={`h-8 w-8 items-center justify-center rounded-full ${selectedOption.iconBgClass}`}
             >
               <Ionicons
                 name={selectedOption.icon}
@@ -85,7 +85,7 @@ export const NotesStep = ({
               />
             </View>
             <View
-              className={`px-3 py-1 rounded-full ${selectedOption.badgeClass}`}
+              className={`rounded-full px-3 py-1 ${selectedOption.badgeClass}`}
             >
               <Text
                 className={`text-sm font-semibold ${selectedOption.badgeTextClass}`}

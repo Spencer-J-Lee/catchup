@@ -17,8 +17,7 @@ export const TimezoneSection = () => {
   const update = useUpdateProfile();
   const [pickerOpen, setPickerOpen] = useState(false);
 
-  const currentTimezone =
-    profile?.timezone ?? detectDeviceTimezone() ?? "UTC";
+  const currentTimezone = profile?.timezone ?? detectDeviceTimezone() ?? "UTC";
 
   const onSelect = (timezone: string) => {
     update.mutate(

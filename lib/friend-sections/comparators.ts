@@ -12,8 +12,7 @@ export const compareDueRows = (left: FriendRow, right: FriendRow): number => {
   }
   const leftKey =
     (left.missedAt && new Date(left.missedAt).getTime()) ||
-    (left.friend.next_due_at &&
-      new Date(left.friend.next_due_at).getTime()) ||
+    (left.friend.next_due_at && new Date(left.friend.next_due_at).getTime()) ||
     Infinity;
   const rightKey =
     (right.missedAt && new Date(right.missedAt).getTime()) ||

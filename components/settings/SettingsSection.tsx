@@ -9,7 +9,7 @@ interface SettingsSectionProps {
 export const SettingsSection = ({ label, children }: SettingsSectionProps) => {
   return (
     <View className="gap-2">
-      <Text className="text-xs uppercase tracking-wide font-semibold text-muted dark:text-muted-dk">
+      <Text className="text-xs font-semibold uppercase tracking-wide text-muted dark:text-muted-dk">
         {label}
       </Text>
       {children}
