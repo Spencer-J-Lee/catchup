@@ -1,10 +1,11 @@
-// TODO: Review
-
 import { useHeaderHeight } from "@react-navigation/elements";
 import classNames from "classnames";
-import { ReactNode, useEffect, useState } from "react";
-import { Keyboard, Platform, ScrollView, View } from "react-native";
-import { KeyboardAvoidingView } from "react-native-keyboard-controller";
+import { ReactNode } from "react";
+import { Platform, ScrollView, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  useKeyboardState,
+} from "react-native-keyboard-controller";
 import {
   Edge,
   SafeAreaView,
@@ -28,24 +29,7 @@ export const Screen = ({
 }: ScreenProps) => {
   const insets = useSafeAreaInsets();
   const headerHeight = useHeaderHeight();
-  const [keyboardVisible, setKeyboardVisible] = useState(false);
-
-  useEffect(() => {
-    const showEvent =
-      Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
-    const hideEvent =
-      Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
-    const showSub = Keyboard.addListener(showEvent, () =>
-      setKeyboardVisible(true),
-    );
-    const hideSub = Keyboard.addListener(hideEvent, () =>
-      setKeyboardVisible(false),
-    );
-    return () => {
-      showSub.remove();
-      hideSub.remove();
-    };
-  }, []);
+  const keyboardVisible = useKeyboardState((state) => state.isVisible);
 
   const content = scroll ? (
     <ScrollView
