@@ -1,10 +1,11 @@
-// TODO: Review
-
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import { View } from "react-native";
 
-import { FrequencyPicker } from "@/components/friend/FrequencyPicker";
+import {
+  FrequencyPicker,
+  type FrequencyValue,
+} from "@/components/friend/FrequencyPicker";
 import { FriendAvatar } from "@/components/friend/FriendListItem/FriendAvatar";
 import { Button } from "@/components/ui/Button";
 import { MediaRow } from "@/components/ui/MediaRow";
@@ -14,7 +15,6 @@ import { useCreateFriend } from "@/hooks/use-friends";
 import type { ContactSnapshot } from "@/lib/contacts";
 import { friendInputSchema } from "@/lib/schemas";
 import { toast, toastMutationError } from "@/lib/toast";
-import type { FrequencyPreset, FrequencyUnit } from "@/types/database";
 
 type ContactParams = {
   contact_id: string;
@@ -38,11 +38,11 @@ const NewFriendScreen = () => {
     }
   }, [params.contact_snapshot]);
 
-  const [frequency, setFrequency] = useState<{
-    preset: FrequencyPreset | null;
-    amount: number | null;
-    unit: FrequencyUnit | null;
-  }>({ preset: null, amount: null, unit: null });
+  const [frequency, setFrequency] = useState<FrequencyValue>({
+    preset: null,
+    amount: null,
+    unit: null,
+  });
 
   const firstName = params.first_name;
   const lastName = params.last_name;
@@ -51,6 +51,7 @@ const NewFriendScreen = () => {
 
   const onSave = async () => {
     if (!user) return;
+
     const parsed = friendInputSchema.safeParse({
       first_name: firstName,
       last_name: lastName || null,
@@ -65,6 +66,7 @@ const NewFriendScreen = () => {
       });
       return;
     }
+
     try {
       await create.mutateAsync({
         ...parsed.data,
@@ -91,7 +93,7 @@ const NewFriendScreen = () => {
         <Button
           onPress={onSave}
           loading={create.isPending}
-          disabled={!firstName.trim()}
+          disabled={firstName.trim() === ""}
         >
           Save
         </Button>
@@ -110,8 +112,8 @@ const NewFriendScreen = () => {
           }
           eyebrow="Linked contact"
           label={
-            contactSnapshot?.name ??
-            `${firstName} ${lastName}`.trim() ??
+            contactSnapshot?.name ||
+            `${firstName} ${lastName ?? ""}`.trim() ||
             "Contact"
           }
           subtitle={contactSnapshot?.phone ?? undefined}
