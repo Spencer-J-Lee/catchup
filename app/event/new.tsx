@@ -1,11 +1,9 @@
-// TODO: Review
-
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo, useState } from "react";
-import { Text } from "react-native";
 
 import {
   EventForm,
+  eventFormToPayloadFields,
   type EventFormValues,
   type EventMode,
 } from "@/components/event/EventForm";
@@ -17,57 +15,77 @@ import { useProfile } from "@/hooks/use-profile";
 import { eventInputSchema } from "@/lib/schemas";
 import { toast, toastMutationError } from "@/lib/toast";
 
+type NewEventMode = Exclude<EventMode, "edit">;
+
+interface ModeConfig {
+  title: string;
+  status: "scheduled" | "completed";
+  buttonLabel: string;
+  successMessage: string;
+  initialDate: () => Date;
+  usesPreReminder: boolean;
+}
+
+const MODE_CONFIG = {
+  schedule: {
+    title: "Schedule catch-up",
+    status: "scheduled",
+    buttonLabel: "Schedule",
+    successMessage: "Catch-up scheduled",
+    initialDate: () => new Date(Date.now() + 24 * 60 * 60 * 1000),
+    usesPreReminder: true,
+  },
+  logCatchUp: {
+    title: "Log catch-up",
+    status: "completed",
+    buttonLabel: "Log catch-up",
+    successMessage: "Catch-up logged",
+    initialDate: () => new Date(),
+    usesPreReminder: false,
+  },
+} satisfies Record<NewEventMode, ModeConfig>;
+
 const NewEventScreen = () => {
-  const params = useLocalSearchParams<{ friend_id?: string; mode?: string }>();
+  const params = useLocalSearchParams<{ friend_id: string; mode?: string }>();
   const router = useRouter();
   const { user } = useAuth();
-  const create = useCreateEvent();
   const { data: profile } = useProfile();
+  const create = useCreateEvent();
 
-  const mode: EventMode =
+  const mode: NewEventMode =
     params.mode === "logCatchUp" ? "logCatchUp" : "schedule";
-  const title = mode === "schedule" ? "Schedule catch-up" : "Log catch-up";
+  const config = MODE_CONFIG[mode];
 
-  const initialFormValues = useMemo<EventFormValues>(() => {
-    const now = new Date();
-    return {
-      date:
-        mode === "schedule"
-          ? new Date(now.getTime() + 24 * 60 * 60 * 1000)
-          : now,
-      status: mode === "schedule" ? "scheduled" : "completed",
+  const initialFormValues = useMemo<EventFormValues>(
+    () => ({
+      date: config.initialDate(),
+      status: config.status,
       medium: null,
       mediumDetail: "",
       locationText: "",
       locationAddress: "",
       notes: "",
-    };
-  }, [mode]);
+    }),
+    [config],
+  );
 
   const [formValues, setFormValues] =
     useState<EventFormValues>(initialFormValues);
 
   const onSave = async () => {
-    if (!user || !params.friend_id) return;
-    const status = mode === "schedule" ? "scheduled" : "completed";
+    if (!user) return;
+
     const defaultPreReminder = profile?.default_pre_reminder_minutes ?? 0;
     const payload = {
+      ...eventFormToPayloadFields(formValues),
       friend_id: params.friend_id,
-      event_at: formValues.date.toISOString(),
-      status: status as "scheduled" | "completed",
-      medium: formValues.medium,
-      medium_detail:
-        formValues.medium &&
-        formValues.medium !== "in_person" &&
-        formValues.mediumDetail
-          ? formValues.mediumDetail
-          : null,
-      location_text: formValues.locationText || null,
-      location_address: formValues.locationAddress || null,
+      status: config.status,
       pre_reminder_minutes:
-        mode === "schedule" && defaultPreReminder > 0 ? defaultPreReminder : null,
-      event_notes: formValues.notes || null,
+        config.usesPreReminder && defaultPreReminder > 0
+          ? defaultPreReminder
+          : null,
     };
+
     const parsed = eventInputSchema.safeParse(payload);
     if (!parsed.success) {
       toast.error("Invalid input", {
@@ -75,26 +93,15 @@ const NewEventScreen = () => {
       });
       return;
     }
+
     try {
       await create.mutateAsync({ ...parsed.data, user_id: user.id });
-      toast.success(
-        mode === "schedule" ? "Catch-up scheduled" : "Catch-up logged",
-      );
+      toast.success(config.successMessage);
       router.back();
     } catch (error) {
       toastMutationError(error, "Couldn't save catch-up");
     }
   };
-
-  if (!params.friend_id) {
-    return (
-      <Screen edges={[]}>
-        <Text className="text-danger dark:text-danger-dk">
-          Missing friend_id
-        </Text>
-      </Screen>
-    );
-  }
 
   return (
     <Screen
@@ -102,11 +109,11 @@ const NewEventScreen = () => {
       edges={[]}
       footer={
         <Button onPress={onSave} loading={create.isPending}>
-          {mode === "schedule" ? "Schedule" : "Log catch-up"}
+          {config.buttonLabel}
         </Button>
       }
     >
-      <Stack.Screen options={{ title }} />
+      <Stack.Screen options={{ title: config.title }} />
       <EventForm mode={mode} formValues={formValues} onChange={setFormValues} />
     </Screen>
   );

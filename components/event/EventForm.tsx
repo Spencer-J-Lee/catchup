@@ -22,6 +22,21 @@ export interface EventFormValues {
   notes: string;
 }
 
+export const eventFormToPayloadFields = (formValues: EventFormValues) => {
+  const isInPerson = formValues.medium === "in_person";
+  const hasMediumDetail =
+    formValues.medium && !isInPerson && formValues.mediumDetail;
+
+  return {
+    event_at: formValues.date.toISOString(),
+    medium: formValues.medium,
+    medium_detail: hasMediumDetail ? formValues.mediumDetail : null,
+    location_text: isInPerson ? formValues.locationText || null : null,
+    location_address: isInPerson ? formValues.locationAddress || null : null,
+    event_notes: formValues.notes || null,
+  };
+};
+
 const STATUS_OPTIONS: EventStatus[] = [
   "scheduled",
   "completed",

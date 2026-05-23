@@ -4,13 +4,14 @@ import { ActivityIndicator, View } from "react-native";
 
 import {
   EventForm,
+  eventFormToPayloadFields,
   type EventFormValues,
-  type EventMode,
 } from "@/components/event/EventForm";
 import { Button } from "@/components/ui/Button";
 import { Screen } from "@/components/ui/Screen";
 import { useEvent, useUpdateEvent } from "@/hooks/use-events";
 import { useThemedColors } from "@/hooks/use-themed-colors";
+import { eventInputSchema } from "@/lib/schemas";
 import { toast, toastMutationError } from "@/lib/toast";
 
 const EditEventScreen = () => {
@@ -23,7 +24,7 @@ const EditEventScreen = () => {
   const [formValues, setFormValues] = useState<EventFormValues | null>(null);
 
   useEffect(() => {
-    if (!event) return;
+    if (!event || formValues) return;
 
     setFormValues({
       date: new Date(event.event_at),
@@ -34,7 +35,7 @@ const EditEventScreen = () => {
       locationAddress: event.location_address ?? "",
       notes: event.event_notes ?? "",
     });
-  }, [event]);
+  }, [event, formValues]);
 
   if (!event || !formValues) {
     return (
@@ -46,30 +47,25 @@ const EditEventScreen = () => {
     );
   }
 
-  const mode: EventMode = "edit";
-
   const onSave = async () => {
     if (!event || !formValues) return;
 
-    const hasMediumDetail =
-      formValues.medium &&
-      formValues.medium !== "in_person" &&
-      formValues.mediumDetail;
-
-    const payload: Parameters<typeof update.mutateAsync>[0] = {
-      id: event.id,
+    const payload = {
+      ...eventFormToPayloadFields(formValues),
       friend_id: event.friend_id,
       status: formValues.status,
-      event_at: formValues.date.toISOString(),
-      medium: formValues.medium,
-      medium_detail: hasMediumDetail ? formValues.mediumDetail : null,
-      location_text: formValues.locationText || null,
-      location_address: formValues.locationAddress || null,
-      event_notes: formValues.notes || null,
     };
 
+    const parsed = eventInputSchema.safeParse(payload);
+    if (!parsed.success) {
+      toast.error("Invalid input", {
+        description: parsed.error.issues[0]?.message ?? "",
+      });
+      return;
+    }
+
     try {
-      await update.mutateAsync(payload);
+      await update.mutateAsync({ ...parsed.data, id: event.id });
       toast.success("Saved");
       router.back();
     } catch (error) {
@@ -87,7 +83,7 @@ const EditEventScreen = () => {
         </Button>
       }
     >
-      <EventForm mode={mode} formValues={formValues} onChange={setFormValues} />
+      <EventForm mode="edit" formValues={formValues} onChange={setFormValues} />
     </Screen>
   );
 };
