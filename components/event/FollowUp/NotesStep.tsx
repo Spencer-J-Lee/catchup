@@ -32,7 +32,7 @@ export const NotesStep = ({
 
   return (
     <Screen
-      edges={["bottom"]}
+      edges={[]}
       footer={
         <Animated.View
           entering={FadeIn.duration(FADE_MS)}
