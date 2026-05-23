@@ -54,8 +54,8 @@ export const friendInputSchema = z
 export type FriendInput = z.infer<typeof friendInputSchema>;
 
 export const eventInputSchema = z.object({
-  friend_id: z.string().uuid(),
-  event_at: z.string().datetime(),
+  friend_id: z.uuid(),
+  event_at: z.iso.datetime(),
   status: eventStatusSchema,
   medium: mediumSchema.nullable().optional(),
   medium_detail: z.string().max(200).nullable().optional(),

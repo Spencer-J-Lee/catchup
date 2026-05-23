@@ -1,3 +1,5 @@
+// TODO: Review
+
 import { formatInTimeZone } from "date-fns-tz";
 import { useMemo } from "react";
 
@@ -22,8 +24,7 @@ export const useFormatters = () => {
       formatRelative: (date: Date | string) => formatRelative(date, timezone),
       formatOverdueDays: (date: Date | string) =>
         formatOverdueDays(date, timezone),
-      formatTimeOfDay: (date: Date | string) =>
-        formatTimeOfDay(date, timezone),
+      formatTimeOfDay: (date: Date | string) => formatTimeOfDay(date, timezone),
       formatLocalDateKey: (date: Date | string) =>
         formatLocalDateKey(date, timezone),
       formatPattern: (date: Date | string, pattern: string) =>
