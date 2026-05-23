@@ -65,9 +65,13 @@ const EditFriendScreen = () => {
   return (
     <Screen
       scroll
-      edges={["bottom"]}
+      edges={[]}
       footer={
-        <Button onPress={onSave} loading={update.isPending}>
+        <Button
+          onPress={onSave}
+          loading={update.isPending}
+          disabled={!friend}
+        >
           Save
         </Button>
       }
