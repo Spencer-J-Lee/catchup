@@ -1,16 +1,16 @@
-// TODO: Review
-
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
 
-import { FrequencyPicker } from "@/components/friend/FrequencyPicker";
+import {
+  FrequencyPicker,
+  type FrequencyValue,
+} from "@/components/friend/FrequencyPicker";
 import { Button } from "@/components/ui/Button";
 import { Screen } from "@/components/ui/Screen";
 import { useFriend, useUpdateFriend } from "@/hooks/use-friends";
 import { friendInputSchema } from "@/lib/schemas";
 import { toast, toastMutationError } from "@/lib/toast";
-import type { FrequencyPreset, FrequencyUnit } from "@/types/database";
 
 const EditFriendScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -18,23 +18,27 @@ const EditFriendScreen = () => {
   const { data: friend } = useFriend(id);
   const update = useUpdateFriend();
 
-  const [frequency, setFrequency] = useState<{
-    preset: FrequencyPreset | null;
-    amount: number | null;
-    unit: FrequencyUnit | null;
-  }>({ preset: null, amount: null, unit: null });
+  const [frequency, setFrequency] = useState<FrequencyValue>({
+    preset: null,
+    amount: null,
+    unit: null,
+  });
 
+  const hydratedRef = useRef(false);
   useEffect(() => {
-    if (!friend) return;
+    if (!friend || hydratedRef.current) return;
+
     setFrequency({
       preset: friend.frequency_preset,
       amount: friend.frequency_amount,
       unit: friend.frequency_unit,
     });
+    hydratedRef.current = true;
   }, [friend]);
 
   const onSave = async () => {
     if (!id || !friend) return;
+
     const parsed = friendInputSchema.safeParse({
       first_name: friend.first_name,
       last_name: friend.last_name,
@@ -48,6 +52,7 @@ const EditFriendScreen = () => {
       });
       return;
     }
+
     try {
       await update.mutateAsync({ id, ...parsed.data });
       toast.success("Saved");
