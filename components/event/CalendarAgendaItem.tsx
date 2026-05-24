@@ -9,23 +9,25 @@ import { formatMedium, fullName } from "@/lib/format";
 import { ROUTES } from "@/lib/routes";
 import type { CatchUpEvent, EventStatus, Friend } from "@/types/database";
 
-const STATUS_META: Record<
-  Extract<EventStatus, "scheduled" | "completed" | "missed">,
-  { label: string; stripClass: string }
-> = {
-  scheduled: {
-    label: "Scheduled",
-    stripClass: "bg-brand dark:bg-brand-dk",
-  },
-  completed: {
-    label: "Completed",
-    stripClass: "bg-success dark:bg-success-dk",
-  },
-  missed: {
-    label: "Missed",
-    stripClass: "bg-danger dark:bg-danger-dk",
-  },
-};
+const STATUS_META: Record<EventStatus, { label: string; stripClass: string }> =
+  {
+    scheduled: {
+      label: "Scheduled",
+      stripClass: "bg-brand dark:bg-brand-dk",
+    },
+    completed: {
+      label: "Completed",
+      stripClass: "bg-success dark:bg-success-dk",
+    },
+    missed: {
+      label: "Missed",
+      stripClass: "bg-danger dark:bg-danger-dk",
+    },
+    cancelled: {
+      label: "Cancelled",
+      stripClass: "bg-muted dark:bg-muted-dk",
+    },
+  };
 
 type CalendarAgendaFriend = Pick<
   Friend,
