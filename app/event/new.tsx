@@ -12,6 +12,7 @@ import { Screen } from "@/components/ui/Screen";
 import { useAuth } from "@/hooks/use-auth";
 import { useCreateEvent } from "@/hooks/use-events";
 import { useProfile } from "@/hooks/use-profile";
+import type { EventNewParams } from "@/lib/routes";
 import { eventInputSchema } from "@/lib/schemas";
 import { toast, toastMutationError } from "@/lib/toast";
 
@@ -46,7 +47,7 @@ const MODE_CONFIG = {
 } satisfies Record<NewEventMode, ModeConfig>;
 
 const NewEventScreen = () => {
-  const params = useLocalSearchParams<{ friend_id: string; mode?: string }>();
+  const params = useLocalSearchParams<EventNewParams>();
   const router = useRouter();
   const { user } = useAuth();
   const { data: profile } = useProfile();

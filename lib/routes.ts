@@ -1,7 +1,6 @@
-// TODO: Review
 import type { Href } from "expo-router";
 
-type FriendNewParams = {
+export type FriendNewParams = {
   contact_id: string;
   first_name: string;
   last_name: string;
@@ -9,7 +8,7 @@ type FriendNewParams = {
   contact_snapshot: string;
 };
 
-type EventNewParams = {
+export type EventNewParams = {
   friend_id: string;
   mode: "schedule" | "logCatchUp";
 };
@@ -40,7 +39,7 @@ export const ROUTES = {
     }),
   },
   event: {
-    new: (params?: EventNewParams) => ({
+    new: (params: EventNewParams) => ({
       pathname: `${EVENT}/new`,
       params,
     }),
@@ -67,7 +66,7 @@ export const ROUTES = {
     edit: (id: string) => Href;
   };
   event: {
-    new: (params?: EventNewParams) => Href;
+    new: (params: EventNewParams) => Href;
     detail: (id: string) => Href;
     edit: (id: string) => Href;
     followUp: (id: string) => Href;

@@ -13,22 +13,15 @@ import { Screen } from "@/components/ui/Screen";
 import { useAuth } from "@/hooks/use-auth";
 import { useCreateFriend } from "@/hooks/use-friends";
 import type { ContactSnapshot } from "@/lib/contacts";
+import type { FriendNewParams } from "@/lib/routes";
 import { friendInputSchema } from "@/lib/schemas";
 import { toast, toastMutationError } from "@/lib/toast";
-
-type ContactParams = {
-  contact_id: string;
-  first_name: string;
-  last_name: string;
-  avatar_url: string;
-  contact_snapshot: string;
-};
 
 const NewFriendScreen = () => {
   const router = useRouter();
   const { user } = useAuth();
   const create = useCreateFriend();
-  const params = useLocalSearchParams<ContactParams>();
+  const params = useLocalSearchParams<FriendNewParams>();
 
   const contactSnapshot = useMemo<ContactSnapshot | null>(() => {
     try {
