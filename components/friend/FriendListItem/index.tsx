@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import classNames from "classnames";
 import { Link } from "expo-router";
 import { useRef } from "react";
-import { Alert, Pressable, Text, View } from "react-native";
+import { ActivityIndicator, Alert, Pressable, Text, View } from "react-native";
 import ReanimatedSwipeable, {
   type SwipeableMethods,
 } from "react-native-gesture-handler/ReanimatedSwipeable";
@@ -44,6 +44,10 @@ export const FriendListItem = ({
   const colors = useThemedColors();
   const { formatRelative, formatOverdueDays } = useFormatters();
 
+  // Stay disabled from the moment delete starts until the row's exit animation
+  // removes it, so deleted items can't be interacted with mid-removal.
+  const isDeleting = deleteFriend.isPending || deleteFriend.isSuccess;
+
   const onDeletePress = () => {
     Alert.alert(
       `Delete ${fullName(friend)}?`,
@@ -71,7 +75,11 @@ export const FriendListItem = ({
         onPress={onDeletePress}
         className="w-20 items-center justify-center bg-danger active:bg-danger-hov dark:bg-danger-dk dark:active:bg-danger-hov-dk"
       >
-        <Ionicons name="trash" size={22} color={colors.dangerFg} />
+        {isDeleting ? (
+          <ActivityIndicator size="small" color={colors.dangerFg} />
+        ) : (
+          <Ionicons name="trash" size={22} color={colors.dangerFg} />
+        )}
       </Pressable>
     );
   };
@@ -96,7 +104,10 @@ export const FriendListItem = ({
         overshootRight
       >
         <Link href={ROUTES.friend.detail(friend.id)} asChild>
-          <Pressable className="flex-row items-center gap-3 bg-app px-4 py-2 dark:bg-app-dk">
+          <Pressable
+            disabled={isDeleting}
+            className="flex-row items-center gap-3 bg-app px-4 py-2 dark:bg-app-dk"
+          >
             <FriendAvatar friend={friend} />
 
             <View className="flex-1 gap-0.5">
