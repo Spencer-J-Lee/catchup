@@ -4,28 +4,31 @@
 //
 // The generated columns use plain `string` for CHECK-constrained text columns
 // (medium, status, frequency_preset, frequency_unit, platform). The narrow
-// unions below match the CHECK values in supabase/migrations/0001_init.sql and
-// stay in sync with lib/schemas.ts.
+// unions below match the CHECK values in supabase/migrations/0001_init.sql.
+// The first four are inferred from the Zod schemas in lib/schemas.ts so the
+// runtime validators and the compile-time types can't drift apart.
+
+import type { z } from "zod";
+
+import type {
+  eventStatusSchema,
+  frequencyPresetSchema,
+  frequencyUnitSchema,
+  mediumSchema,
+} from "@/lib/schemas";
 
 import type { Database } from "./database.generated";
 
-export type { Database, Json } from "./database.generated";
 export { Constants } from "./database.generated";
+export type { Database, Json } from "./database.generated";
 
-export type FrequencyPreset =
-  | "daily"
-  | "weekly"
-  | "monthly"
-  | "3_months"
-  | "6_months"
-  | "yearly"
-  | "custom";
+export type FrequencyPreset = z.infer<typeof frequencyPresetSchema>;
 
-export type FrequencyUnit = "days" | "weeks" | "months";
+export type FrequencyUnit = z.infer<typeof frequencyUnitSchema>;
 
-export type Medium = "text" | "call" | "video" | "in_person" | "email";
+export type Medium = z.infer<typeof mediumSchema>;
 
-export type EventStatus = "scheduled" | "completed" | "missed" | "cancelled";
+export type EventStatus = z.infer<typeof eventStatusSchema>;
 
 export type Platform = "ios" | "android";
 

@@ -1,4 +1,3 @@
-// TODO: Review
 import { z } from "zod";
 
 export const frequencyUnitSchema = z.enum(["days", "weeks", "months"]);
@@ -41,13 +40,16 @@ export const friendInputSchema = z
     frequency_unit: frequencyUnitSchema.nullable().optional(),
   })
   .refine(
-    (friend) =>
-      (friend.frequency_preset == null &&
-        friend.frequency_amount == null &&
-        friend.frequency_unit == null) ||
-      (friend.frequency_preset != null &&
-        friend.frequency_amount != null &&
-        friend.frequency_unit != null),
+    (friend) => {
+      // Frequency is all-or-nothing: a friend either has a full preset/amount/unit
+      // triple or none at all. A partial triple would break computeFrequencyStatus.
+      const setCount = [
+        friend.frequency_preset,
+        friend.frequency_amount,
+        friend.frequency_unit,
+      ].filter((value) => value != null).length;
+      return setCount === 0 || setCount === 3;
+    },
     { message: "Frequency preset, amount, and unit must all be set together" },
   );
 
