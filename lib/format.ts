@@ -1,4 +1,3 @@
-// TODO: Review
 import {
   differenceInCalendarDays,
   format,
@@ -15,6 +14,7 @@ const toDate = (date: Date | string): Date =>
 
 export const formatDate = (date: Date | string, tz?: string): string => {
   const parsed = toDate(date);
+
   return tz
     ? formatInTimeZone(parsed, tz, "MMM d, yyyy")
     : format(parsed, "MMM d, yyyy");
@@ -22,6 +22,7 @@ export const formatDate = (date: Date | string, tz?: string): string => {
 
 export const formatDateTime = (date: Date | string, tz?: string): string => {
   const parsed = toDate(date);
+
   return tz
     ? formatInTimeZone(parsed, tz, "MMM d, yyyy 'at' h:mm a")
     : format(parsed, "MMM d, yyyy 'at' h:mm a");
@@ -54,7 +55,9 @@ export const formatOverdueDays = (
   const parsedForCalendar = tz ? toZonedTime(parsed, tz) : parsed;
   const nowForCalendar = tz ? toZonedTime(now, tz) : now;
   const days = differenceInCalendarDays(nowForCalendar, parsedForCalendar);
+
   if (days <= 0) return "Reconnect today";
+
   return days === 1 ? "1 day past due" : `${days} days past due`;
 };
 
@@ -63,6 +66,7 @@ export const formatLocalDateKey = (
   tz?: string,
 ): string => {
   const parsed = toDate(date);
+
   return tz
     ? formatInTimeZone(parsed, tz, "yyyy-MM-dd")
     : format(parsed, "yyyy-MM-dd");
@@ -82,12 +86,15 @@ export const initialsOf = (
 ): string => {
   const first = firstName.trim();
   const last = lastName?.trim() ?? "";
+
   if (first && last) {
     return (first[0]! + last[0]!).toUpperCase();
   }
+
   if (first) {
     return first.slice(0, 2).toUpperCase();
   }
+
   return "?";
 };
 
@@ -125,6 +132,8 @@ export const formatFrequency = (
 };
 
 export const formatMedium = (medium: Medium | null | undefined): string => {
+  if (!medium) return "";
+
   switch (medium) {
     case "text":
       return "Text";
@@ -136,7 +145,5 @@ export const formatMedium = (medium: Medium | null | undefined): string => {
       return "In person";
     case "email":
       return "Email";
-    default:
-      return "";
   }
 };
