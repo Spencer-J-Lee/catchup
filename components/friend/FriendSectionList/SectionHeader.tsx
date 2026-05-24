@@ -1,5 +1,3 @@
-// TODO: BEEG REVIEW 1
-
 import { Ionicons } from "@expo/vector-icons";
 import { Text, View } from "react-native";
 
@@ -24,12 +22,15 @@ interface SectionHeaderProps {
 
 export const SectionHeader = ({ state, title }: SectionHeaderProps) => {
   const colors = useThemedColors();
+
   return (
     <View className="flex-row items-center gap-2 bg-app px-4 pb-2 dark:bg-app-dk">
       <Ionicons name={SECTION_ICONS[state]} size={16} color={colors.fgMuted} />
+
       <Text className="text-base font-medium text-muted dark:text-muted-dk">
         {title}
       </Text>
+
       <DashedDivider className="flex-1" />
     </View>
   );
