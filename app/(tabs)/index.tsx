@@ -3,7 +3,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Link } from "expo-router";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { ActivityIndicator, Pressable, Text, View } from "react-native";
 
 import { FriendSectionList } from "@/components/friend/FriendSectionList";
@@ -19,10 +19,20 @@ import { ROUTES } from "@/lib/routes";
 const FriendsScreen = () => {
   const colors = useThemedColors();
   const tabBarHeight = useBottomTabBarHeight();
-  const { data, isLoading, error, refetch, isRefetching } = useFriends();
+  const { data, isLoading, error, refetch } = useFriends();
   const { data: scheduledEvents } = useScheduledEvents();
   const { data: missedEvents } = useMissedEvents();
   const [search, setSearch] = useState("");
+  const [isManualRefreshing, setIsManualRefreshing] = useState(false);
+
+  const handleRefresh = useCallback(async () => {
+    setIsManualRefreshing(true);
+    try {
+      await refetch();
+    } finally {
+      setIsManualRefreshing(false);
+    }
+  }, [refetch]);
 
   const sections = useMemo(
     () =>
@@ -86,8 +96,8 @@ const FriendsScreen = () => {
     return (
       <FriendSectionList
         sections={sections}
-        isRefetching={isRefetching}
-        onRefresh={refetch}
+        isRefreshing={isManualRefreshing}
+        onRefresh={handleRefresh}
       />
     );
   };

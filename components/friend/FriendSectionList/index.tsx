@@ -11,13 +11,13 @@ import { SectionHeader } from "./SectionHeader";
 
 interface FriendSectionListProps {
   sections: FriendSection[];
-  isRefetching: boolean;
+  isRefreshing: boolean;
   onRefresh: () => void;
 }
 
 export const FriendSectionList = ({
   sections,
-  isRefetching,
+  isRefreshing,
   onRefresh,
 }: FriendSectionListProps) => {
   const tabBarHeight = useBottomTabBarHeight();
@@ -64,7 +64,7 @@ export const FriendSectionList = ({
           </>
         )
       }
-      refreshing={isRefetching}
+      refreshing={isRefreshing}
       onRefresh={onRefresh}
       stickyHeaderIndices={stickyHeaderIndices}
       contentContainerStyle={{ paddingBottom: tabBarHeight + 24 }}
