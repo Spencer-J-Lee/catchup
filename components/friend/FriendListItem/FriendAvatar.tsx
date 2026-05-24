@@ -17,9 +17,9 @@ const SIZE_CLASSES: Record<AvatarSize, { container: string; text: string }> = {
 };
 
 export const FriendAvatar = ({ friend, size = "sm" }: FriendAvatarProps) => {
-  const sizing = SIZE_CLASSES[size];
+  const sizeClassNames = SIZE_CLASSES[size];
   const baseClassName = classNames(
-    sizing.container,
+    sizeClassNames.container,
     "rounded-full bg-accent/20 dark:bg-accent-dk/25",
   );
 
@@ -38,7 +38,7 @@ export const FriendAvatar = ({ friend, size = "sm" }: FriendAvatarProps) => {
       <Text
         className={classNames(
           "font-semibold leading-none text-default dark:text-default-dk",
-          sizing.text,
+          sizeClassNames.text,
         )}
       >
         {initialsOf(friend.first_name, friend.last_name)}
