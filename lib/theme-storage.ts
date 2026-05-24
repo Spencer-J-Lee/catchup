@@ -1,15 +1,14 @@
-// TODO: Review
 import "expo-sqlite/localStorage/install";
 
-export type ThemePref = "light" | "dark" | "system";
+import { themePrefSchema, type ThemePref } from "./schemas";
 
-const KEY = "catchup.theme.v1";
+export type { ThemePref };
 
-export const readThemePref = (): ThemePref => {
-  const raw = localStorage.getItem(KEY);
-  return raw === "light" || raw === "dark" ? raw : "system";
-};
+const THEME_PREF_KEY = "catchup.theme.v1";
+
+export const readThemePref = (): ThemePref =>
+  themePrefSchema.catch("system").parse(localStorage.getItem(THEME_PREF_KEY));
 
 export const writeThemePref = (pref: ThemePref) => {
-  localStorage.setItem(KEY, pref);
+  localStorage.setItem(THEME_PREF_KEY, pref);
 };

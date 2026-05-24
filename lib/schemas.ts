@@ -25,6 +25,10 @@ export const eventStatusSchema = z.enum([
   "cancelled",
 ]);
 
+// Client-only UI preference (not a DB enum); persisted via lib/theme-storage.
+export const themePrefSchema = z.enum(["light", "dark", "system"]);
+export type ThemePref = z.infer<typeof themePrefSchema>;
+
 export const friendInputSchema = z
   .object({
     first_name: z.string().trim().min(1, "First name is required").max(100),

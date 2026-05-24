@@ -1,4 +1,3 @@
-// TODO: Review
 import { colorScheme } from "nativewind";
 import { create } from "zustand";
 
@@ -12,9 +11,9 @@ interface ThemeState {
 export const useThemeStore = create<ThemeState>((set) => ({
   pref: readThemePref(),
   setPref: (pref) => {
-    writeThemePref(pref);
     colorScheme.set(pref);
     set({ pref });
+    writeThemePref(pref);
   },
 }));
 
