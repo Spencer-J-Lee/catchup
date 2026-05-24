@@ -6,6 +6,7 @@ import type {
   FrequencyPreset,
   FrequencyUnit,
   Friend,
+  Json,
   Medium,
 } from "@/types/database";
 
@@ -647,7 +648,7 @@ export const seedExampleData = async (userId: string): Promise<SeedResult> => {
     avatar_url: friend.avatar_url,
     contact_id: friend.contact?.id ?? null,
     contact_snapshot: friend.contact
-      ? (friend.contact.snapshot as unknown as Record<string, unknown>)
+      ? (friend.contact.snapshot as unknown as Json)
       : null,
     contact_synced_at: friend.contact
       ? isoOffsetDays(-friend.contact.syncedDaysAgo)

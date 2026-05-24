@@ -19,12 +19,22 @@ import { AuthProvider, useAuth } from "@/hooks/use-auth";
 import { useThemedColors } from "@/hooks/use-themed-colors";
 import { queryClient } from "@/lib/query-client";
 import { ROUTES } from "@/lib/routes";
+import { supabase } from "@/lib/supabase";
 
 SplashScreen.preventAutoHideAsync();
 
 const onAppStateChange = (status: AppStateStatus) => {
   if (Platform.OS !== "web") {
     focusManager.setFocused(status === "active");
+
+    // Drive Supabase token auto-refresh from foreground state. The built-in
+    // autoRefreshToken timer is unreliable while the app is backgrounded, so
+    // start it on foreground and stop it otherwise to avoid stale sessions.
+    if (status === "active") {
+      supabase.auth.startAutoRefresh();
+    } else {
+      supabase.auth.stopAutoRefresh();
+    }
   }
 };
 

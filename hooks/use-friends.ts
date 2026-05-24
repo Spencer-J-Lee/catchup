@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import type { FriendInput } from "@/lib/schemas";
 import { supabase } from "@/lib/supabase";
-import type { Friend, FriendFrequencyStatus } from "@/types/database";
+import type { Friend, FriendFrequencyStatus, Json } from "@/types/database";
 
 export type FriendWithStatus = Friend & {
   last_caught_up_at: string | null;
@@ -17,6 +17,11 @@ type CreateFriendInput = FriendInput & {
   contact_synced_at?: string | null;
 };
 
+// The friends.contact_snapshot column is jsonb; app code models it as a plain
+// object for ergonomics. Narrow it to the DB's Json type at the write boundary.
+const toJsonSnapshot = (snapshot: Record<string, unknown> | null | undefined) =>
+  (snapshot ?? null) as Json;
+
 const fetchFriends = async (): Promise<FriendWithStatus[]> => {
   const [friendsRes, statusRes] = await Promise.all([
     supabase
@@ -29,12 +34,13 @@ const fetchFriends = async (): Promise<FriendWithStatus[]> => {
   if (friendsRes.error) throw friendsRes.error;
   if (statusRes.error) throw statusRes.error;
 
-  const statusByFriend = new Map<string, FriendFrequencyStatus>(
-    (statusRes.data ?? []).map((status) => [
-      status.friend_id,
-      status as FriendFrequencyStatus,
-    ]),
-  );
+  const statusByFriend = new Map<string, FriendFrequencyStatus>();
+  for (const status of statusRes.data ?? []) {
+    // friend_id is nullable on the view's Row type; skip orphaned rows.
+    if (status.friend_id !== null) {
+      statusByFriend.set(status.friend_id, status as FriendFrequencyStatus);
+    }
+  }
 
   return (friendsRes.data as Friend[]).map((friend) => {
     const status = statusByFriend.get(friend.id);
@@ -76,7 +82,10 @@ export const useCreateFriend = () => {
     mutationFn: async (input: CreateFriendInput) => {
       const { data, error } = await supabase
         .from("friends")
-        .insert(input)
+        .insert({
+          ...input,
+          contact_snapshot: toJsonSnapshot(input.contact_snapshot),
+        })
         .select()
         .single();
 
@@ -95,7 +104,12 @@ export const useCreateFriends = () => {
     mutationFn: async (inputs: CreateFriendInput[]) => {
       const { data, error } = await supabase
         .from("friends")
-        .insert(inputs)
+        .insert(
+          inputs.map((input) => ({
+            ...input,
+            contact_snapshot: toJsonSnapshot(input.contact_snapshot),
+          })),
+        )
         .select();
 
       if (error) throw error;
@@ -141,7 +155,7 @@ export const useLinkFriendContact = () => {
         .from("friends")
         .update({
           contact_id,
-          contact_snapshot,
+          contact_snapshot: toJsonSnapshot(contact_snapshot),
           avatar_url,
           contact_synced_at: contact_id ? new Date().toISOString() : null,
         })
