@@ -21,6 +21,7 @@ type ProfileUpdateInput = Partial<
 
 export const useProfile = () => {
   const { user } = useAuth();
+
   return useQuery({
     queryKey: profileQueryKey(user?.id),
     enabled: !!user,
@@ -31,7 +32,9 @@ export const useProfile = () => {
         .select("*")
         .eq("id", user!.id)
         .single();
+
       if (error) throw error;
+
       return data as Profile;
     },
   });
@@ -40,6 +43,7 @@ export const useProfile = () => {
 export const useUpdateProfile = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (input: ProfileUpdateInput) => {
       if (!user) throw new Error("Not signed in");
@@ -49,7 +53,9 @@ export const useUpdateProfile = () => {
         .eq("id", user.id)
         .select()
         .single();
+
       if (error) throw error;
+
       return data as Profile;
     },
     onSuccess: (profile) => {

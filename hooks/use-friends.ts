@@ -61,6 +61,7 @@ export const useFriend = (id: string | undefined) => {
         .select("*")
         .eq("id", id!)
         .single();
+
       if (error) throw error;
 
       return data as Friend;
@@ -70,6 +71,7 @@ export const useFriend = (id: string | undefined) => {
 
 export const useCreateFriend = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (input: CreateFriendInput) => {
       const { data, error } = await supabase
@@ -77,6 +79,7 @@ export const useCreateFriend = () => {
         .insert(input)
         .select()
         .single();
+
       if (error) throw error;
 
       return data as Friend;
@@ -87,13 +90,16 @@ export const useCreateFriend = () => {
 
 export const useCreateFriends = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (inputs: CreateFriendInput[]) => {
       const { data, error } = await supabase
         .from("friends")
         .insert(inputs)
         .select();
+
       if (error) throw error;
+
       return data as Friend[];
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["friends"] }),
@@ -102,6 +108,7 @@ export const useCreateFriends = () => {
 
 export const useUpdateFriend = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async ({ id, ...input }: FriendInput & { id: string }) => {
       const { data, error } = await supabase
@@ -110,7 +117,9 @@ export const useUpdateFriend = () => {
         .eq("id", id)
         .select()
         .single();
+
       if (error) throw error;
+
       return data as Friend;
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["friends"] }),
@@ -119,6 +128,7 @@ export const useUpdateFriend = () => {
 
 export const useLinkFriendContact = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (args: {
       id: string;
@@ -138,7 +148,9 @@ export const useLinkFriendContact = () => {
         .eq("id", id)
         .select()
         .single();
+
       if (error) throw error;
+
       return data as Friend;
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["friends"] }),
@@ -147,6 +159,7 @@ export const useLinkFriendContact = () => {
 
 export const useDeleteFriend = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase.from("friends").delete().eq("id", id);

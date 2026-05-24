@@ -13,7 +13,9 @@ export const useScheduledEvents = () => {
         .select("*")
         .eq("status", "scheduled")
         .order("event_at", { ascending: true });
+
       if (error) throw error;
+
       return data as CatchUpEvent[];
     },
   });
@@ -28,7 +30,9 @@ export const useMissedEvents = () => {
         .select("*")
         .eq("status", "missed")
         .order("event_at", { ascending: false });
+
       if (error) throw error;
+
       return data as CatchUpEvent[];
     },
   });
@@ -44,7 +48,9 @@ export const useEventsForFriend = (friendId: string | undefined) => {
         .select("*")
         .eq("friend_id", friendId!)
         .order("event_at", { ascending: false });
+
       if (error) throw error;
+
       return data as CatchUpEvent[];
     },
   });
@@ -60,7 +66,9 @@ export const useEvent = (id: string | undefined) => {
         .select("*")
         .eq("id", id!)
         .single();
+
       if (error) throw error;
+
       return data as CatchUpEvent;
     },
   });
@@ -74,7 +82,9 @@ export const useAllEvents = () => {
         .from("catch_up_events")
         .select("*")
         .neq("status", "cancelled");
+
       if (error) throw error;
+
       return data as CatchUpEvent[];
     },
   });
@@ -93,7 +103,9 @@ export const useEventsInRange = (
         .select("*")
         .gte("event_at", args!.from)
         .lte("event_at", args!.to);
+
       if (error) throw error;
+
       return data as CatchUpEvent[];
     },
   });
@@ -108,7 +120,9 @@ export const useCreateEvent = () => {
         .insert(input)
         .select()
         .single();
+
       if (error) throw error;
+
       return data as CatchUpEvent;
     },
     onSuccess: () => {
@@ -131,7 +145,9 @@ export const useUpdateEvent = () => {
         .eq("id", id)
         .select()
         .single();
+
       if (error) throw error;
+
       return data as CatchUpEvent;
     },
     onSuccess: () => {
@@ -149,6 +165,7 @@ export const useDeleteEvent = () => {
         .from("catch_up_events")
         .delete()
         .eq("id", id);
+
       if (error) throw error;
     },
     onSuccess: () => {
