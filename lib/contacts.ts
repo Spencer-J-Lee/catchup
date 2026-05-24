@@ -1,15 +1,29 @@
-// TODO: Review
 import * as Contacts from "expo-contacts";
 import { Alert, Linking, Platform } from "react-native";
+import { z } from "zod";
 
-export interface ContactSnapshot {
-  name: string | null;
-  phone: string | null;
-  email: string | null;
-  phones: { label: string | null; number: string }[];
-  emails: { label: string | null; email: string }[];
-  image_uri: string | null;
-}
+const contactPhoneSchema = z.object({
+  label: z.string().nullable(),
+  number: z.string(),
+});
+const contactEmailSchema = z.object({
+  label: z.string().nullable(),
+  email: z.string(),
+});
+
+// A contact_snapshot is JSON persisted on the friend row, so on read it is
+// untrusted input. Defaults keep parsing resilient to partial/legacy blobs
+// while still rejecting anything structurally wrong (see snapshotFrom).
+export const contactSnapshotSchema = z.object({
+  name: z.string().nullable().default(null),
+  phone: z.string().nullable().default(null),
+  email: z.string().nullable().default(null),
+  phones: z.array(contactPhoneSchema).default([]),
+  emails: z.array(contactEmailSchema).default([]),
+  image_uri: z.string().nullable().default(null),
+});
+
+export type ContactSnapshot = z.infer<typeof contactSnapshotSchema>;
 
 export interface PickedContact {
   contact_id: string;
@@ -135,11 +149,12 @@ export const snapshotFrom = (
   raw: Record<string, unknown> | null,
 ): ContactSnapshot | null => {
   if (!raw) return null;
-  return raw as unknown as ContactSnapshot;
+  const result = contactSnapshotSchema.safeParse(raw);
+  return result.success ? result.data : null;
 };
 
 export const openMessage = (phone: string) => {
-  const url = Platform.OS === "ios" ? `sms:${phone}` : `sms:${phone}`;
+  const url = Platform.OS === "android" ? `smsto:${phone}` : `sms:${phone}`;
   Linking.openURL(url).catch(() =>
     Alert.alert("Cannot open Messages", "No SMS app is available."),
   );
