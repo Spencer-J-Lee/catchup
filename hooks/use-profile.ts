@@ -1,5 +1,3 @@
-// TODO: Review
-
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { useAuth } from "@/hooks/use-auth";
@@ -59,10 +57,7 @@ export const useUpdateProfile = () => {
       return data as Profile;
     },
     onSuccess: (profile) => {
-      queryClient.setQueryData(profileQueryKey(profile.id), profile);
-      queryClient.invalidateQueries({
-        queryKey: profileQueryKey(profile.id),
-      });
+      queryClient.invalidateQueries({ queryKey: profileQueryKey(profile.id) });
     },
   });
 };
