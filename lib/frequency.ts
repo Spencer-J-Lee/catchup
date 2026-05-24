@@ -1,5 +1,9 @@
-// TODO: Review
-import { addDays, addMonths, addWeeks, differenceInDays } from "date-fns";
+import {
+  addDays,
+  addMonths,
+  addWeeks,
+  differenceInCalendarDays,
+} from "date-fns";
 
 import type { FrequencyPreset, FrequencyUnit } from "@/types/database";
 
@@ -31,6 +35,7 @@ export const presetFromAmount = (
       { amount: number; unit: FrequencyUnit },
     ][]
   ).find(([, preset]) => preset.amount === amount && preset.unit === unit);
+
   return match ? match[0] : "custom";
 };
 
@@ -64,6 +69,7 @@ export const computeFrequencyStatus = (args: {
   now?: Date;
 }): FrequencyStatus => {
   const now = args.now ?? new Date();
+
   if (args.frequencyAmount == null || args.frequencyUnit == null) {
     return {
       lastCaughtUpAt: args.lastCaughtUpAt,
@@ -72,9 +78,11 @@ export const computeFrequencyStatus = (args: {
       isOverdue: false,
     };
   }
+
   const base = args.lastCaughtUpAt ?? args.fallbackStart;
   const due = addFrequency(base, args.frequencyAmount, args.frequencyUnit);
-  const daysUntilDue = differenceInDays(due, now);
+  const daysUntilDue = differenceInCalendarDays(due, now);
+
   return {
     lastCaughtUpAt: args.lastCaughtUpAt,
     nextDueAt: due,
