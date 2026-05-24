@@ -25,8 +25,6 @@ interface FriendListItemProps {
   action?: FriendItemAction | null;
   whenAt?: string | null;
   scheduledEventId?: string | null;
-  /** When set and `action === "schedule"`, render a "Missed X ago" hint —
-   * signals the missed→reaching-out auto-flow. */
   missedAt?: string | null;
   isDue?: boolean;
 }
@@ -90,12 +88,12 @@ export const FriendListItem = ({
     <ReanimatedSwipeable
       ref={swipeableRef}
       renderRightActions={renderRightActions}
-      rightThreshold={40}
+      rightThreshold={30}
       friction={2}
-      overshootRight={false}
+      overshootRight
     >
       <Link href={ROUTES.friend.detail(friend.id)} asChild>
-        <Pressable className="flex-row items-center gap-3 bg-app px-4 py-2 active:opacity-70 dark:bg-app-dk">
+        <Pressable className="flex-row items-center gap-3 bg-app px-4 py-2 dark:bg-app-dk">
           <FriendAvatar friend={friend} />
 
           <View className="flex-1 gap-0.5">
