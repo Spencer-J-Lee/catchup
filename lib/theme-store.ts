@@ -8,8 +8,10 @@ interface ThemeState {
   setPref: (pref: ThemePref) => void;
 }
 
+const initialPref = readThemePref();
+
 export const useThemeStore = create<ThemeState>((set) => ({
-  pref: readThemePref(),
+  pref: initialPref,
   setPref: (pref) => {
     colorScheme.set(pref);
     set({ pref });
@@ -18,4 +20,4 @@ export const useThemeStore = create<ThemeState>((set) => ({
 }));
 
 // Apply persisted preference before first paint to avoid flash-of-wrong-theme.
-colorScheme.set(useThemeStore.getState().pref);
+colorScheme.set(initialPref);
