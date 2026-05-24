@@ -28,7 +28,7 @@ export const CalendarDay = ({
 }: CalendarDayProps) => {
   const isSelected = marking?.selected === true;
   const isDayToday = state === "today";
-  const isDisabled = state === "disabled" || state === "inactive";
+  const isOutsideMonth = state === "disabled" || state === "inactive";
   const dots = marking?.dots ?? [];
 
   const variantClass = isSelected
@@ -40,7 +40,6 @@ export const CalendarDay = ({
   return (
     <Pressable
       onPress={() => onPress?.(date)}
-      disabled={isDisabled}
       accessibilityRole="button"
       className={classNames(DAY_BASE_CLASS, variantClass)}
     >
@@ -54,7 +53,7 @@ export const CalendarDay = ({
       <Text
         className={classNames(
           "text-lg",
-          isDisabled
+          isOutsideMonth
             ? "text-subtle dark:text-subtle-dk"
             : "text-default dark:text-default-dk",
         )}
