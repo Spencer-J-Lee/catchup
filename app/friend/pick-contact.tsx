@@ -201,22 +201,22 @@ const PickContactScreen = () => {
     return (
       <Screen edges={[]}>
         <View className="flex-1 items-center justify-center px-8">
-          <View className="mb-5 h-20 w-20 items-center justify-center rounded-full bg-raised dark:bg-raised-dk">
+          <View className="h-20 w-20 items-center justify-center rounded-full bg-raised dark:bg-raised-dk">
             <Ionicons name="people-outline" size={36} color={colors.brand} />
           </View>
-          <Text className="mb-2 text-center text-xl font-semibold text-default dark:text-default-dk">
+          <Text className="mt-5 text-center text-xl font-semibold text-default dark:text-default-dk">
             Contacts access needed
           </Text>
-          <Text className="mb-6 text-center text-muted dark:text-muted-dk">
+          <Text className="mt-2 text-center text-muted dark:text-muted-dk">
             Allow CatchUp to read your contacts so you can add friends from
             them.
           </Text>
           {error ? (
-            <Text className="mb-4 text-sm text-danger dark:text-danger-dk">
+            <Text className="mt-6 text-sm text-danger dark:text-danger-dk">
               {error}
             </Text>
           ) : null}
-          <Button onPress={() => Linking.openSettings()} className="px-6">
+          <Button onPress={() => Linking.openSettings()} className="mt-4 px-6">
             Open Settings
           </Button>
         </View>

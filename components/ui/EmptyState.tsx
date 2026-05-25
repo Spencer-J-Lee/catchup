@@ -26,16 +26,16 @@ export const EmptyState = ({
 
   return (
     <View className="flex-1 items-center justify-center px-8">
-      <View className="mb-5 h-20 w-20 items-center justify-center rounded-full bg-raised dark:bg-raised-dk">
+      <View className="h-20 w-20 items-center justify-center rounded-full bg-raised dark:bg-raised-dk">
         <Ionicons name={icon} size={36} color={colors.brand} />
       </View>
 
-      <Text className="mb-2 text-center text-xl font-semibold text-default dark:text-default-dk">
+      <Text className="mt-5 text-center text-xl font-semibold text-default dark:text-default-dk">
         {title}
       </Text>
 
       {description ? (
-        <Text className="mb-6 text-center text-muted dark:text-muted-dk">
+        <Text className="mt-2 text-center text-muted dark:text-muted-dk">
           {description}
         </Text>
       ) : null}
@@ -43,10 +43,10 @@ export const EmptyState = ({
       {cta ? (
         cta.href ? (
           <Link href={cta.href} asChild>
-            <Button className="px-6">{cta.label}</Button>
+            <Button className="mt-6 px-6">{cta.label}</Button>
           </Link>
         ) : (
-          <Button className="px-6" onPress={cta.onPress}>
+          <Button className="mt-6 px-6" onPress={cta.onPress}>
             {cta.label}
           </Button>
         )

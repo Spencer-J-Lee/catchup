@@ -104,19 +104,19 @@ const FriendsScreen = () => {
 
   return (
     <Screen>
-      <View className="mb-4 flex-row items-center justify-between">
-        <Text className="text-3xl font-bold text-default dark:text-default-dk">
-          Catchup
-        </Text>
-        <Link href={ROUTES.friend.pickContact} asChild>
-          <Pressable className="h-10 w-10 items-center justify-center rounded-full bg-raised active:bg-high dark:bg-raised-dk dark:active:bg-high-dk">
-            <Ionicons name="add" size={22} color={colors.fgDefault} />
-          </Pressable>
-        </Link>
-      </View>
+      <View className="flex-1 gap-4">
+        <View className="flex-row items-center justify-between">
+          <Text className="text-3xl font-bold text-default dark:text-default-dk">
+            Catchup
+          </Text>
+          <Link href={ROUTES.friend.pickContact} asChild>
+            <Pressable className="h-10 w-10 items-center justify-center rounded-full bg-raised active:bg-high dark:bg-raised-dk dark:active:bg-high-dk">
+              <Ionicons name="add" size={22} color={colors.fgDefault} />
+            </Pressable>
+          </Link>
+        </View>
 
-      {hasFriends ? (
-        <View className="mb-4">
+        {hasFriends ? (
           <Input
             placeholder="Search friends"
             value={search}
@@ -126,10 +126,10 @@ const FriendsScreen = () => {
             returnKeyType="search"
             clearButtonMode="while-editing"
           />
-        </View>
-      ) : null}
+        ) : null}
 
-      {renderBody()}
+        {renderBody()}
+      </View>
     </Screen>
   );
 };
