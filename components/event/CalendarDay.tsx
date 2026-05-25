@@ -45,7 +45,7 @@ export const CalendarDay = ({
     >
       {isDayToday ? (
         // Explicit width avoids strange text wrapping where it shouldn't
-        <Text className="absolute -top-4 w-[35px] text-[9px] font-bold tracking-wider text-brand dark:text-brand-dk">
+        <Text className="absolute -top-3.5 w-[35px] text-[9px] font-bold tracking-wider text-brand dark:text-brand-dk">
           TODAY
         </Text>
       ) : null}
