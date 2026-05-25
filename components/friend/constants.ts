@@ -1,1 +1,0 @@
-export const FRIEND_LIST_ANIMATION_DURATION = 300;
