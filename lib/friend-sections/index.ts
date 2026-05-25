@@ -34,6 +34,7 @@ export const buildFriendSections = ({
   search,
 }: BuildFriendSectionsArgs): FriendSection[] => {
   if (!friends) return [];
+
   const now = new Date();
   const indexes = buildEventIndexes(
     scheduledEvents,
@@ -67,13 +68,13 @@ export const buildFriendSections = ({
   const pushGroup = (state: FriendLifecycleState) => {
     const rows = groups[state];
     if (rows.length === 0) return;
+
     sections.push({
-      kind: "header",
       title: formatLifecycleState(state),
       count: rows.length,
       state,
+      data: rows,
     });
-    for (const row of rows) sections.push({ kind: "friend", row });
   };
 
   pushGroup("awaiting_followup");

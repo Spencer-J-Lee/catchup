@@ -14,14 +14,12 @@ export interface FriendRow {
   isDue: boolean;
 }
 
-export type FriendSection =
-  | {
-      kind: "header";
-      title: string;
-      count: number;
-      state: FriendLifecycleState;
-    }
-  | { kind: "friend"; row: FriendRow };
+export interface FriendSection {
+  title: string;
+  count: number;
+  state: FriendLifecycleState;
+  data: FriendRow[];
+}
 
 export interface EventRef {
   id: string;

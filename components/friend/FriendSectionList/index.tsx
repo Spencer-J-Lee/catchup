@@ -3,7 +3,7 @@ import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { FriendListItem } from "@/components/friend/FriendListItem";
 import type { FriendSection } from "@/lib/friend-sections";
 
-import { FlatList, View } from "react-native";
+import { SectionList, View } from "react-native";
 import { SectionHeader } from "./SectionHeader";
 
 interface FriendSectionListProps {
@@ -20,28 +20,24 @@ export const FriendSectionList = ({
   const tabBarHeight = useBottomTabBarHeight();
 
   return (
-    <FlatList
-      data={sections}
-      keyExtractor={(section) =>
-        section.kind === "header" ? section.state : section.row.friend.id
-      }
-      renderItem={({ item, index }) =>
-        item.kind === "header" ? (
-          <>
-            {index === 0 ? null : <View className="h-5" />}
-            <SectionHeader state={item.state} title={item.title} />
-          </>
-        ) : (
-          <FriendListItem
-            friend={item.row.friend}
-            action={item.row.action}
-            whenAt={item.row.whenAt}
-            scheduledEventId={item.row.scheduledEventId}
-            missedAt={item.row.missedAt}
-            isDue={item.row.isDue}
-          />
-        )
-      }
+    <SectionList
+      sections={sections}
+      keyExtractor={(row) => row.friend.id}
+      renderItem={({ item }) => (
+        <FriendListItem
+          friend={item.friend}
+          action={item.action}
+          whenAt={item.whenAt}
+          scheduledEventId={item.scheduledEventId}
+          missedAt={item.missedAt}
+          isDue={item.isDue}
+        />
+      )}
+      renderSectionHeader={({ section }) => (
+        <SectionHeader state={section.state} title={section.title} />
+      )}
+      renderSectionFooter={() => <View className="h-5" />}
+      stickySectionHeadersEnabled
       refreshing={isRefreshing}
       onRefresh={onRefresh}
       contentContainerStyle={{ paddingBottom: tabBarHeight + 24 }}
