@@ -40,7 +40,7 @@ export const FriendSectionList = ({
       stickySectionHeadersEnabled
       refreshing={isRefreshing}
       onRefresh={onRefresh}
-      contentContainerStyle={{ paddingBottom: tabBarHeight + 24 }}
+      contentContainerStyle={{ paddingBottom: tabBarHeight }}
       scrollIndicatorInsets={{ bottom: tabBarHeight }}
       keyboardShouldPersistTaps="handled"
       className="-mx-4"

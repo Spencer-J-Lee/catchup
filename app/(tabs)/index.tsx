@@ -104,7 +104,7 @@ const FriendsScreen = () => {
 
   return (
     <Screen>
-      <View className="gap-3">
+      <View className="flex-1 gap-3">
         <View className="flex-row items-center justify-between">
           <Text className="text-3xl font-bold text-default dark:text-default-dk">
             Catchup
