@@ -8,8 +8,6 @@ const DAY_BASE_CLASS =
 const DAY_SELECTED_CLASS =
   "bg-raised dark:bg-raised-dk border-raised dark:border-raised-dk active:bg-high dark:active:bg-high-dk active:border-high dark:active:border-high-dk";
 
-const DAY_TODAY_CLASS = "border-dotted border-high dark:border-high-dk";
-
 interface CalendarDayProps {
   date?: DateData;
   state?: "selected" | "disabled" | "inactive" | "today" | "";
@@ -31,11 +29,7 @@ export const CalendarDay = ({
   const isOutsideMonth = state === "disabled" || state === "inactive";
   const dots = marking?.dots ?? [];
 
-  const variantClass = isSelected
-    ? DAY_SELECTED_CLASS
-    : isDayToday
-      ? DAY_TODAY_CLASS
-      : "border-transparent";
+  const variantClass = isSelected ? DAY_SELECTED_CLASS : "border-transparent";
 
   return (
     <Pressable
@@ -44,8 +38,7 @@ export const CalendarDay = ({
       className={classNames(DAY_BASE_CLASS, variantClass)}
     >
       {isDayToday ? (
-        // Explicit width avoids strange text wrapping where it shouldn't
-        <Text className="absolute -top-3.5 w-[35px] text-[9px] font-bold tracking-wider text-brand dark:text-brand-dk">
+        <Text className="absolute h-[150%] w-[150%] rounded border border-dashed border-border text-center text-[9px] font-bold tracking-wider text-brand dark:border-border-dk dark:text-brand-dk">
           TODAY
         </Text>
       ) : null}
