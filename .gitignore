@@ -46,5 +46,5 @@ app-example
 supabase/.branches/
 supabase/.temp/
 
-# Personal notes
-*_notes*
+# Misc
+_stuff/*
