@@ -23,11 +23,6 @@ const STATUS_META: Record<
     pill: "bg-success/15 dark:bg-success-dk/25 border-success dark:border-success-dk",
     text: "text-success dark:text-success-dk",
   },
-  missed: {
-    label: "Missed",
-    pill: "bg-danger/15 dark:bg-danger-dk/25 border-danger dark:border-danger-dk",
-    text: "text-danger dark:text-danger-dk",
-  },
   cancelled: {
     label: "Cancelled",
     pill: "bg-high dark:bg-high-dk border-border dark:border-border-dk",

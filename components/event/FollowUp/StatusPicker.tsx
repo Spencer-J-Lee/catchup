@@ -5,10 +5,14 @@ import { IconActionRow } from "@/components/ui/IconActionRow";
 import { Screen } from "@/components/ui/Screen";
 import { useThemedColors } from "@/hooks/use-themed-colors";
 
-import { FADE_MS, STATUS_OPTIONS, type FollowUpStatus } from "./statusOptions";
+import {
+  FADE_MS,
+  STATUS_OPTIONS,
+  type FollowUpOptionKey,
+} from "./statusOptions";
 
 interface StatusPickerProps {
-  onSelect: (status: FollowUpStatus) => void;
+  onSelect: (key: FollowUpOptionKey) => void;
 }
 
 export const StatusPicker = ({ onSelect }: StatusPickerProps) => {
@@ -23,12 +27,12 @@ export const StatusPicker = ({ onSelect }: StatusPickerProps) => {
         <View className="gap-2">
           {STATUS_OPTIONS.map((option) => (
             <IconActionRow
-              key={option.status}
+              key={option.key}
               label={option.label}
               icon={option.icon}
               iconColor={colors.dangerFg}
               iconBgClass={option.iconBgClass}
-              onPress={() => onSelect(option.status)}
+              onPress={() => onSelect(option.key)}
               iconSize={30}
             />
           ))}

@@ -66,7 +66,7 @@ export const SeedDataSection = () => {
   return (
     <DeveloperCard
       title="Seed data"
-      description="Loads a curated set of example friends and catch-up events covering due, not-due, missing-frequency, never-caught-up, scheduled, missed, and cancelled cases. Re-running replaces previous seed data."
+      description="Loads a curated set of example friends and catch-up events covering due, not-due, missing-frequency, never-caught-up, scheduled, and cancelled cases. Re-running replaces previous seed data."
     >
       <Button onPress={onSeed} loading={seeding} disabled={clearing}>
         Load example data

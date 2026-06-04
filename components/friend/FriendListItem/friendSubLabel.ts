@@ -6,7 +6,6 @@ interface SubLabelArgs {
   friend: FriendWithStatus;
   action?: FriendItemAction | null;
   whenAt?: string | null;
-  missedAt?: string | null;
   isDue?: boolean;
   formatRelative: (date: Date | string) => string;
   formatOverdueDays: (date: Date | string) => string;
@@ -38,7 +37,6 @@ export const getFriendSubLabelData = ({
   friend,
   action,
   whenAt,
-  missedAt,
   isDue,
   formatRelative,
   formatOverdueDays,
@@ -56,13 +54,6 @@ export const getFriendSubLabelData = ({
     return {
       label: `Coming up ${formatRelative(whenAt)}`,
       className: isImminent ? `${URGENT} font-medium` : MUTED,
-    };
-  }
-
-  if (action === "schedule" && missedAt) {
-    return {
-      label: `Missed ${formatRelative(missedAt)}`,
-      className: `${URGENT} font-medium`,
     };
   }
 

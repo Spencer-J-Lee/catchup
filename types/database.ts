@@ -4,7 +4,7 @@
 //
 // The generated columns use plain `string` for CHECK-constrained text columns
 // (medium, status, frequency_preset, frequency_unit, platform). The narrow
-// unions below match the CHECK values in supabase/migrations/0001_init.sql.
+// unions below match the current CHECK values in supabase/migrations/.
 // The first four are inferred from the Zod schemas in lib/schemas.ts so the
 // runtime validators and the compile-time types can't drift apart.
 

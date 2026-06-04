@@ -17,14 +17,12 @@ export const classifyFriend = (
 ): ClassifiedFriend => {
   const past = indexes.pastByFriend.get(friend.id) ?? null;
   const upcoming = indexes.upcomingByFriend.get(friend.id) ?? null;
-  const missed = indexes.recentMissedByFriend.get(friend.id) ?? null;
 
   const { state } = deriveFriendState({
     nextDueAt: friend.next_due_at,
     lastCaughtUpAt: friend.last_caught_up_at,
     upcomingScheduled: upcoming,
     pastScheduled: past,
-    recentMissed: missed,
     now,
   });
 
@@ -36,7 +34,6 @@ export const classifyFriend = (
         action: "followUp",
         whenAt: past.event_at,
         scheduledEventId: past.id,
-        missedAt: null,
         isDue: true,
       },
     };
@@ -50,21 +47,12 @@ export const classifyFriend = (
         action: "edit",
         whenAt: upcoming.event_at,
         scheduledEventId: upcoming.id,
-        missedAt: null,
         isDue: false,
       },
     };
   }
 
   if (state === "due") {
-    // Surface a "missed N days ago" hint when the auto-flow kicked in.
-    const missedAt = missed
-      ? !friend.last_caught_up_at ||
-        new Date(missed.event_at).getTime() >
-          new Date(friend.last_caught_up_at).getTime()
-        ? missed.event_at
-        : null
-      : null;
     return {
       state: "due",
       row: {
@@ -72,7 +60,6 @@ export const classifyFriend = (
         action: "schedule",
         whenAt: null,
         scheduledEventId: null,
-        missedAt,
         isDue: true,
       },
     };
@@ -85,7 +72,6 @@ export const classifyFriend = (
       action: null,
       whenAt: null,
       scheduledEventId: null,
-      missedAt: null,
       isDue: false,
     },
   };

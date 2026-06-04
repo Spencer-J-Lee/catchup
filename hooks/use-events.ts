@@ -21,23 +21,6 @@ export const useScheduledEvents = () => {
   });
 };
 
-export const useMissedEvents = () => {
-  return useQuery({
-    queryKey: ["events", "missed"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("catch_up_events")
-        .select("*")
-        .eq("status", "missed")
-        .order("event_at", { ascending: false });
-
-      if (error) throw error;
-
-      return data as CatchUpEvent[];
-    },
-  });
-};
-
 export const useEventsForFriend = (friendId: string | undefined) => {
   return useQuery({
     queryKey: ["events", "by-friend", friendId],

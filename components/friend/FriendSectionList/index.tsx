@@ -29,7 +29,6 @@ export const FriendSectionList = ({
           action={item.action}
           whenAt={item.whenAt}
           scheduledEventId={item.scheduledEventId}
-          missedAt={item.missedAt}
           isDue={item.isDue}
         />
       )}

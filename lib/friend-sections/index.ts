@@ -18,7 +18,6 @@ export type { FriendRow, FriendSection } from "./types";
 export interface BuildFriendSectionsArgs {
   friends: FriendWithStatus[] | undefined;
   scheduledEvents: CatchUpEvent[] | undefined;
-  missedEvents: CatchUpEvent[] | undefined;
   search: string;
 }
 
@@ -30,17 +29,12 @@ const matchesQuery = (friend: FriendWithStatus, query: string): boolean =>
 export const buildFriendSections = ({
   friends,
   scheduledEvents,
-  missedEvents,
   search,
 }: BuildFriendSectionsArgs): FriendSection[] => {
   if (!friends) return [];
 
   const now = new Date();
-  const indexes = buildEventIndexes(
-    scheduledEvents,
-    missedEvents,
-    now.getTime(),
-  );
+  const indexes = buildEventIndexes(scheduledEvents, now.getTime());
 
   const query = search.trim().toLowerCase();
   const filtered = query

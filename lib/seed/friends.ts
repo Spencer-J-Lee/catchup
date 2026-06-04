@@ -44,9 +44,9 @@ export const FRIENDS: SeedFriend[] = [
       },
     ],
   },
-  // scenario: due via missed_pending — last completion is much older than
-  // the missed event, so the auto-flow surfaces a "Missed Nd ago" hint (also long
-  // overdue by frequency, but the missed event wins state priority). Linked contact w/o avatar.
+  // scenario: long overdue (weekly frequency) — last completion is months old,
+  // and a later cancelled event keeps history without resetting the clock.
+  // Linked contact w/o avatar.
   {
     first_name: "Bailey",
     last_name: mark("Park"),
@@ -77,13 +77,13 @@ export const FRIENDS: SeedFriend[] = [
         offsetDays: -40,
         atHour: 12,
         atMinute: 30,
-        status: "missed",
+        status: "cancelled",
         medium: null,
         medium_detail: null,
         location_text: null,
         location_address: null,
         event_notes:
-          "Missed — they had to cancel last minute, never rescheduled.",
+          "Cancelled — they had to bail last minute, never rescheduled.",
       },
     ],
   },
@@ -347,7 +347,7 @@ export const FRIENDS: SeedFriend[] = [
       },
     ],
   },
-  // scenario: scheduled event 2d in the past — awaiting follow-up (mark complete/missed/cancelled)
+  // scenario: scheduled event 2d in the past — awaiting follow-up (complete / reschedule / cancel)
   {
     first_name: "Kai",
     last_name: mark("Nakamura"),
@@ -390,10 +390,9 @@ export const FRIENDS: SeedFriend[] = [
       },
     ],
   },
-  // scenario: clean missed_pending — frequency says not yet due, but a recent missed
-  // event after the last completion pulls the friend into "Due" with
-  // "Missed Nd ago" as the only signal. Tests the missed→due auto-flow
-  // independent of overdue frequency.
+  // scenario: not yet due (monthly frequency) with a recent cancelled event —
+  // a cancellation keeps history but doesn't change the friend's state, so
+  // they stay "On track" until frequency says otherwise.
   {
     first_name: "Marlowe",
     last_name: mark("Quinn"),
@@ -425,7 +424,7 @@ export const FRIENDS: SeedFriend[] = [
       {
         offsetDays: -3,
         atHour: 10,
-        status: "missed",
+        status: "cancelled",
         medium: "in_person",
         medium_detail: null,
         location_text: "Ritual Coffee",
@@ -470,9 +469,9 @@ export const FRIENDS: SeedFriend[] = [
     ],
   },
   // scenario: calendar multi-dot coverage — events land on days that already
-  // contain other friends' events to exercise the two- and three-status day
-  // markers (day -7 pairs with Gabriella's completed; day -2 pairs with
-  // Harper's completed and Kai's scheduled).
+  // contain other friends' events to exercise the two-status day markers
+  // (day -7 pairs scheduled with Gabriella's completed; day -2 pairs
+  // completed with Kai's scheduled).
   {
     first_name: "Noor",
     last_name: mark("Reyes"),
@@ -497,12 +496,12 @@ export const FRIENDS: SeedFriend[] = [
       {
         offsetDays: -2,
         atHour: 11,
-        status: "missed",
+        status: "completed",
         medium: "in_person",
         medium_detail: null,
         location_text: "Andytown Coffee",
         location_address: "3655 Lawton St, San Francisco, CA",
-        event_notes: "They had to bail last minute — kid was sick.",
+        event_notes: "Quick coffee — kept it short since their kid was sick.",
       },
     ],
   },

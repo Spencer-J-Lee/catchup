@@ -5,12 +5,14 @@ import { ActivityIndicator, View } from "react-native";
 import { NotesStep } from "@/components/event/FollowUp/NotesStep";
 import { StatusPicker } from "@/components/event/FollowUp/StatusPicker";
 import {
-  STATUS_OPTIONS_BY_STATUS,
+  STATUS_OPTIONS_BY_KEY,
+  type FollowUpOptionKey,
   type FollowUpStatus,
 } from "@/components/event/FollowUp/statusOptions";
 import { Screen } from "@/components/ui/Screen";
 import { useEvent, useUpdateEvent } from "@/hooks/use-events";
 import { useThemedColors } from "@/hooks/use-themed-colors";
+import { ROUTES } from "@/lib/routes";
 import { toast, toastMutationError } from "@/lib/toast";
 
 const FollowUpScreen = () => {
@@ -39,6 +41,16 @@ const FollowUpScreen = () => {
     );
   }
 
+  const onSelectOption = (key: FollowUpOptionKey) => {
+    if (key === "rescheduled") {
+      // Rescheduling keeps the existing event and all its details — swap this
+      // sheet for the edit form so the user can pick the new date.
+      router.replace(ROUTES.event.edit(event.id));
+      return;
+    }
+    setSelectedStatus(key);
+  };
+
   const submit = async (notesToSave: string | undefined) => {
     if (!selectedStatus) return;
 
@@ -62,11 +74,11 @@ const FollowUpScreen = () => {
   };
 
   if (!selectedStatus) {
-    return <StatusPicker onSelect={setSelectedStatus} />;
+    return <StatusPicker onSelect={onSelectOption} />;
   } else {
     return (
       <NotesStep
-        selectedOption={STATUS_OPTIONS_BY_STATUS[selectedStatus]}
+        selectedOption={STATUS_OPTIONS_BY_KEY[selectedStatus]}
         notes={notes}
         onChangeStatus={() => setSelectedStatus(null)}
         onNotesChange={setNotes}

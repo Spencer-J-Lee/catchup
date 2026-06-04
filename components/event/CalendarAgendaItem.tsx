@@ -19,10 +19,6 @@ const STATUS_META: Record<EventStatus, { label: string; stripClass: string }> =
       label: "Completed",
       stripClass: "bg-success dark:bg-success-dk",
     },
-    missed: {
-      label: "Missed",
-      stripClass: "bg-danger dark:bg-danger-dk",
-    },
     cancelled: {
       label: "Cancelled",
       stripClass: "bg-muted dark:bg-muted-dk",

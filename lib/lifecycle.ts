@@ -3,24 +3,27 @@
 //
 // A friend's lifecycle state is derived from their events + frequency; it is not
 // stored. The DB-level `catch_up_events.status` enum (scheduled/completed/
-// missed/cancelled) remains the system of record. This module maps from those
+// cancelled) remains the system of record. This module maps from those
 // per-event facts to a per-friend state used by the home screen.
+//
+// Rescheduling needs no state of its own: it edits the existing event's
+// `event_at` in place, so the friend simply lands back in "On its way".
 //
 //        ┌───────────────────────────────── repeat ───────────────────────────────┐
 //        ▼                                                                        │
 //   ┌──────────┐ schedule  ┌───────────────────┐                                  │
 //   │ On track │──────────▶│ Time to reconnect │                                  │
 //   └──────────┘           └───────────────────┘                                  │
-//        ▲                          │  ▲                                          │
-//        │ cancel                   │  │ miss (auto-flow)                         │
-//        │ (keeps history)          ▼  │                                          │
+//        ▲                          │                                             │
+//        │ cancel                   │                                             │
+//        │ (keeps history)          ▼                                             │
 //        │                  ┌────────────┐  time passes  ┌──────────────┐         │
 //        │   ◀──────────────│ On its way │──────────────▶│ How'd it go? │─────────┘
 //        │                  └────────────┘               └──────────────┘
-//        │                        │  ▲                          │
-//        │                        │  │ reschedule               │ complete
-//        │                        └──┘                          │
-//        └──────────────────── complete ─────────────────────── ▼
+//        │                        │  ▲ ▲                       │  │
+//        │                        │  │ └────── reschedule ─────┘  │ complete
+//        │                        └──┘                            │
+//        └──────────────────── complete ───────────────────────── ▼
 
 import type { CatchUpEvent } from "@/types/database";
 
@@ -35,7 +38,6 @@ export type LifecycleReason =
   | "not_yet_due"
   | "completed_recent"
   | "overdue"
-  | "missed_pending"
   | "upcoming_scheduled"
   | "past_scheduled_needs_resolution";
 
@@ -48,8 +50,6 @@ export interface DeriveFriendStateInput {
   upcomingScheduled: Pick<CatchUpEvent, "id" | "event_at"> | null;
   /** Oldest scheduled event with `event_at` <= now (still unresolved). */
   pastScheduled: Pick<CatchUpEvent, "id" | "event_at"> | null;
-  /** Most recent event with status='missed'. */
-  recentMissed: Pick<CatchUpEvent, "id" | "event_at"> | null;
   now: Date;
 }
 
@@ -64,7 +64,7 @@ export const deriveFriendState = (
   const nowMs = args.now.getTime();
 
   // 1. A scheduled event sitting in the past beats everything — the user
-  //    needs to mark complete / missed / cancelled before the friend's state
+  //    needs to mark complete / reschedule / cancel before the friend's state
   //    can advance.
   if (args.pastScheduled) {
     return {
@@ -78,25 +78,12 @@ export const deriveFriendState = (
     return { state: "scheduled", reason: "upcoming_scheduled" };
   }
 
-  // 3. Most recent activity was a miss → Due (auto-flow back).
-  //    Compare against last_caught_up_at so a stale miss doesn't outrank a
-  //    subsequent completion.
-  if (args.recentMissed?.event_at) {
-    const missedMs = new Date(args.recentMissed.event_at).getTime();
-    const completedMs = args.lastCaughtUpAt
-      ? new Date(args.lastCaughtUpAt).getTime()
-      : -Infinity;
-    if (missedMs > completedMs) {
-      return { state: "due", reason: "missed_pending" };
-    }
-  }
-
-  // 4. Frequency says overdue → Due.
+  // 3. Frequency says overdue → Due.
   if (args.nextDueAt && new Date(args.nextDueAt).getTime() < nowMs) {
     return { state: "due", reason: "overdue" };
   }
 
-  // 5. Caught up — either caught up recently, or no activity yet.
+  // 4. Caught up — either caught up recently, or no activity yet.
   if (args.lastCaughtUpAt) {
     return {
       state: "caught_up",

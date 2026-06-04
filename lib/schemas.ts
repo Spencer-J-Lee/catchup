@@ -21,7 +21,6 @@ export const mediumSchema = z.enum([
 export const eventStatusSchema = z.enum([
   "scheduled",
   "completed",
-  "missed",
   "cancelled",
 ]);
 

@@ -6,19 +6,13 @@ export const compareByWhenAt = (left: FriendRow, right: FriendRow): number =>
   new Date(left.whenAt!).getTime() - new Date(right.whenAt!).getTime();
 
 export const compareDueRows = (left: FriendRow, right: FriendRow): number => {
-  // Missed friends first; within each group, sort by the relevant timestamp.
-  if (!!left.missedAt !== !!right.missedAt) {
-    return left.missedAt ? -1 : 1;
-  }
-  const leftKey =
-    (left.missedAt && new Date(left.missedAt).getTime()) ||
-    (left.friend.next_due_at && new Date(left.friend.next_due_at).getTime()) ||
-    Infinity;
-  const rightKey =
-    (right.missedAt && new Date(right.missedAt).getTime()) ||
-    (right.friend.next_due_at &&
-      new Date(right.friend.next_due_at).getTime()) ||
-    Infinity;
+  // Longest overdue first; friends without a due date sort last.
+  const leftKey = left.friend.next_due_at
+    ? new Date(left.friend.next_due_at).getTime()
+    : Infinity;
+  const rightKey = right.friend.next_due_at
+    ? new Date(right.friend.next_due_at).getTime()
+    : Infinity;
   return leftKey - rightKey;
 };
 

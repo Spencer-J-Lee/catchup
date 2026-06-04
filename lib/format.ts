@@ -104,8 +104,6 @@ export const formatStatus = (status: EventStatus): string => {
       return "Scheduled";
     case "completed":
       return "Completed";
-    case "missed":
-      return "Missed";
     case "cancelled":
       return "Cancelled";
   }

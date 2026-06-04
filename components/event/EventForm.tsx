@@ -37,12 +37,7 @@ export const eventFormToPayloadFields = (formValues: EventFormValues) => {
   };
 };
 
-const STATUS_OPTIONS: EventStatus[] = [
-  "scheduled",
-  "completed",
-  "missed",
-  "cancelled",
-];
+const STATUS_OPTIONS: EventStatus[] = ["scheduled", "completed", "cancelled"];
 
 const MEDIUM_DETAIL_PLACEHOLDER: Record<
   Exclude<Medium, "in_person">,

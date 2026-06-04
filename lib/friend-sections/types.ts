@@ -10,7 +10,6 @@ export interface FriendRow {
   action: FriendItemAction | null;
   whenAt: string | null;
   scheduledEventId: string | null;
-  missedAt: string | null;
   isDue: boolean;
 }
 
@@ -29,5 +28,4 @@ export interface EventRef {
 export interface EventIndexes {
   pastByFriend: Map<string, EventRef>;
   upcomingByFriend: Map<string, EventRef>;
-  recentMissedByFriend: Map<string, EventRef>;
 }

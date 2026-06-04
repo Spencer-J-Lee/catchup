@@ -25,7 +25,6 @@ interface FriendListItemProps {
   action?: FriendItemAction | null;
   whenAt?: string | null;
   scheduledEventId?: string | null;
-  missedAt?: string | null;
   isDue?: boolean;
 }
 
@@ -34,7 +33,6 @@ export const FriendListItem = ({
   action,
   whenAt,
   scheduledEventId,
-  missedAt,
   isDue,
 }: FriendListItemProps) => {
   const swipeableRef = useRef<SwipeableMethods>(null);
@@ -86,7 +84,6 @@ export const FriendListItem = ({
     friend,
     action,
     whenAt,
-    missedAt,
     isDue,
     formatRelative,
     formatOverdueDays,

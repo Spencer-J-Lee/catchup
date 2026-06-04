@@ -2,13 +2,11 @@ import type { Ionicons } from "@expo/vector-icons";
 
 import type { EventStatus } from "@/types/database";
 
-export type FollowUpStatus = Extract<
-  EventStatus,
-  "completed" | "missed" | "cancelled"
->;
+export type FollowUpStatus = Extract<EventStatus, "completed" | "cancelled">;
+export type FollowUpOptionKey = FollowUpStatus | "rescheduled";
 
 export interface StatusOption {
-  status: FollowUpStatus;
+  key: FollowUpOptionKey;
   label: string;
   icon: keyof typeof Ionicons.glyphMap;
   iconBgClass: string;
@@ -16,37 +14,37 @@ export interface StatusOption {
   badgeTextClass: string;
 }
 
-export const STATUS_OPTIONS_BY_STATUS = {
+export const STATUS_OPTIONS_BY_KEY = {
   completed: {
-    status: "completed",
+    key: "completed",
     label: "Completed",
     icon: "checkmark",
     iconBgClass: "bg-success dark:bg-success-dk",
     badgeClass: "bg-success/15 dark:bg-success-dk/20",
     badgeTextClass: "text-success dark:text-success-dk",
   },
-  missed: {
-    status: "missed",
-    label: "Missed",
-    icon: "close",
-    iconBgClass: "bg-danger dark:bg-danger-dk",
-    badgeClass: "bg-danger/15 dark:bg-danger-dk/20",
-    badgeTextClass: "text-danger dark:text-danger-dk",
+  rescheduled: {
+    key: "rescheduled",
+    label: "Rescheduled",
+    icon: "calendar",
+    iconBgClass: "bg-accent dark:bg-accent-dk",
+    badgeClass: "bg-accent/15 dark:bg-accent-dk/20",
+    badgeTextClass: "text-accent dark:text-accent-dk",
   },
   cancelled: {
-    status: "cancelled",
+    key: "cancelled",
     label: "Cancelled",
     icon: "remove",
     iconBgClass: "bg-[#8a8a93] dark:bg-[#5e5e66]",
     badgeClass: "bg-[#e4e4e7] dark:bg-high-dk",
     badgeTextClass: "text-muted dark:text-muted-dk",
   },
-} satisfies Record<FollowUpStatus, StatusOption>;
+} satisfies Record<FollowUpOptionKey, StatusOption>;
 
 export const STATUS_OPTIONS: StatusOption[] = [
-  STATUS_OPTIONS_BY_STATUS.completed,
-  STATUS_OPTIONS_BY_STATUS.missed,
-  STATUS_OPTIONS_BY_STATUS.cancelled,
+  STATUS_OPTIONS_BY_KEY.completed,
+  STATUS_OPTIONS_BY_KEY.rescheduled,
+  STATUS_OPTIONS_BY_KEY.cancelled,
 ];
 
 export const FADE_MS = 300;

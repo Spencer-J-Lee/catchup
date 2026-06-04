@@ -29,10 +29,9 @@ type DayMarking = {
 const STATUS_DOT_PALETTE: Record<DotStatus, { light: string; dark: string }> = {
   scheduled: { light: lightColors.brand, dark: darkColors.brand },
   completed: { light: lightColors.success, dark: darkColors.success },
-  missed: { light: lightColors.danger, dark: darkColors.danger },
 };
 
-const STATUS_DOT_ORDER: DotStatus[] = ["scheduled", "missed", "completed"];
+const STATUS_DOT_ORDER: DotStatus[] = ["scheduled", "completed"];
 
 const eventTimestamp = (event: CatchUpEvent): number =>
   new Date(event.event_at).getTime();

@@ -15,7 +15,6 @@ import { toast, toastMutationError } from "@/lib/toast";
 
 const TOAST_LABEL_BY_STATUS: Record<MarkableStatus, string> = {
   completed: "Marked complete",
-  missed: "Marked missed",
   cancelled: "Marked cancelled",
 };
 
@@ -94,7 +93,11 @@ const EventDetailScreen = () => {
 
         {/* TODO: Improve */}
         {event.status === "scheduled" ? (
-          <EventStatusActions onMark={markAs} isPending={update.isPending} />
+          <EventStatusActions
+            onMark={markAs}
+            onReschedule={() => router.push(ROUTES.event.edit(id))}
+            isPending={update.isPending}
+          />
         ) : null}
 
         {/* TODO: Improve */}

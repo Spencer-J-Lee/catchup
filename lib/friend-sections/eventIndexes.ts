@@ -6,7 +6,6 @@ import type { EventIndexes, EventRef } from "./types";
 
 export const buildEventIndexes = (
   scheduledEvents: CatchUpEvent[] | undefined,
-  missedEvents: CatchUpEvent[] | undefined,
   nowMs: number,
 ): EventIndexes => {
   const pastByFriend = new Map<string, EventRef>();
@@ -24,19 +23,5 @@ export const buildEventIndexes = (
     }
   }
 
-  const recentMissedByFriend = new Map<string, EventRef>();
-  for (const event of missedEvents ?? []) {
-    const existing = recentMissedByFriend.get(event.friend_id);
-    if (
-      !existing ||
-      new Date(event.event_at).getTime() > new Date(existing.event_at).getTime()
-    ) {
-      recentMissedByFriend.set(event.friend_id, {
-        id: event.id,
-        event_at: event.event_at,
-      });
-    }
-  }
-
-  return { pastByFriend, upcomingByFriend, recentMissedByFriend };
+  return { pastByFriend, upcomingByFriend };
 };

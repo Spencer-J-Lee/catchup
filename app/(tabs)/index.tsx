@@ -10,7 +10,7 @@ import { FriendSectionList } from "@/components/friend/FriendSectionList";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Input } from "@/components/ui/Input";
 import { Screen } from "@/components/ui/Screen";
-import { useMissedEvents, useScheduledEvents } from "@/hooks/use-events";
+import { useScheduledEvents } from "@/hooks/use-events";
 import { useFriends } from "@/hooks/use-friends";
 import { useThemedColors } from "@/hooks/use-themed-colors";
 import { buildFriendSections } from "@/lib/friend-sections";
@@ -21,7 +21,6 @@ const FriendsScreen = () => {
   const tabBarHeight = useBottomTabBarHeight();
   const { data, isLoading, error, refetch } = useFriends();
   const { data: scheduledEvents } = useScheduledEvents();
-  const { data: missedEvents } = useMissedEvents();
   const [search, setSearch] = useState("");
   const [isManualRefreshing, setIsManualRefreshing] = useState(false);
 
@@ -39,10 +38,9 @@ const FriendsScreen = () => {
       buildFriendSections({
         friends: data,
         scheduledEvents,
-        missedEvents,
         search,
       }),
-    [data, scheduledEvents, missedEvents, search],
+    [data, scheduledEvents, search],
   );
 
   const hasFriends = !!data && data.length > 0;
