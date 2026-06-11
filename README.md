@@ -3,6 +3,26 @@
 A mobile app for tracking who you want to stay in touch with and when you last
 caught up with them. React Native (Expo) + TypeScript + Supabase.
 
+## Screenshots
+
+### Friends List View 
+<img width="290" height="600" alt="Screenshot 2026-06-11 at 10 38 38 AM" src="https://github.com/user-attachments/assets/53c3641c-4b85-4113-8bbe-2cb674b2783c" />
+<img width="290" height="600" alt="Screenshot 2026-06-11 at 10 40 06 AM" src="https://github.com/user-attachments/assets/972a9b3a-b171-4d90-bc58-3c3222339f48" />
+
+### Friend Details View
+<img width="290" height="600" alt="Screenshot 2026-06-11 at 10 39 17 AM" src="https://github.com/user-attachments/assets/a6dfb43c-4a21-4dda-9393-0d6a17534252" />
+
+### Calendar View
+<img width="290" height="600" alt="Screenshot 2026-06-03 at 4 52 43 PM" src="https://github.com/user-attachments/assets/afbd7c8f-66c6-4559-a316-10d28c5e8ed7" />
+
+### Settings View
+<img width="290" height="600" alt="Screenshot 2026-06-11 at 10 39 33 AM" src="https://github.com/user-attachments/assets/8a585b6c-654f-4d8f-a9e2-2dfaf0310abe" />
+
+### Catchup Event Details/Edit View
+<img width="290" height="600" alt="Screenshot 2026-06-11 at 10 39 51 AM" src="https://github.com/user-attachments/assets/e32d5bf4-d425-4ffd-b823-f8371c602486" />
+<img width="290" height="600" alt="Screenshot 2026-06-11 at 10 45 00 AM" src="https://github.com/user-attachments/assets/80817205-8c97-44b5-9289-372feb41fb91" />
+
+
 ## What's built so far
 
 Phase 1 (the core tracking MVP) is essentially complete, and parts of Phase 2
