@@ -1,7 +1,6 @@
 # CatchUp
 
-A mobile app for tracking who you want to stay in touch with and when you last
-caught up with them. React Native (Expo) + TypeScript + Supabase.
+A mobile app for tracking friends you want to stay in touch with and when you last caught up with them, featuring contact imports, catch-up scheduling, and a calendar of past and upcoming events. React Native (Expo) + TypeScript + Supabase.
 
 ## Screenshots
 
